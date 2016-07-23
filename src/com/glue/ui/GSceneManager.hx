@@ -30,7 +30,7 @@ class GSceneManager
 		currentScene = null;
 	}
 	
-	static public function gotoScreen(screenClass:Dynamic):Void
+	static public function gotoScene(screenClass:Dynamic):Void
 	{
 		if (Type.getSuperClass(screenClass) != GScene)
 		{

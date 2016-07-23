@@ -1,7 +1,7 @@
 package com.glue.ui;
 
-import com.glue.entities.GEntity;
-import com.glue.entities.GImage;
+import com.glue.display.GEntity;
+import com.glue.display.GImage;
 import com.glue.game.GCamera;
 import com.glue.input.GMouse;
 import flash.display.MovieClip;
@@ -16,37 +16,36 @@ import motion.easing.Quad;
 
 class GScene 
 {
-	public var canvas:Sprite;
-	
+	var _canvas:Sprite;
 	var _entitiesCanvas:Sprite;
 	var _effectCanvas:Sprite;
+	var _layers:Map<String, Sprite> = new Map<String, Sprite>();
+	var _entities:Array<GEntity> = new Array<GEntity>();
 	var _mask:Sprite;
 	
 	public var camera:GCamera;
-	public var mouseX:Float;
-	public var mouseY:Float;
-	
-	var _layers:Map<String, Sprite> = new Map<String, Sprite>();
-	var _entities:Array<GEntity> = new Array<GEntity>();
+	//public var mouseX:Float;
+	//public var mouseY:Float;
 	
 	public function new()
 	{
-		canvas = new Sprite();
-		GSceneManager.sceneCanvas.addChild(canvas);
+		_canvas = new Sprite();
+		GSceneManager.sceneCanvas.addChild(_canvas);
 		
 		_entitiesCanvas = new Sprite();
-		canvas.addChild(_entitiesCanvas);
+		_canvas.addChild(_entitiesCanvas);
 		
 		_effectCanvas = new Sprite();
-		canvas.addChild(_effectCanvas);
+		_canvas.addChild(_effectCanvas);
 		
 		_mask = new Sprite();
-		canvas.addChild(_mask);
+		_canvas.addChild(_mask);
+		
+		addLayer("default");
 		
 		camera = new GCamera();
 		
 		// mask
-		
 		_mask.graphics.beginFill(0xFF0000, 0.3);
 		_mask.graphics.drawRect(0, 0, GEngine.width, GEngine.height);
 		_mask.graphics.endFill();
@@ -54,9 +53,7 @@ class GScene
 		_mask.y = 0;
 		_mask.mouseEnabled = false;
 		_mask.doubleClickEnabled = false;
-		canvas.mask = _mask;
-		
-		addLayer("default");
+		_canvas.mask = _mask;
 	}
 	
 	public function addLayer(layerName:String):Void
@@ -78,8 +75,7 @@ class GScene
 		if (_layers.exists(layerName))
 		{
 			_entities.push(entity);
-			entity.addToWorldLayer(_layers.get(layerName));
-			entity.layerName = layerName;
+			entity.addToLayer(_layers.get(layerName));
 		}
 		else
 		{
@@ -89,54 +85,78 @@ class GScene
 	
 	public function removeEntity(entity:GEntity):Void 
 	{
-		var i:Int;
+		var index = _entities.indexOf(entity);
 		
-		for (i in 0..._entities.length)
+		if (index >= 0)
 		{
-			if (_entities[i] == entity)
+			var i:Int;
+			
+			for (layerName in _layers.keys())
 			{
-				_entities.splice(i, 1);
-				entity.removeFromWorldLayer(_layers.get(entity.layerName));
-				entity.destroy();
-				return;
+				if (entity.isChildOfLayer(_layers.get(layerName)))
+				{
+					entity.removeFromLayer(_layers.get(layerName));
+					break;
+				}
 			}
+			
+			_entities.splice(index, 1);
 		}
 	}
 	
-	public function collide(e1:GImage, e2:GImage):Bool
-	{
-		if (e1.position.x + e1.bounds.left > e2.position.x + e2.bounds.right ||
-			e1.position.x + e1.bounds.right < e2.position.x + e2.bounds.left ||
-			e1.position.y + e1.bounds.top > e2.position.y + e2.bounds.bottom ||
-			e1.position.y + e2.bounds.bottom < e2.position.y + e2.bounds.top)
-		{
-			return false;
-		}
-		
-		return true;
-	}
+	//public function collide(e1:GImage, e2:GImage):Bool
+	//{
+		//if (e1.position.x + e1.bounds.left > e2.position.x + e2.bounds.right ||
+			//e1.position.x + e1.bounds.right < e2.position.x + e2.bounds.left ||
+			//e1.position.y + e1.bounds.top > e2.position.y + e2.bounds.bottom ||
+			//e1.position.y + e2.bounds.bottom < e2.position.y + e2.bounds.top)
+		//{
+			//return false;
+		//}
+		//
+		//return true;
+	//}
 	
 	public function update():Void
 	{
-		// canvas
-		
-		_entitiesCanvas.x = -camera.position.x + GEngine.width / 2;
-		_entitiesCanvas.y = camera.position.y +  GEngine.height / 2;
-		//_entitiesCanvas.x = -camera.position.x + Lib.application.window.width / 2;
-		//_entitiesCanvas.y = camera.position.y +  Lib.application.window.height / 2;
-		
 		// camera
-		
 		camera.update();
 		
-		// world coordinates
+		// canvas
+		_entitiesCanvas.x = -camera.position.x + GEngine.width / 2;
+		_entitiesCanvas.y = camera.position.y +  GEngine.height / 2;
 		
-		mouseX = GMouse.position.x / GEngine.stage.scaleX - _entitiesCanvas.x;
-		mouseY = GMouse.position.y / GEngine.stage.scaleY - _entitiesCanvas.y;
+		
+		// world coordinates
+		//mouseX = GMouse.position.x / GEngine.stage.scaleX - _entitiesCanvas.x;
+		//mouseY = GMouse.position.y / GEngine.stage.scaleY - _entitiesCanvas.y;
 		
 		// entities
+		var i:Int = 0;
 		
-		var i:Int;
+		while (i < _entities.length)
+		{
+			var entity = _entities[i];
+			
+			if (entity.isDestroyed)
+			{
+				for (layerName in _layers.keys())
+				{
+					if (entity.isChildOfLayer(_layers.get(layerName)))
+					{
+						entity.removeFromLayer(_layers.get(layerName));
+						break;
+					}
+				}
+				
+				_entities.splice(i, 1);
+			}
+			else
+			{
+				entity.update();
+				i++;
+			}
+		}
 		
 		for (i in 0... _entities.length)
 		{
@@ -164,9 +184,6 @@ class GScene
 	
 	public function destroy():Void
 	{
-		camera.destroy();
-		camera = null;
-		
 		while (GSceneManager.sceneCanvas.numChildren > 0)
 		{
 			GSceneManager.sceneCanvas.removeChildAt(0);
@@ -184,9 +201,5 @@ class GScene
 			_entities[0] = null;
 			_entities.splice(0, 1);
 		}
-		
-		_layers = null;
-		_entities = null;
-		camera = null;
 	}
 }

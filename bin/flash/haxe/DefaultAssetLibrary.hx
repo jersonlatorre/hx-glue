@@ -64,119 +64,14 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		#end
 		
 		#if flash
 		
 		className.set ("img/background_game.png", __ASSET__img_background_game_png);
 		type.set ("img/background_game.png", AssetType.IMAGE);
-		className.set ("img/background_menu.png", __ASSET__img_background_menu_png);
-		type.set ("img/background_menu.png", AssetType.IMAGE);
-		className.set ("img/background_scorecard.png", __ASSET__img_background_scorecard_png);
-		type.set ("img/background_scorecard.png", AssetType.IMAGE);
-		className.set ("img/button_play.json", __ASSET__img_button_play_json);
-		type.set ("img/button_play.json", AssetType.TEXT);
-		className.set ("img/button_play.png", __ASSET__img_button_play_png);
-		type.set ("img/button_play.png", AssetType.IMAGE);
-		className.set ("img/button_replay.json", __ASSET__img_button_replay_json);
-		type.set ("img/button_replay.json", AssetType.TEXT);
-		className.set ("img/button_replay.png", __ASSET__img_button_replay_png);
-		type.set ("img/button_replay.png", AssetType.IMAGE);
-		className.set ("img/item_bad_1_die.json", __ASSET__img_item_bad_1_die_json);
-		type.set ("img/item_bad_1_die.json", AssetType.TEXT);
-		className.set ("img/item_bad_1_die.png", __ASSET__img_item_bad_1_die_png);
-		type.set ("img/item_bad_1_die.png", AssetType.IMAGE);
-		className.set ("img/item_bad_1_stand.json", __ASSET__img_item_bad_1_stand_json);
-		type.set ("img/item_bad_1_stand.json", AssetType.TEXT);
-		className.set ("img/item_bad_1_stand.png", __ASSET__img_item_bad_1_stand_png);
-		type.set ("img/item_bad_1_stand.png", AssetType.IMAGE);
-		className.set ("img/item_bad_2_die.json", __ASSET__img_item_bad_2_die_json);
-		type.set ("img/item_bad_2_die.json", AssetType.TEXT);
-		className.set ("img/item_bad_2_die.png", __ASSET__img_item_bad_2_die_png);
-		type.set ("img/item_bad_2_die.png", AssetType.IMAGE);
-		className.set ("img/item_bad_2_stand.json", __ASSET__img_item_bad_2_stand_json);
-		type.set ("img/item_bad_2_stand.json", AssetType.TEXT);
-		className.set ("img/item_bad_2_stand.png", __ASSET__img_item_bad_2_stand_png);
-		type.set ("img/item_bad_2_stand.png", AssetType.IMAGE);
-		className.set ("img/item_bad_3_die.json", __ASSET__img_item_bad_3_die_json);
-		type.set ("img/item_bad_3_die.json", AssetType.TEXT);
-		className.set ("img/item_bad_3_die.png", __ASSET__img_item_bad_3_die_png);
-		type.set ("img/item_bad_3_die.png", AssetType.IMAGE);
-		className.set ("img/item_bad_3_stand.json", __ASSET__img_item_bad_3_stand_json);
-		type.set ("img/item_bad_3_stand.json", AssetType.TEXT);
-		className.set ("img/item_bad_3_stand.png", __ASSET__img_item_bad_3_stand_png);
-		type.set ("img/item_bad_3_stand.png", AssetType.IMAGE);
-		className.set ("img/item_good_1_die.json", __ASSET__img_item_good_1_die_json);
-		type.set ("img/item_good_1_die.json", AssetType.TEXT);
-		className.set ("img/item_good_1_die.png", __ASSET__img_item_good_1_die_png);
-		type.set ("img/item_good_1_die.png", AssetType.IMAGE);
-		className.set ("img/item_good_1_stand.json", __ASSET__img_item_good_1_stand_json);
-		type.set ("img/item_good_1_stand.json", AssetType.TEXT);
-		className.set ("img/item_good_1_stand.png", __ASSET__img_item_good_1_stand_png);
-		type.set ("img/item_good_1_stand.png", AssetType.IMAGE);
-		className.set ("img/item_good_2_die.json", __ASSET__img_item_good_2_die_json);
-		type.set ("img/item_good_2_die.json", AssetType.TEXT);
-		className.set ("img/item_good_2_die.png", __ASSET__img_item_good_2_die_png);
-		type.set ("img/item_good_2_die.png", AssetType.IMAGE);
-		className.set ("img/item_good_2_stand.json", __ASSET__img_item_good_2_stand_json);
-		type.set ("img/item_good_2_stand.json", AssetType.TEXT);
-		className.set ("img/item_good_2_stand.png", __ASSET__img_item_good_2_stand_png);
-		type.set ("img/item_good_2_stand.png", AssetType.IMAGE);
-		className.set ("img/item_good_3_die.json", __ASSET__img_item_good_3_die_json);
-		type.set ("img/item_good_3_die.json", AssetType.TEXT);
-		className.set ("img/item_good_3_die.png", __ASSET__img_item_good_3_die_png);
-		type.set ("img/item_good_3_die.png", AssetType.IMAGE);
-		className.set ("img/item_good_3_stand.json", __ASSET__img_item_good_3_stand_json);
-		type.set ("img/item_good_3_stand.json", AssetType.TEXT);
-		className.set ("img/item_good_3_stand.png", __ASSET__img_item_good_3_stand_png);
-		type.set ("img/item_good_3_stand.png", AssetType.IMAGE);
-		className.set ("img/player_die.json", __ASSET__img_player_die_json);
-		type.set ("img/player_die.json", AssetType.TEXT);
-		className.set ("img/player_die.png", __ASSET__img_player_die_png);
-		type.set ("img/player_die.png", AssetType.IMAGE);
-		className.set ("img/player_stand.json", __ASSET__img_player_stand_json);
-		type.set ("img/player_stand.json", AssetType.TEXT);
-		className.set ("img/player_stand.png", __ASSET__img_player_stand_png);
-		type.set ("img/player_stand.png", AssetType.IMAGE);
-		className.set ("img/player_walk.json", __ASSET__img_player_walk_json);
-		type.set ("img/player_walk.json", AssetType.TEXT);
-		className.set ("img/player_walk.png", __ASSET__img_player_walk_png);
-		type.set ("img/player_walk.png", AssetType.IMAGE);
+		className.set ("img/play.png", __ASSET__img_play_png);
+		type.set ("img/play.png", AssetType.IMAGE);
 		className.set ("fonts/font.fnt", __ASSET__fonts_font_fnt);
 		type.set ("fonts/font.fnt", AssetType.TEXT);
 		className.set ("fonts/font.png", __ASSET__fonts_font_png);
@@ -206,147 +101,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 		path.set (id, id);
 		
 		type.set (id, AssetType.IMAGE);
-		id = "img/background_menu.png";
-		path.set (id, id);
-		
-		type.set (id, AssetType.IMAGE);
-		id = "img/background_scorecard.png";
-		path.set (id, id);
-		
-		type.set (id, AssetType.IMAGE);
-		id = "img/button_play.json";
-		path.set (id, id);
-		
-		type.set (id, AssetType.TEXT);
-		id = "img/button_play.png";
-		path.set (id, id);
-		
-		type.set (id, AssetType.IMAGE);
-		id = "img/button_replay.json";
-		path.set (id, id);
-		
-		type.set (id, AssetType.TEXT);
-		id = "img/button_replay.png";
-		path.set (id, id);
-		
-		type.set (id, AssetType.IMAGE);
-		id = "img/item_bad_1_die.json";
-		path.set (id, id);
-		
-		type.set (id, AssetType.TEXT);
-		id = "img/item_bad_1_die.png";
-		path.set (id, id);
-		
-		type.set (id, AssetType.IMAGE);
-		id = "img/item_bad_1_stand.json";
-		path.set (id, id);
-		
-		type.set (id, AssetType.TEXT);
-		id = "img/item_bad_1_stand.png";
-		path.set (id, id);
-		
-		type.set (id, AssetType.IMAGE);
-		id = "img/item_bad_2_die.json";
-		path.set (id, id);
-		
-		type.set (id, AssetType.TEXT);
-		id = "img/item_bad_2_die.png";
-		path.set (id, id);
-		
-		type.set (id, AssetType.IMAGE);
-		id = "img/item_bad_2_stand.json";
-		path.set (id, id);
-		
-		type.set (id, AssetType.TEXT);
-		id = "img/item_bad_2_stand.png";
-		path.set (id, id);
-		
-		type.set (id, AssetType.IMAGE);
-		id = "img/item_bad_3_die.json";
-		path.set (id, id);
-		
-		type.set (id, AssetType.TEXT);
-		id = "img/item_bad_3_die.png";
-		path.set (id, id);
-		
-		type.set (id, AssetType.IMAGE);
-		id = "img/item_bad_3_stand.json";
-		path.set (id, id);
-		
-		type.set (id, AssetType.TEXT);
-		id = "img/item_bad_3_stand.png";
-		path.set (id, id);
-		
-		type.set (id, AssetType.IMAGE);
-		id = "img/item_good_1_die.json";
-		path.set (id, id);
-		
-		type.set (id, AssetType.TEXT);
-		id = "img/item_good_1_die.png";
-		path.set (id, id);
-		
-		type.set (id, AssetType.IMAGE);
-		id = "img/item_good_1_stand.json";
-		path.set (id, id);
-		
-		type.set (id, AssetType.TEXT);
-		id = "img/item_good_1_stand.png";
-		path.set (id, id);
-		
-		type.set (id, AssetType.IMAGE);
-		id = "img/item_good_2_die.json";
-		path.set (id, id);
-		
-		type.set (id, AssetType.TEXT);
-		id = "img/item_good_2_die.png";
-		path.set (id, id);
-		
-		type.set (id, AssetType.IMAGE);
-		id = "img/item_good_2_stand.json";
-		path.set (id, id);
-		
-		type.set (id, AssetType.TEXT);
-		id = "img/item_good_2_stand.png";
-		path.set (id, id);
-		
-		type.set (id, AssetType.IMAGE);
-		id = "img/item_good_3_die.json";
-		path.set (id, id);
-		
-		type.set (id, AssetType.TEXT);
-		id = "img/item_good_3_die.png";
-		path.set (id, id);
-		
-		type.set (id, AssetType.IMAGE);
-		id = "img/item_good_3_stand.json";
-		path.set (id, id);
-		
-		type.set (id, AssetType.TEXT);
-		id = "img/item_good_3_stand.png";
-		path.set (id, id);
-		
-		type.set (id, AssetType.IMAGE);
-		id = "img/player_die.json";
-		path.set (id, id);
-		
-		type.set (id, AssetType.TEXT);
-		id = "img/player_die.png";
-		path.set (id, id);
-		
-		type.set (id, AssetType.IMAGE);
-		id = "img/player_stand.json";
-		path.set (id, id);
-		
-		type.set (id, AssetType.TEXT);
-		id = "img/player_stand.png";
-		path.set (id, id);
-		
-		type.set (id, AssetType.IMAGE);
-		id = "img/player_walk.json";
-		path.set (id, id);
-		
-		type.set (id, AssetType.TEXT);
-		id = "img/player_walk.png";
+		id = "img/play.png";
 		path.set (id, id);
 		
 		type.set (id, AssetType.IMAGE);
@@ -411,113 +166,8 @@ class DefaultAssetLibrary extends AssetLibrary {
 		className.set ("img/background_game.png", __ASSET__img_background_game_png);
 		type.set ("img/background_game.png", AssetType.IMAGE);
 		
-		className.set ("img/background_menu.png", __ASSET__img_background_menu_png);
-		type.set ("img/background_menu.png", AssetType.IMAGE);
-		
-		className.set ("img/background_scorecard.png", __ASSET__img_background_scorecard_png);
-		type.set ("img/background_scorecard.png", AssetType.IMAGE);
-		
-		className.set ("img/button_play.json", __ASSET__img_button_play_json);
-		type.set ("img/button_play.json", AssetType.TEXT);
-		
-		className.set ("img/button_play.png", __ASSET__img_button_play_png);
-		type.set ("img/button_play.png", AssetType.IMAGE);
-		
-		className.set ("img/button_replay.json", __ASSET__img_button_replay_json);
-		type.set ("img/button_replay.json", AssetType.TEXT);
-		
-		className.set ("img/button_replay.png", __ASSET__img_button_replay_png);
-		type.set ("img/button_replay.png", AssetType.IMAGE);
-		
-		className.set ("img/item_bad_1_die.json", __ASSET__img_item_bad_1_die_json);
-		type.set ("img/item_bad_1_die.json", AssetType.TEXT);
-		
-		className.set ("img/item_bad_1_die.png", __ASSET__img_item_bad_1_die_png);
-		type.set ("img/item_bad_1_die.png", AssetType.IMAGE);
-		
-		className.set ("img/item_bad_1_stand.json", __ASSET__img_item_bad_1_stand_json);
-		type.set ("img/item_bad_1_stand.json", AssetType.TEXT);
-		
-		className.set ("img/item_bad_1_stand.png", __ASSET__img_item_bad_1_stand_png);
-		type.set ("img/item_bad_1_stand.png", AssetType.IMAGE);
-		
-		className.set ("img/item_bad_2_die.json", __ASSET__img_item_bad_2_die_json);
-		type.set ("img/item_bad_2_die.json", AssetType.TEXT);
-		
-		className.set ("img/item_bad_2_die.png", __ASSET__img_item_bad_2_die_png);
-		type.set ("img/item_bad_2_die.png", AssetType.IMAGE);
-		
-		className.set ("img/item_bad_2_stand.json", __ASSET__img_item_bad_2_stand_json);
-		type.set ("img/item_bad_2_stand.json", AssetType.TEXT);
-		
-		className.set ("img/item_bad_2_stand.png", __ASSET__img_item_bad_2_stand_png);
-		type.set ("img/item_bad_2_stand.png", AssetType.IMAGE);
-		
-		className.set ("img/item_bad_3_die.json", __ASSET__img_item_bad_3_die_json);
-		type.set ("img/item_bad_3_die.json", AssetType.TEXT);
-		
-		className.set ("img/item_bad_3_die.png", __ASSET__img_item_bad_3_die_png);
-		type.set ("img/item_bad_3_die.png", AssetType.IMAGE);
-		
-		className.set ("img/item_bad_3_stand.json", __ASSET__img_item_bad_3_stand_json);
-		type.set ("img/item_bad_3_stand.json", AssetType.TEXT);
-		
-		className.set ("img/item_bad_3_stand.png", __ASSET__img_item_bad_3_stand_png);
-		type.set ("img/item_bad_3_stand.png", AssetType.IMAGE);
-		
-		className.set ("img/item_good_1_die.json", __ASSET__img_item_good_1_die_json);
-		type.set ("img/item_good_1_die.json", AssetType.TEXT);
-		
-		className.set ("img/item_good_1_die.png", __ASSET__img_item_good_1_die_png);
-		type.set ("img/item_good_1_die.png", AssetType.IMAGE);
-		
-		className.set ("img/item_good_1_stand.json", __ASSET__img_item_good_1_stand_json);
-		type.set ("img/item_good_1_stand.json", AssetType.TEXT);
-		
-		className.set ("img/item_good_1_stand.png", __ASSET__img_item_good_1_stand_png);
-		type.set ("img/item_good_1_stand.png", AssetType.IMAGE);
-		
-		className.set ("img/item_good_2_die.json", __ASSET__img_item_good_2_die_json);
-		type.set ("img/item_good_2_die.json", AssetType.TEXT);
-		
-		className.set ("img/item_good_2_die.png", __ASSET__img_item_good_2_die_png);
-		type.set ("img/item_good_2_die.png", AssetType.IMAGE);
-		
-		className.set ("img/item_good_2_stand.json", __ASSET__img_item_good_2_stand_json);
-		type.set ("img/item_good_2_stand.json", AssetType.TEXT);
-		
-		className.set ("img/item_good_2_stand.png", __ASSET__img_item_good_2_stand_png);
-		type.set ("img/item_good_2_stand.png", AssetType.IMAGE);
-		
-		className.set ("img/item_good_3_die.json", __ASSET__img_item_good_3_die_json);
-		type.set ("img/item_good_3_die.json", AssetType.TEXT);
-		
-		className.set ("img/item_good_3_die.png", __ASSET__img_item_good_3_die_png);
-		type.set ("img/item_good_3_die.png", AssetType.IMAGE);
-		
-		className.set ("img/item_good_3_stand.json", __ASSET__img_item_good_3_stand_json);
-		type.set ("img/item_good_3_stand.json", AssetType.TEXT);
-		
-		className.set ("img/item_good_3_stand.png", __ASSET__img_item_good_3_stand_png);
-		type.set ("img/item_good_3_stand.png", AssetType.IMAGE);
-		
-		className.set ("img/player_die.json", __ASSET__img_player_die_json);
-		type.set ("img/player_die.json", AssetType.TEXT);
-		
-		className.set ("img/player_die.png", __ASSET__img_player_die_png);
-		type.set ("img/player_die.png", AssetType.IMAGE);
-		
-		className.set ("img/player_stand.json", __ASSET__img_player_stand_json);
-		type.set ("img/player_stand.json", AssetType.TEXT);
-		
-		className.set ("img/player_stand.png", __ASSET__img_player_stand_png);
-		type.set ("img/player_stand.png", AssetType.IMAGE);
-		
-		className.set ("img/player_walk.json", __ASSET__img_player_walk_json);
-		type.set ("img/player_walk.json", AssetType.TEXT);
-		
-		className.set ("img/player_walk.png", __ASSET__img_player_walk_png);
-		type.set ("img/player_walk.png", AssetType.IMAGE);
+		className.set ("img/play.png", __ASSET__img_play_png);
+		type.set ("img/play.png", AssetType.IMAGE);
 		
 		className.set ("fonts/font.fnt", __ASSET__fonts_font_fnt);
 		type.set ("fonts/font.fnt", AssetType.TEXT);
@@ -1194,42 +844,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 #if flash
 
 @:keep @:bind #if display private #end class __ASSET__img_background_game_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind #if display private #end class __ASSET__img_background_menu_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind #if display private #end class __ASSET__img_background_scorecard_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind #if display private #end class __ASSET__img_button_play_json extends flash.utils.ByteArray { }
-@:keep @:bind #if display private #end class __ASSET__img_button_play_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind #if display private #end class __ASSET__img_button_replay_json extends flash.utils.ByteArray { }
-@:keep @:bind #if display private #end class __ASSET__img_button_replay_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind #if display private #end class __ASSET__img_item_bad_1_die_json extends flash.utils.ByteArray { }
-@:keep @:bind #if display private #end class __ASSET__img_item_bad_1_die_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind #if display private #end class __ASSET__img_item_bad_1_stand_json extends flash.utils.ByteArray { }
-@:keep @:bind #if display private #end class __ASSET__img_item_bad_1_stand_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind #if display private #end class __ASSET__img_item_bad_2_die_json extends flash.utils.ByteArray { }
-@:keep @:bind #if display private #end class __ASSET__img_item_bad_2_die_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind #if display private #end class __ASSET__img_item_bad_2_stand_json extends flash.utils.ByteArray { }
-@:keep @:bind #if display private #end class __ASSET__img_item_bad_2_stand_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind #if display private #end class __ASSET__img_item_bad_3_die_json extends flash.utils.ByteArray { }
-@:keep @:bind #if display private #end class __ASSET__img_item_bad_3_die_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind #if display private #end class __ASSET__img_item_bad_3_stand_json extends flash.utils.ByteArray { }
-@:keep @:bind #if display private #end class __ASSET__img_item_bad_3_stand_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind #if display private #end class __ASSET__img_item_good_1_die_json extends flash.utils.ByteArray { }
-@:keep @:bind #if display private #end class __ASSET__img_item_good_1_die_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind #if display private #end class __ASSET__img_item_good_1_stand_json extends flash.utils.ByteArray { }
-@:keep @:bind #if display private #end class __ASSET__img_item_good_1_stand_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind #if display private #end class __ASSET__img_item_good_2_die_json extends flash.utils.ByteArray { }
-@:keep @:bind #if display private #end class __ASSET__img_item_good_2_die_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind #if display private #end class __ASSET__img_item_good_2_stand_json extends flash.utils.ByteArray { }
-@:keep @:bind #if display private #end class __ASSET__img_item_good_2_stand_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind #if display private #end class __ASSET__img_item_good_3_die_json extends flash.utils.ByteArray { }
-@:keep @:bind #if display private #end class __ASSET__img_item_good_3_die_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind #if display private #end class __ASSET__img_item_good_3_stand_json extends flash.utils.ByteArray { }
-@:keep @:bind #if display private #end class __ASSET__img_item_good_3_stand_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind #if display private #end class __ASSET__img_player_die_json extends flash.utils.ByteArray { }
-@:keep @:bind #if display private #end class __ASSET__img_player_die_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind #if display private #end class __ASSET__img_player_stand_json extends flash.utils.ByteArray { }
-@:keep @:bind #if display private #end class __ASSET__img_player_stand_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind #if display private #end class __ASSET__img_player_walk_json extends flash.utils.ByteArray { }
-@:keep @:bind #if display private #end class __ASSET__img_player_walk_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__img_play_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__fonts_font_fnt extends flash.utils.ByteArray { }
 @:keep @:bind #if display private #end class __ASSET__fonts_font_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__data_config_json extends flash.utils.ByteArray { }
@@ -1258,41 +873,6 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #else
 
 
@@ -1301,42 +881,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 @:image("assets/img/background_game.png") #if display private #end class __ASSET__img_background_game_png extends lime.graphics.Image {}
-@:image("assets/img/background_menu.png") #if display private #end class __ASSET__img_background_menu_png extends lime.graphics.Image {}
-@:image("assets/img/background_scorecard.png") #if display private #end class __ASSET__img_background_scorecard_png extends lime.graphics.Image {}
-@:file("assets/img/button_play.json") #if display private #end class __ASSET__img_button_play_json extends lime.utils.Bytes {}
-@:image("assets/img/button_play.png") #if display private #end class __ASSET__img_button_play_png extends lime.graphics.Image {}
-@:file("assets/img/button_replay.json") #if display private #end class __ASSET__img_button_replay_json extends lime.utils.Bytes {}
-@:image("assets/img/button_replay.png") #if display private #end class __ASSET__img_button_replay_png extends lime.graphics.Image {}
-@:file("assets/img/item_bad_1_die.json") #if display private #end class __ASSET__img_item_bad_1_die_json extends lime.utils.Bytes {}
-@:image("assets/img/item_bad_1_die.png") #if display private #end class __ASSET__img_item_bad_1_die_png extends lime.graphics.Image {}
-@:file("assets/img/item_bad_1_stand.json") #if display private #end class __ASSET__img_item_bad_1_stand_json extends lime.utils.Bytes {}
-@:image("assets/img/item_bad_1_stand.png") #if display private #end class __ASSET__img_item_bad_1_stand_png extends lime.graphics.Image {}
-@:file("assets/img/item_bad_2_die.json") #if display private #end class __ASSET__img_item_bad_2_die_json extends lime.utils.Bytes {}
-@:image("assets/img/item_bad_2_die.png") #if display private #end class __ASSET__img_item_bad_2_die_png extends lime.graphics.Image {}
-@:file("assets/img/item_bad_2_stand.json") #if display private #end class __ASSET__img_item_bad_2_stand_json extends lime.utils.Bytes {}
-@:image("assets/img/item_bad_2_stand.png") #if display private #end class __ASSET__img_item_bad_2_stand_png extends lime.graphics.Image {}
-@:file("assets/img/item_bad_3_die.json") #if display private #end class __ASSET__img_item_bad_3_die_json extends lime.utils.Bytes {}
-@:image("assets/img/item_bad_3_die.png") #if display private #end class __ASSET__img_item_bad_3_die_png extends lime.graphics.Image {}
-@:file("assets/img/item_bad_3_stand.json") #if display private #end class __ASSET__img_item_bad_3_stand_json extends lime.utils.Bytes {}
-@:image("assets/img/item_bad_3_stand.png") #if display private #end class __ASSET__img_item_bad_3_stand_png extends lime.graphics.Image {}
-@:file("assets/img/item_good_1_die.json") #if display private #end class __ASSET__img_item_good_1_die_json extends lime.utils.Bytes {}
-@:image("assets/img/item_good_1_die.png") #if display private #end class __ASSET__img_item_good_1_die_png extends lime.graphics.Image {}
-@:file("assets/img/item_good_1_stand.json") #if display private #end class __ASSET__img_item_good_1_stand_json extends lime.utils.Bytes {}
-@:image("assets/img/item_good_1_stand.png") #if display private #end class __ASSET__img_item_good_1_stand_png extends lime.graphics.Image {}
-@:file("assets/img/item_good_2_die.json") #if display private #end class __ASSET__img_item_good_2_die_json extends lime.utils.Bytes {}
-@:image("assets/img/item_good_2_die.png") #if display private #end class __ASSET__img_item_good_2_die_png extends lime.graphics.Image {}
-@:file("assets/img/item_good_2_stand.json") #if display private #end class __ASSET__img_item_good_2_stand_json extends lime.utils.Bytes {}
-@:image("assets/img/item_good_2_stand.png") #if display private #end class __ASSET__img_item_good_2_stand_png extends lime.graphics.Image {}
-@:file("assets/img/item_good_3_die.json") #if display private #end class __ASSET__img_item_good_3_die_json extends lime.utils.Bytes {}
-@:image("assets/img/item_good_3_die.png") #if display private #end class __ASSET__img_item_good_3_die_png extends lime.graphics.Image {}
-@:file("assets/img/item_good_3_stand.json") #if display private #end class __ASSET__img_item_good_3_stand_json extends lime.utils.Bytes {}
-@:image("assets/img/item_good_3_stand.png") #if display private #end class __ASSET__img_item_good_3_stand_png extends lime.graphics.Image {}
-@:file("assets/img/player_die.json") #if display private #end class __ASSET__img_player_die_json extends lime.utils.Bytes {}
-@:image("assets/img/player_die.png") #if display private #end class __ASSET__img_player_die_png extends lime.graphics.Image {}
-@:file("assets/img/player_stand.json") #if display private #end class __ASSET__img_player_stand_json extends lime.utils.Bytes {}
-@:image("assets/img/player_stand.png") #if display private #end class __ASSET__img_player_stand_png extends lime.graphics.Image {}
-@:file("assets/img/player_walk.json") #if display private #end class __ASSET__img_player_walk_json extends lime.utils.Bytes {}
-@:image("assets/img/player_walk.png") #if display private #end class __ASSET__img_player_walk_png extends lime.graphics.Image {}
+@:image("assets/img/play.png") #if display private #end class __ASSET__img_play_png extends lime.graphics.Image {}
 @:file("assets/fonts/font.fnt") #if display private #end class __ASSET__fonts_font_fnt extends lime.utils.Bytes {}
 @:image("assets/fonts/font.png") #if display private #end class __ASSET__fonts_font_png extends lime.graphics.Image {}
 @:file("assets/data/config.json") #if display private #end class __ASSET__data_config_json extends lime.utils.Bytes {}

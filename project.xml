@@ -3,11 +3,11 @@
 	<!-- NMML reference: https://gist.github.com/1763850 -->
 	
 	<!-- metadata, make sure 'package' is at least 3 segments (ie. com.mycompany.myproject) -->
-	<meta title="Collector" package="com.plug.Collector" version="1.0.0" company="Plug" />
+	<meta title="GlueTest" package="com.plug.GlueTest" version="1.0.0" company="Plug" />
 	<android target-sdk-version="19" />
 	
 	<!-- output -->
-	<app main="Main" file="Collector" path="bin" />
+	<app main="Main" file="GlueTest" path="bin" />
 	
 	<window background="#FF0000" fps="60" />
 	<window width="800" height="600" />

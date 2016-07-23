@@ -1,8 +1,6 @@
 package com.plug.entities;
 
-import com.glue.entities.GAlignMode;
-import com.glue.entities.GSprite;
-import com.plug.ui.SceneScore;
+import com.glue.display.GSprite;
 import com.glue.input.GKeyboard;
 import com.glue.input.GMouse;
 import com.glue.ui.GSceneManager;
@@ -29,8 +27,7 @@ class Player extends GSprite
 	
 	public function new() 
 	{
-		super(GAlignMode.BOTTOM);
-		
+		super();
 		addAnimation("stand", "player_stand");
 		addAnimation("walk", "player_walk");
 		addAnimation("die", "player_die");
@@ -38,7 +35,7 @@ class Player extends GSprite
 		
 		state = STATE_ALIVE;
 		
-		setBounds(-18, 80, 36, 80);
+		//setBounds(-18, 80, 36, 80);
 	}
 	
 	override public function update():Void 
@@ -47,37 +44,37 @@ class Player extends GSprite
 		{
 			case STATE_ALIVE:
 			{
-				if (GKeyboard.isLeft || (GMouse.isPressed && Global.scene.mouseX < 0))
-				{
-					_speedX = -SPEED_X;
-					scaleX = -1;
-					setAnimation("walk");
-				}
-				
-				if (GKeyboard.isRight || (GMouse.isPressed && Global.scene.mouseX >= 0))
-				{
-					_speedX = SPEED_X;
-					scaleX = 1;
-					setAnimation("walk");
-				}
-				
-				if (!GKeyboard.isRight && !GKeyboard.isLeft && !GMouse.isPressed)
-				{
-					_speedX = 0;
-					setAnimation("stand");
-				}
-				
-				position.x += _speedX * GTime.dt;
-				
-				if (position.x >= 400 - 30)
-				{
-					position.x = 400 - 30;
-				}
-				
-				if (position.x <= -400 + 30)
-				{
-					position.x = -400 + 30;
-				}
+				//if (GKeyboard.isLeft || (GMouse.isPressed && Global.scene.mouseX < 0))
+				//{
+					//_speedX = -SPEED_X;
+					//setScaleX(-1);
+					//setAnimation("walk");
+				//}
+				//
+				//if (GKeyboard.isRight || (GMouse.isPressed && Global.scene.mouseX >= 0))
+				//{
+					//_speedX = SPEED_X;
+					//setScaleX(1);
+					//setAnimation("walk");
+				//}
+				//
+				//if (!GKeyboard.isRight && !GKeyboard.isLeft && !GMouse.isPressed)
+				//{
+					//_speedX = 0;
+					//setAnimation("stand");
+				//}
+				//
+				//position.x += _speedX * GTime.dt;
+				//
+				//if (position.x >= 400 - 30)
+				//{
+					//position.x = 400 - 30;
+				//}
+				//
+				//if (position.x <= -400 + 30)
+				//{
+					//position.x = -400 + 30;
+				//}
 				
 				super.update();
 			}
@@ -92,24 +89,5 @@ class Player extends GSprite
 				
 			}
 		}
-	}
-	
-	override public function onEndAnimation():Void 
-	{
-		if (animation == "die")
-		{
-			Actuate.timer(0.4).onComplete(function():Void
-			{
-				GSceneManager.gotoScreen(SceneScore);
-			});
-			
-			state = STATE_DEAD;
-		}
-	}
-	
-	public function hit() 
-	{
-		state = STATE_DIYING;
-		setAnimation("die");
 	}
 }

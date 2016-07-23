@@ -50,7 +50,7 @@ import flash.geom.Vector3D;
 		return new GVector2D(rx, ry);
 	}
 	
-	static public function pointProduct(a:GVector2D, b:GVector2D):Float
+	static public function dotProduct(a:GVector2D, b:GVector2D):Float
 	{
 		return (a.x * b.x + a.y + b.y);
 	}

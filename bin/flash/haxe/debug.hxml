@@ -9,7 +9,7 @@
 -cp C:/HaxeToolkit/haxe/lib/openfl/3,6,1
 -D openfl=3.6.1
 -cp src
--cp C:\HaxeToolkit\haxe\lib\/openfl/3,6,1/extern
+-cp C:\HaxeToolkit\haxe\lib\openfl/3,6,1/extern
 -D native-trace
 -D openfl-next
 -D tools=2.9.1
@@ -21,7 +21,7 @@
 -D web
 -swf-lib bin/flash/obj/assets.swf
 -swf-version 11.2
--swf bin/flash/bin/Collector.swf
+-swf bin/flash/bin/GlueTest.swf
 -swf-header 800:600:60:FF0000
 -cp bin/flash/haxe
 -debug

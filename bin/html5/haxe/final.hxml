@@ -21,7 +21,7 @@
 -D html5
 -D web
 --remap flash:openfl
--js bin/html5/bin/Collector.js
+-js bin/html5/bin/GlueTest.js
 -cp bin/html5/haxe
 -D html5
 --macro allowPackage("flash")

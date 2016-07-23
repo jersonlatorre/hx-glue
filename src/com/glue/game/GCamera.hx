@@ -1,5 +1,5 @@
 package com.glue.game;
-import com.glue.entities.GEntity;
+import com.glue.display.GEntity;
 import com.glue.utils.GVector2D;
 
 /**
@@ -10,87 +10,99 @@ import com.glue.utils.GVector2D;
 @final class GCamera
 {
 
-	public var position:GVector2D = new GVector2D(0, 0);
+	public var position:GVector2D;
 	
 	var _target:GEntity;
 	
-	static inline var STATE_TARGET:Int = 0;
 	static inline var STATE_FOLLOW:Int = 1;
 	static inline var STATE_FOLLOW_X:Int = 3;
 	static inline var STATE_FOLLOW_Y:Int = 4;
-	static inline var STATE_MANUAL:Int = 2;
+	static inline var STATE_NONE:Int = 2;
 	
 	var _leftLimit:Float = Math.NEGATIVE_INFINITY;
 	var _rightLimit:Float = Math.POSITIVE_INFINITY;
 	var _topLimit:Float = Math.POSITIVE_INFINITY;
 	var _bottomLimit:Float = Math.NEGATIVE_INFINITY;
-	
-	public var state:Int = STATE_MANUAL;
+	var _mode:Int = STATE_NONE;
+	var _delayFactor:Float = 0.1;
 	
 	public function new() 
 	{
-		
+		position = GVector2D.create(GEngine.width / 2, -GEngine.height / 2);
 	}
 	
-	public function target(target:GEntity):Void 
+	public function follow(target:GEntity, delayFactor:Float = 0.1):GCamera
 	{
 		_target = target;
-		state = STATE_TARGET;
+		_delayFactor = delayFactor;
+		_mode = STATE_FOLLOW;
+		return this;
 	}
 	
-	public function follow(target:GEntity):Void
+	public function setPosition(x:Float, y:Float):GCamera
 	{
-		_target = target;
-		state = STATE_FOLLOW;
+		position.x = x;
+		position.y = y;
+		return this;
 	}
 	
-	public function setLeftLimit(limit:Float):Void
+	public function setPositionX(x:Float):GCamera
+	{
+		position.x = x;
+		return this;
+	}
+	
+	public function setPositionY(y:Float):GCamera
+	{
+		position.y = y;
+		return this;
+	}
+	
+	public function setLeftLimit(limit:Float):GCamera
 	{
 		_leftLimit = limit;
+		return this;
 	}
 	
-	public function setRightLimit(limit:Float):Void
+	public function setRightLimit(limit:Float):GCamera
 	{
 		_rightLimit = limit;
+		return this;
 	}
 	
-	public function setTopLimit(limit:Float):Void
+	public function setTopLimit(limit:Float):GCamera
 	{
 		_topLimit = limit;
+		return this;
 	}
 	
-	public function setBottomLimit(limit:Float):Void
+	public function setBottomLimit(limit:Float):GCamera
 	{
 		_bottomLimit = limit;
+		return this;
 	}
 	
 	public function update():Void
 	{
-		switch(state)
+		switch(_mode)
 		{
-			case STATE_TARGET:
-			{
-				position.x = _target.position.x;
-				position.y = _target.position.y;
-			}
-			
 			case STATE_FOLLOW:
 			{
-				position.x += (_target.position.x - position.x) / 10;
-				position.y += (_target.position.y - position.y) / 10;
+				position.x += (_target.position.x - position.x) * _delayFactor;
+				position.y += (_target.position.y - position.y) * _delayFactor;
 			}
 			
 			case STATE_FOLLOW_X:
 			{
-				position.x += (_target.position.x - position.x) / 10;
+				position.x += (_target.position.x - position.x) * _delayFactor;
 			}
 			
 			case STATE_FOLLOW_Y:
 			{
-				position.y += (_target.position.y - position.y) / 10;
+				position.y += (_target.position.y - position.y) * _delayFactor;
 			}
 			
-			case STATE_MANUAL:
+			case STATE_NONE:
 			{
 				
 			}

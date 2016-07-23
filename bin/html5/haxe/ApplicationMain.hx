@@ -34,147 +34,7 @@ class ApplicationMain {
 		types.push (lime.Assets.AssetType.IMAGE);
 		
 		
-		urls.push ("img/background_menu.png");
-		types.push (lime.Assets.AssetType.IMAGE);
-		
-		
-		urls.push ("img/background_scorecard.png");
-		types.push (lime.Assets.AssetType.IMAGE);
-		
-		
-		urls.push ("img/button_play.json");
-		types.push (lime.Assets.AssetType.TEXT);
-		
-		
-		urls.push ("img/button_play.png");
-		types.push (lime.Assets.AssetType.IMAGE);
-		
-		
-		urls.push ("img/button_replay.json");
-		types.push (lime.Assets.AssetType.TEXT);
-		
-		
-		urls.push ("img/button_replay.png");
-		types.push (lime.Assets.AssetType.IMAGE);
-		
-		
-		urls.push ("img/item_bad_1_die.json");
-		types.push (lime.Assets.AssetType.TEXT);
-		
-		
-		urls.push ("img/item_bad_1_die.png");
-		types.push (lime.Assets.AssetType.IMAGE);
-		
-		
-		urls.push ("img/item_bad_1_stand.json");
-		types.push (lime.Assets.AssetType.TEXT);
-		
-		
-		urls.push ("img/item_bad_1_stand.png");
-		types.push (lime.Assets.AssetType.IMAGE);
-		
-		
-		urls.push ("img/item_bad_2_die.json");
-		types.push (lime.Assets.AssetType.TEXT);
-		
-		
-		urls.push ("img/item_bad_2_die.png");
-		types.push (lime.Assets.AssetType.IMAGE);
-		
-		
-		urls.push ("img/item_bad_2_stand.json");
-		types.push (lime.Assets.AssetType.TEXT);
-		
-		
-		urls.push ("img/item_bad_2_stand.png");
-		types.push (lime.Assets.AssetType.IMAGE);
-		
-		
-		urls.push ("img/item_bad_3_die.json");
-		types.push (lime.Assets.AssetType.TEXT);
-		
-		
-		urls.push ("img/item_bad_3_die.png");
-		types.push (lime.Assets.AssetType.IMAGE);
-		
-		
-		urls.push ("img/item_bad_3_stand.json");
-		types.push (lime.Assets.AssetType.TEXT);
-		
-		
-		urls.push ("img/item_bad_3_stand.png");
-		types.push (lime.Assets.AssetType.IMAGE);
-		
-		
-		urls.push ("img/item_good_1_die.json");
-		types.push (lime.Assets.AssetType.TEXT);
-		
-		
-		urls.push ("img/item_good_1_die.png");
-		types.push (lime.Assets.AssetType.IMAGE);
-		
-		
-		urls.push ("img/item_good_1_stand.json");
-		types.push (lime.Assets.AssetType.TEXT);
-		
-		
-		urls.push ("img/item_good_1_stand.png");
-		types.push (lime.Assets.AssetType.IMAGE);
-		
-		
-		urls.push ("img/item_good_2_die.json");
-		types.push (lime.Assets.AssetType.TEXT);
-		
-		
-		urls.push ("img/item_good_2_die.png");
-		types.push (lime.Assets.AssetType.IMAGE);
-		
-		
-		urls.push ("img/item_good_2_stand.json");
-		types.push (lime.Assets.AssetType.TEXT);
-		
-		
-		urls.push ("img/item_good_2_stand.png");
-		types.push (lime.Assets.AssetType.IMAGE);
-		
-		
-		urls.push ("img/item_good_3_die.json");
-		types.push (lime.Assets.AssetType.TEXT);
-		
-		
-		urls.push ("img/item_good_3_die.png");
-		types.push (lime.Assets.AssetType.IMAGE);
-		
-		
-		urls.push ("img/item_good_3_stand.json");
-		types.push (lime.Assets.AssetType.TEXT);
-		
-		
-		urls.push ("img/item_good_3_stand.png");
-		types.push (lime.Assets.AssetType.IMAGE);
-		
-		
-		urls.push ("img/player_die.json");
-		types.push (lime.Assets.AssetType.TEXT);
-		
-		
-		urls.push ("img/player_die.png");
-		types.push (lime.Assets.AssetType.IMAGE);
-		
-		
-		urls.push ("img/player_stand.json");
-		types.push (lime.Assets.AssetType.TEXT);
-		
-		
-		urls.push ("img/player_stand.png");
-		types.push (lime.Assets.AssetType.IMAGE);
-		
-		
-		urls.push ("img/player_walk.json");
-		types.push (lime.Assets.AssetType.TEXT);
-		
-		
-		urls.push ("img/player_walk.png");
+		urls.push ("img/play.png");
 		types.push (lime.Assets.AssetType.IMAGE);
 		
 		
@@ -279,13 +139,13 @@ class ApplicationMain {
 		
 		config = {
 			
-			build: "22",
+			build: "165",
 			company: "Plug",
-			file: "Collector",
+			file: "GlueTest",
 			fps: 60,
-			name: "Collector",
+			name: "GlueTest",
 			orientation: "landscape",
-			packageName: "com.plug.Collector",
+			packageName: "com.plug.GlueTest",
 			version: "1.0.0",
 			windows: [
 				
@@ -301,7 +161,7 @@ class ApplicationMain {
 					parameters: "{}",
 					resizable: true,
 					stencilBuffer: true,
-					title: "Collector",
+					title: "GlueTest",
 					vsync: true,
 					width: 800,
 					x: null,
