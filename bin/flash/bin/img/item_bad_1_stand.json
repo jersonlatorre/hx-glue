@@ -1,0 +1,259 @@
+{"frames": [
+
+{
+	"filename": "item_malo_stand0000",
+	"frame": {"x":0,"y":0,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0001",
+	"frame": {"x":68,"y":0,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0002",
+	"frame": {"x":136,"y":0,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0003",
+	"frame": {"x":204,"y":0,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0004",
+	"frame": {"x":272,"y":0,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0005",
+	"frame": {"x":340,"y":0,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0006",
+	"frame": {"x":408,"y":0,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0007",
+	"frame": {"x":0,"y":68,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0008",
+	"frame": {"x":68,"y":68,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0009",
+	"frame": {"x":136,"y":68,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0010",
+	"frame": {"x":204,"y":68,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0011",
+	"frame": {"x":272,"y":68,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0012",
+	"frame": {"x":340,"y":68,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0013",
+	"frame": {"x":408,"y":68,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0014",
+	"frame": {"x":0,"y":136,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0015",
+	"frame": {"x":68,"y":136,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0016",
+	"frame": {"x":136,"y":136,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0017",
+	"frame": {"x":204,"y":136,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0018",
+	"frame": {"x":272,"y":136,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0019",
+	"frame": {"x":340,"y":136,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0020",
+	"frame": {"x":408,"y":136,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0021",
+	"frame": {"x":0,"y":204,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0022",
+	"frame": {"x":68,"y":204,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0023",
+	"frame": {"x":136,"y":204,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0024",
+	"frame": {"x":204,"y":204,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0025",
+	"frame": {"x":272,"y":204,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0026",
+	"frame": {"x":340,"y":204,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0027",
+	"frame": {"x":408,"y":204,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0028",
+	"frame": {"x":0,"y":272,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0029",
+	"frame": {"x":68,"y":272,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}
+,{
+	"filename": "item_malo_stand0030",
+	"frame": {"x":136,"y":272,"w":68,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":68,"h":68},
+	"sourceSize": {"w":68,"h":68}
+}],
+"meta": {
+	"app": "Adobe Flash Professional",
+	"version": "13.0.0.759",
+	"image": "item_bad_stand.png",
+	"format": "RGBA8888",
+	"size": {"w":512,"h":512},
+	"scale": "1"
+}
+}

@@ -1,0 +1,35 @@
+{"frames": [
+
+{
+	"filename": "btn_Replay0000",
+	"frame": {"x":0,"y":0,"w":258,"h":136},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":258,"h":136},
+	"sourceSize": {"w":258,"h":136}
+}
+,{
+	"filename": "btn_Replay0001",
+	"frame": {"x":0,"y":136,"w":258,"h":136},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":258,"h":136},
+	"sourceSize": {"w":258,"h":136}
+}
+,{
+	"filename": "btn_Replay0002",
+	"frame": {"x":0,"y":272,"w":258,"h":136},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":258,"h":136},
+	"sourceSize": {"w":258,"h":136}
+}],
+"meta": {
+	"app": "Adobe Flash Professional",
+	"version": "13.0.0.759",
+	"image": "button_replay.png",
+	"format": "RGBA8888",
+	"size": {"w":512,"h":512},
+	"scale": "1"
+}
+}

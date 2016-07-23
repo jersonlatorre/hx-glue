@@ -1,0 +1,58 @@
+cambió el ASSETS.hx!!!!!
+
+
+public static function getSound (id:String, useCache:Bool = true):Sound {
+		
+	#if (tools && !display)
+	
+	if (useCache && cache.enabled && cache.hasSound (id)) {
+		
+		var sound = cache.getSound (id);
+		
+		if (isValidSound (sound)) {
+			
+			return sound;
+			
+		}
+		
+	}
+	
+	#if flash
+	
+	var buffer = LimeAssets.getAudioBuffer (id, false);
+	
+	if (buffer != null) {
+		
+		#if flash
+		var sound = buffer.src;
+		#else
+		var sound = Sound.fromAudioBuffer (buffer);
+		#end
+		
+		if (useCache && cache.enabled) {
+			
+			cache.setSound (id, sound);
+			
+		}
+		
+		return sound;
+		
+	}
+	
+	#elseif (html5 || android || windows)
+	
+	var path = LimeAssets.getPath (id);
+	
+	if (path != null) {
+		
+		return new Sound (new URLRequest (path));
+		
+	}
+	
+	#end
+	
+	#end
+	
+	return null;
+	
+}
