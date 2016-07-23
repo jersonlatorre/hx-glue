@@ -27,10 +27,8 @@ class Player extends GMultipleSprite
 	
 	public function new() 
 	{
-		super();
-		addAnimation("stand", "player_stand");
-		addAnimation("walk", "player_walk");
-		addAnimation("die", "player_die");
+		super("world");
+		addAnimation("stand", "Anim");
 		setAnimation("stand");
 		
 		state = STATE_ALIVE;

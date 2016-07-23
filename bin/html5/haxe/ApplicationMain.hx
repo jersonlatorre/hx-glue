@@ -30,54 +30,6 @@ class ApplicationMain {
 		var types = [];
 		
 		
-		urls.push ("img/background_game.png");
-		types.push (lime.Assets.AssetType.IMAGE);
-		
-		
-		urls.push ("img/play.png");
-		types.push (lime.Assets.AssetType.IMAGE);
-		
-		
-		urls.push ("fonts/font.fnt");
-		types.push (lime.Assets.AssetType.TEXT);
-		
-		
-		urls.push ("fonts/font.png");
-		types.push (lime.Assets.AssetType.IMAGE);
-		
-		
-		urls.push ("data/config.json");
-		types.push (lime.Assets.AssetType.TEXT);
-		
-		
-		urls.push ("sound/bgm_game.ogg");
-		types.push (lime.Assets.AssetType.SOUND);
-		
-		
-		urls.push ("sound/bgm_menu.ogg");
-		types.push (lime.Assets.AssetType.SOUND);
-		
-		
-		urls.push ("sound/button_down.ogg");
-		types.push (lime.Assets.AssetType.SOUND);
-		
-		
-		urls.push ("sound/button_over.ogg");
-		types.push (lime.Assets.AssetType.SOUND);
-		
-		
-		urls.push ("sound/player_die.ogg");
-		types.push (lime.Assets.AssetType.SOUND);
-		
-		
-		urls.push ("sound/player_good.ogg");
-		types.push (lime.Assets.AssetType.SOUND);
-		
-		
-		urls.push ("sound/player_lose.ogg");
-		types.push (lime.Assets.AssetType.SOUND);
-		
-		
 		
 		if (config.assetsPrefix != null) {
 			
@@ -139,7 +91,7 @@ class ApplicationMain {
 		
 		config = {
 			
-			build: "176",
+			build: "289",
 			company: "Plug",
 			file: "GlueTest",
 			fps: 60,

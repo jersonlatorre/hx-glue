@@ -157,11 +157,6 @@ class GScene
 				i++;
 			}
 		}
-		
-		for (i in 0... _entities.length)
-		{
-			_entities[i].update();
-		}
 	}
 	
 	public function fadeIn(duration:Float = 0.5)

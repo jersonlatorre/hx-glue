@@ -52,99 +52,15 @@ class DefaultAssetLibrary extends AssetLibrary {
 		#if (openfl && !flash)
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		#end
 		
 		#if flash
 		
-		className.set ("img/background_game.png", __ASSET__img_background_game_png);
-		type.set ("img/background_game.png", AssetType.IMAGE);
-		className.set ("img/play.png", __ASSET__img_play_png);
-		type.set ("img/play.png", AssetType.IMAGE);
-		className.set ("fonts/font.fnt", __ASSET__fonts_font_fnt);
-		type.set ("fonts/font.fnt", AssetType.TEXT);
-		className.set ("fonts/font.png", __ASSET__fonts_font_png);
-		type.set ("fonts/font.png", AssetType.IMAGE);
-		className.set ("data/config.json", __ASSET__data_config_json);
-		type.set ("data/config.json", AssetType.TEXT);
-		className.set ("sound/bgm_game.ogg", __ASSET__sound_bgm_game_ogg);
-		type.set ("sound/bgm_game.ogg", AssetType.SOUND);
-		className.set ("sound/bgm_menu.ogg", __ASSET__sound_bgm_menu_ogg);
-		type.set ("sound/bgm_menu.ogg", AssetType.SOUND);
-		className.set ("sound/button_down.ogg", __ASSET__sound_button_down_ogg);
-		type.set ("sound/button_down.ogg", AssetType.SOUND);
-		className.set ("sound/button_over.ogg", __ASSET__sound_button_over_ogg);
-		type.set ("sound/button_over.ogg", AssetType.SOUND);
-		className.set ("sound/player_die.ogg", __ASSET__sound_player_die_ogg);
-		type.set ("sound/player_die.ogg", AssetType.SOUND);
-		className.set ("sound/player_good.ogg", __ASSET__sound_player_good_ogg);
-		type.set ("sound/player_good.ogg", AssetType.SOUND);
-		className.set ("sound/player_lose.ogg", __ASSET__sound_player_lose_ogg);
-		type.set ("sound/player_lose.ogg", AssetType.SOUND);
 		
 		
 		#elseif html5
 		
 		var id;
-		id = "img/background_game.png";
-		path.set (id, id);
-		
-		type.set (id, AssetType.IMAGE);
-		id = "img/play.png";
-		path.set (id, id);
-		
-		type.set (id, AssetType.IMAGE);
-		id = "fonts/font.fnt";
-		path.set (id, id);
-		
-		type.set (id, AssetType.TEXT);
-		id = "fonts/font.png";
-		path.set (id, id);
-		
-		type.set (id, AssetType.IMAGE);
-		id = "data/config.json";
-		path.set (id, id);
-		
-		type.set (id, AssetType.TEXT);
-		id = "sound/bgm_game.ogg";
-		path.set (id, id);
-		
-		type.set (id, AssetType.SOUND);
-		id = "sound/bgm_menu.ogg";
-		path.set (id, id);
-		
-		type.set (id, AssetType.SOUND);
-		id = "sound/button_down.ogg";
-		path.set (id, id);
-		
-		type.set (id, AssetType.SOUND);
-		id = "sound/button_over.ogg";
-		path.set (id, id);
-		
-		type.set (id, AssetType.SOUND);
-		id = "sound/player_die.ogg";
-		path.set (id, id);
-		
-		type.set (id, AssetType.SOUND);
-		id = "sound/player_good.ogg";
-		path.set (id, id);
-		
-		type.set (id, AssetType.SOUND);
-		id = "sound/player_lose.ogg";
-		path.set (id, id);
-		
-		type.set (id, AssetType.SOUND);
 		
 		
 		var assetsPrefix = null;
@@ -162,42 +78,6 @@ class DefaultAssetLibrary extends AssetLibrary {
 		#if (windows || mac || linux)
 		
 		var useManifest = false;
-		
-		className.set ("img/background_game.png", __ASSET__img_background_game_png);
-		type.set ("img/background_game.png", AssetType.IMAGE);
-		
-		className.set ("img/play.png", __ASSET__img_play_png);
-		type.set ("img/play.png", AssetType.IMAGE);
-		
-		className.set ("fonts/font.fnt", __ASSET__fonts_font_fnt);
-		type.set ("fonts/font.fnt", AssetType.TEXT);
-		
-		className.set ("fonts/font.png", __ASSET__fonts_font_png);
-		type.set ("fonts/font.png", AssetType.IMAGE);
-		
-		className.set ("data/config.json", __ASSET__data_config_json);
-		type.set ("data/config.json", AssetType.TEXT);
-		
-		className.set ("sound/bgm_game.ogg", __ASSET__sound_bgm_game_ogg);
-		type.set ("sound/bgm_game.ogg", AssetType.SOUND);
-		
-		className.set ("sound/bgm_menu.ogg", __ASSET__sound_bgm_menu_ogg);
-		type.set ("sound/bgm_menu.ogg", AssetType.SOUND);
-		
-		className.set ("sound/button_down.ogg", __ASSET__sound_button_down_ogg);
-		type.set ("sound/button_down.ogg", AssetType.SOUND);
-		
-		className.set ("sound/button_over.ogg", __ASSET__sound_button_over_ogg);
-		type.set ("sound/button_over.ogg", AssetType.SOUND);
-		
-		className.set ("sound/player_die.ogg", __ASSET__sound_player_die_ogg);
-		type.set ("sound/player_die.ogg", AssetType.SOUND);
-		
-		className.set ("sound/player_good.ogg", __ASSET__sound_player_good_ogg);
-		type.set ("sound/player_good.ogg", AssetType.SOUND);
-		
-		className.set ("sound/player_lose.ogg", __ASSET__sound_player_lose_ogg);
-		type.set ("sound/player_lose.ogg", AssetType.SOUND);
 		
 		
 		if (useManifest) {
@@ -843,33 +723,9 @@ class DefaultAssetLibrary extends AssetLibrary {
 #if !display
 #if flash
 
-@:keep @:bind #if display private #end class __ASSET__img_background_game_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind #if display private #end class __ASSET__img_play_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind #if display private #end class __ASSET__fonts_font_fnt extends null { }
-@:keep @:bind #if display private #end class __ASSET__fonts_font_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
-@:keep @:bind #if display private #end class __ASSET__data_config_json extends null { }
-@:keep @:bind #if display private #end class __ASSET__sound_bgm_game_ogg extends null { }
-@:keep @:bind #if display private #end class __ASSET__sound_bgm_menu_ogg extends null { }
-@:keep @:bind #if display private #end class __ASSET__sound_button_down_ogg extends null { }
-@:keep @:bind #if display private #end class __ASSET__sound_button_over_ogg extends null { }
-@:keep @:bind #if display private #end class __ASSET__sound_player_die_ogg extends null { }
-@:keep @:bind #if display private #end class __ASSET__sound_player_good_ogg extends null { }
-@:keep @:bind #if display private #end class __ASSET__sound_player_lose_ogg extends null { }
 
 
 #elseif html5
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -880,18 +736,6 @@ class DefaultAssetLibrary extends AssetLibrary {
 #if (windows || mac || linux || cpp)
 
 
-@:image("assets/img/background_game.png") #if display private #end class __ASSET__img_background_game_png extends lime.graphics.Image {}
-@:image("assets/img/play.png") #if display private #end class __ASSET__img_play_png extends lime.graphics.Image {}
-@:file("assets/fonts/font.fnt") #if display private #end class __ASSET__fonts_font_fnt extends lime.utils.Bytes {}
-@:image("assets/fonts/font.png") #if display private #end class __ASSET__fonts_font_png extends lime.graphics.Image {}
-@:file("assets/data/config.json") #if display private #end class __ASSET__data_config_json extends lime.utils.Bytes {}
-@:file("assets/sound/bgm_game.ogg") #if display private #end class __ASSET__sound_bgm_game_ogg extends lime.utils.Bytes {}
-@:file("assets/sound/bgm_menu.ogg") #if display private #end class __ASSET__sound_bgm_menu_ogg extends lime.utils.Bytes {}
-@:file("assets/sound/button_down.ogg") #if display private #end class __ASSET__sound_button_down_ogg extends lime.utils.Bytes {}
-@:file("assets/sound/button_over.ogg") #if display private #end class __ASSET__sound_button_over_ogg extends lime.utils.Bytes {}
-@:file("assets/sound/player_die.ogg") #if display private #end class __ASSET__sound_player_die_ogg extends lime.utils.Bytes {}
-@:file("assets/sound/player_good.ogg") #if display private #end class __ASSET__sound_player_good_ogg extends lime.utils.Bytes {}
-@:file("assets/sound/player_lose.ogg") #if display private #end class __ASSET__sound_player_lose_ogg extends lime.utils.Bytes {}
 
 
 

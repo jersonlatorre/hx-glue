@@ -32,8 +32,8 @@ class SceneGame extends GScene
 	{
 		super();
 		
-		_image = new GSprite("world", "Anim");
-		_image.setPosition(0, 0);
+		_image = new GSprite("world", "Anim", 30);
+		_image.setPosition(0, 0).setAnchor(0, 0);
 		addEntity(_image);
 		
 		//camera.follow(_image);

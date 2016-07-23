@@ -23,30 +23,6 @@ ApplicationMain.create = function() {
 	ApplicationMain.preloader.create(ApplicationMain.config);
 	var urls = [];
 	var types = [];
-	urls.push("img/background_game.png");
-	types.push("IMAGE");
-	urls.push("img/play.png");
-	types.push("IMAGE");
-	urls.push("fonts/font.fnt");
-	types.push("TEXT");
-	urls.push("fonts/font.png");
-	types.push("IMAGE");
-	urls.push("data/config.json");
-	types.push("TEXT");
-	urls.push("sound/bgm_game.ogg");
-	types.push("SOUND");
-	urls.push("sound/bgm_menu.ogg");
-	types.push("SOUND");
-	urls.push("sound/button_down.ogg");
-	types.push("SOUND");
-	urls.push("sound/button_over.ogg");
-	types.push("SOUND");
-	urls.push("sound/player_die.ogg");
-	types.push("SOUND");
-	urls.push("sound/player_good.ogg");
-	types.push("SOUND");
-	urls.push("sound/player_lose.ogg");
-	types.push("SOUND");
 	if(ApplicationMain.config.assetsPrefix != null) {
 		var _g1 = 0;
 		var _g = urls.length;
@@ -69,7 +45,7 @@ ApplicationMain.init = function() {
 	if(total == 0) ApplicationMain.start();
 };
 ApplicationMain.main = function() {
-	ApplicationMain.config = { build : "176", company : "Plug", file : "GlueTest", fps : 60, name : "GlueTest", orientation : "landscape", packageName : "com.plug.GlueTest", version : "1.0.0", windows : [{ antialiasing : 0, background : 16711680, borderless : false, depthBuffer : false, display : 0, fullscreen : false, hardware : false, height : 600, parameters : "{}", resizable : true, stencilBuffer : true, title : "GlueTest", vsync : true, width : 800, x : null, y : null}]};
+	ApplicationMain.config = { build : "289", company : "Plug", file : "GlueTest", fps : 60, name : "GlueTest", orientation : "landscape", packageName : "com.plug.GlueTest", version : "1.0.0", windows : [{ antialiasing : 0, background : 16711680, borderless : false, depthBuffer : false, display : 0, fullscreen : false, hardware : false, height : 600, parameters : "{}", resizable : true, stencilBuffer : true, title : "GlueTest", vsync : true, width : 800, x : null, y : null}]};
 };
 ApplicationMain.start = function() {
 	var hasMain = false;
@@ -1486,42 +1462,6 @@ var DefaultAssetLibrary = function() {
 	this.className = new haxe_ds_StringMap();
 	lime_AssetLibrary.call(this);
 	var id;
-	id = "img/background_game.png";
-	this.path.set(id,id);
-	this.type.set(id,"IMAGE");
-	id = "img/play.png";
-	this.path.set(id,id);
-	this.type.set(id,"IMAGE");
-	id = "fonts/font.fnt";
-	this.path.set(id,id);
-	this.type.set(id,"TEXT");
-	id = "fonts/font.png";
-	this.path.set(id,id);
-	this.type.set(id,"IMAGE");
-	id = "data/config.json";
-	this.path.set(id,id);
-	this.type.set(id,"TEXT");
-	id = "sound/bgm_game.ogg";
-	this.path.set(id,id);
-	this.type.set(id,"SOUND");
-	id = "sound/bgm_menu.ogg";
-	this.path.set(id,id);
-	this.type.set(id,"SOUND");
-	id = "sound/button_down.ogg";
-	this.path.set(id,id);
-	this.type.set(id,"SOUND");
-	id = "sound/button_over.ogg";
-	this.path.set(id,id);
-	this.type.set(id,"SOUND");
-	id = "sound/player_die.ogg";
-	this.path.set(id,id);
-	this.type.set(id,"SOUND");
-	id = "sound/player_good.ogg";
-	this.path.set(id,id);
-	this.type.set(id,"SOUND");
-	id = "sound/player_lose.ogg";
-	this.path.set(id,id);
-	this.type.set(id,"SOUND");
 	var assetsPrefix = null;
 	if(ApplicationMain.config != null && Object.prototype.hasOwnProperty.call(ApplicationMain.config,"assetsPrefix")) assetsPrefix = ApplicationMain.config.assetsPrefix;
 	if(assetsPrefix != null) {
@@ -3905,9 +3845,14 @@ com_glue_data_GLoader.queue = function(data) {
 	if(data.type == "image") {
 		var loader = new openfl_display_Loader();
 		com_glue_data_GLoader._files.push({ type : data.type, id : data.id, url : data.src, loader : loader});
+	} else if(data.type == "atlas") {
+		var loader1 = new openfl_display_Loader();
+		com_glue_data_GLoader._files.push({ type : "image", id : data.id, url : data.src, loader : loader1});
+		var loader2 = new openfl_net_URLLoader();
+		com_glue_data_GLoader._files.push({ type : "data", id : Std.string(data.id) + "_data", url : data.data, loader : loader2});
 	} else {
-		var loader1 = new openfl_net_URLLoader();
-		com_glue_data_GLoader._files.push({ type : data.type, id : data.id, url : data.src, loader : loader1});
+		var loader3 = new openfl_net_URLLoader();
+		com_glue_data_GLoader._files.push({ type : data.type, id : data.id, url : data.src, loader : loader3});
 	}
 };
 com_glue_data_GLoader.load = function(callback) {
@@ -3934,7 +3879,7 @@ com_glue_data_GLoader.downloadFile = function(e) {
 		com_glue_data_GLoader.onLoadComplete();
 		return;
 	}
-	haxe_Log.trace("file: " + Std.string(com_glue_data_GLoader._files[com_glue_data_GLoader._currentFileIndex].id),{ fileName : "GLoader.hx", lineNumber : 76, className : "com.glue.data.GLoader", methodName : "downloadFile"});
+	haxe_Log.trace("file: " + Std.string(com_glue_data_GLoader._files[com_glue_data_GLoader._currentFileIndex].id),{ fileName : "GLoader.hx", lineNumber : 84, className : "com.glue.data.GLoader", methodName : "downloadFile"});
 	if(com_glue_data_GLoader._files[com_glue_data_GLoader._currentFileIndex].type == "image") {
 		com_glue_data_GLoader._files[com_glue_data_GLoader._currentFileIndex].loader.contentLoaderInfo.addEventListener("complete",com_glue_data_GLoader.downloadFile);
 		com_glue_data_GLoader._files[com_glue_data_GLoader._currentFileIndex].loader.contentLoaderInfo.addEventListener("ioError",com_glue_data_GLoader.onError);
@@ -3947,14 +3892,14 @@ com_glue_data_GLoader.downloadFile = function(e) {
 	com_glue_data_GLoader._currentFileIndex++;
 };
 com_glue_data_GLoader.onError = function(e) {
-	haxe_Log.trace("Error Downloading " + Std.string(com_glue_data_GLoader._files[com_glue_data_GLoader._currentFileIndex - 1].id) + " " + Std.string(e),{ fileName : "GLoader.hx", lineNumber : 99, className : "com.glue.data.GLoader", methodName : "onError"});
+	haxe_Log.trace("Error Downloading " + Std.string(com_glue_data_GLoader._files[com_glue_data_GLoader._currentFileIndex - 1].id) + " " + Std.string(e),{ fileName : "GLoader.hx", lineNumber : 107, className : "com.glue.data.GLoader", methodName : "onError"});
 };
 com_glue_data_GLoader.onLoadComplete = function() {
 	com_glue_data_GLoader._callback();
 };
 com_glue_data_GLoader.getImage = function(id) {
 	if(!com_glue_data_GLoader._loadedFiles.exists(id)) {
-		haxe_Log.trace("Image with the id: " + id + " not found.",{ fileName : "GLoader.hx", lineNumber : 111, className : "com.glue.data.GLoader", methodName : "getImage"});
+		haxe_Log.trace("Image with the id: " + id + " not found.",{ fileName : "GLoader.hx", lineNumber : 119, className : "com.glue.data.GLoader", methodName : "getImage"});
 		return null;
 	} else {
 		var bitmap = new openfl_display_Bitmap(com_glue_data_GLoader._loadedFiles.get(id).bitmapData.clone());
@@ -3962,20 +3907,20 @@ com_glue_data_GLoader.getImage = function(id) {
 		return bitmap;
 	}
 };
-com_glue_data_GLoader.getJson = function(id) {
+com_glue_data_GLoader.getAtlasData = function(id) {
+	id += "_data";
 	if(!com_glue_data_GLoader._loadedFiles.exists(id)) {
-		haxe_Log.trace("Data with the id: " + id + " not found.",{ fileName : "GLoader.hx", lineNumber : 126, className : "com.glue.data.GLoader", methodName : "getJson"});
+		haxe_Log.trace("Data with the id: " + id + " not found.",{ fileName : "GLoader.hx", lineNumber : 136, className : "com.glue.data.GLoader", methodName : "getAtlasData"});
 		return null;
 	} else {
 		var data = com_glue_data_GLoader._loadedFiles.get(id);
 		try {
-			var data1 = data.toString();
-			return JSON.parse(data1);
+			return JSON.parse(data);
 		} catch( e ) {
 			haxe_CallStack.lastException = e;
 			if (e instanceof js__$Boot_HaxeError) e = e.val;
 			if( js_Boot.__instanceof(e,openfl_errors_Error) ) {
-				haxe_Log.trace("JSON file with the id: " + id + " is not in UTF8 format.",{ fileName : "GLoader.hx", lineNumber : 139, className : "com.glue.data.GLoader", methodName : "getJson"});
+				haxe_Log.trace("JSON file with the id: " + id + " is not a valid JSON data.",{ fileName : "GLoader.hx", lineNumber : 149, className : "com.glue.data.GLoader", methodName : "getAtlasData"});
 				return null;
 			} else throw(e);
 		}
@@ -4106,30 +4051,37 @@ com_glue_display_GImage.prototype = $extend(com_glue_display_GEntity.prototype,{
 	}
 	,__class__: com_glue_display_GImage
 });
-var com_glue_display_GMultipleSprite = function() {
+var com_glue_display_GMultipleSprite = function(atlasId) {
 	this._animations = new haxe_ds_StringMap();
+	this.onEndAnimation = null;
 	this.animation = "";
 	com_glue_display_GEntity.call(this);
+	this._atlasId = atlasId;
 };
 $hxClasses["com.glue.display.GMultipleSprite"] = com_glue_display_GMultipleSprite;
 com_glue_display_GMultipleSprite.__name__ = ["com","glue","display","GMultipleSprite"];
 com_glue_display_GMultipleSprite.__super__ = com_glue_display_GEntity;
 com_glue_display_GMultipleSprite.prototype = $extend(com_glue_display_GEntity.prototype,{
-	addAnimation: function(name,id) {
-		{
-			this._animations.set(name,id);
-			id;
-		}
+	addAnimation: function(name,animationId,fps) {
+		if(fps == null) fps = 30;
+		var v = { id : animationId, fps : fps};
+		this._animations.set(name,v);
+		v;
+		return this;
 	}
 	,setAnimation: function(name) {
 		if(this.animation == name) return;
 		while(this._skin.get_numChildren() > 0) this._skin.removeChildAt(0);
+		this._sprite = new com_glue_display_GSprite(this._atlasId,this._animations.get(name).id,this._animations.get(name).fps);
+		this._sprite.addToLayer(this._skin);
+		this._sprite.setAnchor(0,0);
+		this._width = this._sprite._width;
+		this._height = this._sprite._height;
 		this.animation = name;
-		this.update();
-	}
-	,onEndAnimation: function() {
+		this._sprite.onEndAnimation = this.onEndAnimation;
 	}
 	,update: function() {
+		if(this._sprite != null) this._sprite.update();
 		com_glue_display_GEntity.prototype.update.call(this);
 	}
 	,destroy: function() {
@@ -4139,12 +4091,12 @@ com_glue_display_GMultipleSprite.prototype = $extend(com_glue_display_GEntity.pr
 });
 var com_glue_display_GSprite = function(atlasId,spriteId,fps) {
 	if(fps == null) fps = 30;
+	this.onEndAnimation = null;
 	this._currentFrameIndex = 0;
 	this._frames = [];
 	com_glue_display_GEntity.call(this);
 	this._fps = fps;
-	this._deltaTimeAux = this._fps / 60;
-	var data = com_glue_data_GLoader.getJson(atlasId);
+	var data = com_glue_data_GLoader.getAtlasData(atlasId);
 	var _g1 = 0;
 	var _g = data.frames.length;
 	while(_g1 < _g) {
@@ -4162,14 +4114,18 @@ var com_glue_display_GSprite = function(atlasId,spriteId,fps) {
 	this._mask.get_graphics().endFill();
 	this._image.set_mask(this._mask);
 	this._skin.addChild(this._image);
+	this._skin.addChild(this._mask);
 };
 $hxClasses["com.glue.display.GSprite"] = com_glue_display_GSprite;
 com_glue_display_GSprite.__name__ = ["com","glue","display","GSprite"];
 com_glue_display_GSprite.__super__ = com_glue_display_GEntity;
 com_glue_display_GSprite.prototype = $extend(com_glue_display_GEntity.prototype,{
 	update: function() {
-		this._currentFrameIndex += this._deltaTimeAux;
+		this._currentFrameIndex += this._fps * com_glue_utils_GTime.deltaTime / 1000;
 		var rounded = Math.floor(this._currentFrameIndex) % this._frames.length;
+		if(rounded >= this._frames.length) {
+			if(this.onEndAnimation != null) this.onEndAnimation();
+		}
 		this._image.set_x(-this._frames[rounded].frame.x);
 		this._image.set_y(-this._frames[rounded].frame.y);
 		com_glue_display_GEntity.prototype.update.call(this);
@@ -4444,12 +4400,6 @@ com_glue_ui_GScene.prototype = {
 				entity.update();
 				i++;
 			}
-		}
-		var _g1 = 0;
-		var _g = this._entities.length;
-		while(_g1 < _g) {
-			var i1 = _g1++;
-			this._entities[i1].update();
 		}
 	}
 	,fadeIn: function(duration) {
@@ -5592,10 +5542,8 @@ com_glue_utils_GVector2D.prototype = {
 	,__class__: com_glue_utils_GVector2D
 };
 var com_plug_entities_Player = function() {
-	com_glue_display_GMultipleSprite.call(this);
-	this.addAnimation("stand","player_stand");
-	this.addAnimation("walk","player_walk");
-	this.addAnimation("die","player_die");
+	com_glue_display_GMultipleSprite.call(this,"world");
+	this.addAnimation("stand","Anim");
 	this.setAnimation("stand");
 	this.state = 0;
 };
@@ -5620,18 +5568,15 @@ com_plug_entities_Player.prototype = $extend(com_glue_display_GMultipleSprite.pr
 });
 var com_plug_ui_SceneGame = function() {
 	com_glue_ui_GScene.call(this);
-	this._image = new com_glue_display_GSprite("world","ButtonPlay");
-	this._image.setPosition(100,100);
+	this._image = new com_glue_display_GSprite("world","Anim",30);
+	this._image.setPosition(0,0).setAnchor(0,0);
 	this.addEntity(this._image);
-	this.camera.follow(this._image);
-	haxe_Log.trace(com_glue_data_GLoader.getJson("config"),{ fileName : "SceneGame.hx", lineNumber : 41, className : "com.plug.ui.SceneGame", methodName : "new"});
 };
 $hxClasses["com.plug.ui.SceneGame"] = com_plug_ui_SceneGame;
 com_plug_ui_SceneGame.__name__ = ["com","plug","ui","SceneGame"];
 com_plug_ui_SceneGame.__super__ = com_glue_ui_GScene;
 com_plug_ui_SceneGame.prototype = $extend(com_glue_ui_GScene.prototype,{
 	update: function() {
-		this._image.position.x += 0.15 * com_glue_utils_GTime.deltaTime;
 		com_glue_ui_GScene.prototype.update.call(this);
 	}
 	,__class__: com_plug_ui_SceneGame

@@ -12,18 +12,22 @@ import openfl.display.Sprite;
 class GMultipleSprite extends GEntity
 {
 	public var animation:String = "";
+	public var onEndAnimation:Dynamic = null;
 	
-	var _animations:Map<String, String> = new Map<String, String>();
-	//var _sprite:GSpriteAux;
+	var _animations:Map<String, Dynamic> = new Map<String, Dynamic>();
+	var _atlasId:String;
+	var _sprite:GSprite;
 	
-	public function new():Void
+	public function new(atlasId):Void
 	{
 		super();
+		_atlasId = atlasId;
 	}
 	
-	public function addAnimation(name:String, id:String):Void 
+	public function addAnimation(name:String, animationId:String, fps:Int = 30):GMultipleSprite 
 	{
-		_animations[name] = id;
+		_animations[name] = { id: animationId, fps: fps };
+		return this;
 	}
 
 	public function setAnimation(name:String):Void 
@@ -35,78 +39,24 @@ class GMultipleSprite extends GEntity
 			_skin.removeChildAt(0);
 		}
 		
-		//_sprite = new GSpriteAux(_animations[name]);
-		//_sprite.onEndAnimation = onEndAnimation;
-		//
-		//_content.addChild(_sprite.canvas);
-		
+		_sprite = new GSprite(_atlasId, _animations[name].id, _animations[name].fps);
+		_sprite.addToLayer(_skin);
+		_sprite.setAnchor(0, 0);
+		_width = _sprite._width;
+		_height = _sprite._height;
 		animation = name;
 		
-		update();
-	}
-	
-	public function onEndAnimation():Void 
-	{
-		
+		_sprite.onEndAnimation = onEndAnimation;
 	}
 	
 	override public function update():Void 
 	{
-		//if (_sprite != null) _sprite.update();
+		if (_sprite != null) _sprite.update();
 		super.update();
 	}
 	
 	override public function destroy():Void 
 	{
-		//_sprite.destroy();
 		super.destroy();
-		//_animations = null;
 	}
 }
-
-//class GSpriteAux extends GEntity
-//{
-	//var _spriteFrames:Array<BitmapData>;
-	//var _skinBitmap:Bitmap;
-	//var _totalFrames:Int;
-	//var _id:String;
-	//
-	//public var currentFrame:Int = 0;
-	//public var onEndAnimation:Dynamic = null;
-	//
-	//public function new(id:String) 
-	//{
-		//super();
-		//
-		//_id = id;
-		//GImageManager.setSpriteFrames(id);
-		//_totalFrames = GImageManager.spriteFrames.get(id).length;
-		//
-		//_skinBitmap = new Bitmap();
-		//_skinBitmap.smoothing = true;
-		//canvas.addChild(_skinBitmap);
-	//}
-	//
-	//override public function update():Void
-	//{
-		//_skinBitmap.bitmapData = GImageManager.spriteFrames.get(_id)[currentFrame];
-		//
-		//currentFrame++;
-		//
-		//if (currentFrame >= _totalFrames)
-		//{
-			//currentFrame = 0;
-			//if (onEndAnimation != null) onEndAnimation();
-		//}
-		//
-		//super.update();
-	//}
-	//
-	//override public function destroy():Void 
-	//{
-		//_spriteFrames = null;
-		//_skinBitmap = null;
-		//
-		//super.destroy();
-	//}
-//}

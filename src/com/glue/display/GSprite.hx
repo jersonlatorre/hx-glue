@@ -1,5 +1,6 @@
 package com.glue.display;
 import com.glue.data.GLoader;
+import com.glue.utils.GTime;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display.Sprite;
@@ -13,16 +14,16 @@ class GSprite extends GEntity
 	var _image:Bitmap;
 	var _mask:Sprite;
 	var _frames:Array<Dynamic> = new Array<Dynamic>();
-	var _currentFrameIndex:Int = 0;
+	var _currentFrameIndex:Float = 0;
 	var _fps:Int;
-	var _deltaTimeAux:Float;
+	
+	public var onEndAnimation:Dynamic = null;
 	
 	public function new(atlasId:String, spriteId:String, fps:Int = 30) 
 	{
 		super();
 		
 		_fps = fps;
-		_deltaTimeAux = _fps / 60;
 		
 		var data:Dynamic = GLoader.getAtlasData(atlasId);
 		
@@ -43,26 +44,23 @@ class GSprite extends GEntity
 		_mask.graphics.drawRect(0, 0, _width, _height);
 		_mask.graphics.endFill();
 		_image.mask = _mask;
+		
 		_skin.addChild(_image);
-		
-		trace(_frames[0].frame.x, _frames[0].frame.y);
-		_mask.x = _frames[0].frame.x;
-		_mask.y = _frames[0].frame.y;
-		_image.x = -_frames[0].frame.x;
-		_image.y = _frames[0].frame.y;
-		
-		update();
+		_skin.addChild(_mask);
 		
 	}
 	
 	override public function update():Void 
 	{
-		_currentFrameIndex += 1;
-		_currentFrameIndex = Math.floor(_currentFrameIndex) % _frames.length;
-		_mask.x = _frames[_currentFrameIndex].frame.x;
-		_mask.y = _frames[_currentFrameIndex].frame.y;
-		_image.x = -_frames[_currentFrameIndex].frame.x;
-		_image.y = _frames[_currentFrameIndex].frame.y;
+		_currentFrameIndex += _fps * GTime.deltaTime / 1000;
+		var rounded:Int = Math.floor(_currentFrameIndex) % _frames.length;
+		if (rounded >= _frames.length)
+		{
+			if (onEndAnimation != null) onEndAnimation();
+		}
+		
+		_image.x = -_frames[rounded].frame.x;
+		_image.y = -_frames[rounded].frame.y;
 		super.update();
 	}
 	
