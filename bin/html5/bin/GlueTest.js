@@ -69,7 +69,7 @@ ApplicationMain.init = function() {
 	if(total == 0) ApplicationMain.start();
 };
 ApplicationMain.main = function() {
-	ApplicationMain.config = { build : "165", company : "Plug", file : "GlueTest", fps : 60, name : "GlueTest", orientation : "landscape", packageName : "com.plug.GlueTest", version : "1.0.0", windows : [{ antialiasing : 0, background : 16711680, borderless : false, depthBuffer : false, display : 0, fullscreen : false, hardware : false, height : 600, parameters : "{}", resizable : true, stencilBuffer : true, title : "GlueTest", vsync : true, width : 800, x : null, y : null}]};
+	ApplicationMain.config = { build : "176", company : "Plug", file : "GlueTest", fps : 60, name : "GlueTest", orientation : "landscape", packageName : "com.plug.GlueTest", version : "1.0.0", windows : [{ antialiasing : 0, background : 16711680, borderless : false, depthBuffer : false, display : 0, fullscreen : false, hardware : false, height : 600, parameters : "{}", resizable : true, stencilBuffer : true, title : "GlueTest", vsync : true, width : 800, x : null, y : null}]};
 };
 ApplicationMain.start = function() {
 	var hasMain = false;
@@ -1384,6 +1384,8 @@ var Main = function() {
 	openfl_display_Sprite.call(this);
 	com_glue_data_GLoader.queue({ type : "image", src : "img/background_game.png", id : "background_game"});
 	com_glue_data_GLoader.queue({ type : "image", src : "img/play.png", id : "image"});
+	com_glue_data_GLoader.queue({ type : "data", src : "data/config.json", id : "config"});
+	com_glue_data_GLoader.queue({ type : "atlas", src : "img/world.png", data : "img/world.json", id : "world"});
 	com_glue_GEngine.start({ stage : this.stage, width : 800, height : 600, mainScene : com_plug_ui_SceneGame});
 };
 $hxClasses["Main"] = Main;
@@ -3951,14 +3953,35 @@ com_glue_data_GLoader.onLoadComplete = function() {
 	com_glue_data_GLoader._callback();
 };
 com_glue_data_GLoader.getImage = function(id) {
-	var bitmap = new openfl_display_Bitmap(com_glue_data_GLoader._loadedFiles.get(id).bitmapData.clone());
-	bitmap.smoothing = true;
-	return bitmap;
+	if(!com_glue_data_GLoader._loadedFiles.exists(id)) {
+		haxe_Log.trace("Image with the id: " + id + " not found.",{ fileName : "GLoader.hx", lineNumber : 111, className : "com.glue.data.GLoader", methodName : "getImage"});
+		return null;
+	} else {
+		var bitmap = new openfl_display_Bitmap(com_glue_data_GLoader._loadedFiles.get(id).bitmapData.clone());
+		bitmap.smoothing = true;
+		return bitmap;
+	}
 };
 com_glue_data_GLoader.getJson = function(id) {
-	return null;
+	if(!com_glue_data_GLoader._loadedFiles.exists(id)) {
+		haxe_Log.trace("Data with the id: " + id + " not found.",{ fileName : "GLoader.hx", lineNumber : 126, className : "com.glue.data.GLoader", methodName : "getJson"});
+		return null;
+	} else {
+		var data = com_glue_data_GLoader._loadedFiles.get(id);
+		try {
+			var data1 = data.toString();
+			return JSON.parse(data1);
+		} catch( e ) {
+			haxe_CallStack.lastException = e;
+			if (e instanceof js__$Boot_HaxeError) e = e.val;
+			if( js_Boot.__instanceof(e,openfl_errors_Error) ) {
+				haxe_Log.trace("JSON file with the id: " + id + " is not in UTF8 format.",{ fileName : "GLoader.hx", lineNumber : 139, className : "com.glue.data.GLoader", methodName : "getJson"});
+				return null;
+			} else throw(e);
+		}
+	}
 };
-var com_glue_entities_GEntity = function() {
+var com_glue_display_GEntity = function() {
 	this.isDestroyed = false;
 	this._height = 0;
 	this._width = 0;
@@ -3971,9 +3994,9 @@ var com_glue_entities_GEntity = function() {
 	this.position = new com_glue_utils_GVector2D(0,0);
 	this._anchor = new com_glue_utils_GVector2D(0,0);
 };
-$hxClasses["com.glue.entities.GEntity"] = com_glue_entities_GEntity;
-com_glue_entities_GEntity.__name__ = ["com","glue","entities","GEntity"];
-com_glue_entities_GEntity.prototype = {
+$hxClasses["com.glue.display.GEntity"] = com_glue_display_GEntity;
+com_glue_display_GEntity.__name__ = ["com","glue","display","GEntity"];
+com_glue_display_GEntity.prototype = {
 	setPosition: function(x,y) {
 		this.position.x = x;
 		this.position.y = y;
@@ -4032,20 +4055,20 @@ com_glue_entities_GEntity.prototype = {
 	,destroy: function() {
 		this.isDestroyed = true;
 	}
-	,__class__: com_glue_entities_GEntity
+	,__class__: com_glue_display_GEntity
 };
-var com_glue_entities_GBitmapText = function(id) {
-	com_glue_entities_GEntity.call(this);
+var com_glue_display_GBitmapText = function(id) {
+	com_glue_display_GEntity.call(this);
 };
-$hxClasses["com.glue.entities.GBitmapText"] = com_glue_entities_GBitmapText;
-com_glue_entities_GBitmapText.__name__ = ["com","glue","entities","GBitmapText"];
-com_glue_entities_GBitmapText.__super__ = com_glue_entities_GEntity;
-com_glue_entities_GBitmapText.prototype = $extend(com_glue_entities_GEntity.prototype,{
+$hxClasses["com.glue.display.GBitmapText"] = com_glue_display_GBitmapText;
+com_glue_display_GBitmapText.__name__ = ["com","glue","display","GBitmapText"];
+com_glue_display_GBitmapText.__super__ = com_glue_display_GEntity;
+com_glue_display_GBitmapText.prototype = $extend(com_glue_display_GEntity.prototype,{
 	update: function() {
-		com_glue_entities_GEntity.prototype.update.call(this);
+		com_glue_display_GEntity.prototype.update.call(this);
 	}
 	,destroy: function() {
-		com_glue_entities_GEntity.prototype.destroy.call(this);
+		com_glue_display_GEntity.prototype.destroy.call(this);
 	}
 	,set_text: function(s) {
 		this._bitmapText.set_text(s);
@@ -4064,34 +4087,34 @@ com_glue_entities_GBitmapText.prototype = $extend(com_glue_entities_GEntity.prot
 	,set_textHeight: function(value) {
 		return value;
 	}
-	,__class__: com_glue_entities_GBitmapText
+	,__class__: com_glue_display_GBitmapText
 	,__properties__: {set_textHeight:"set_textHeight",get_textHeight:"get_textHeight",set_textWidth:"set_textWidth",get_textWidth:"get_textWidth",set_text:"set_text"}
 });
-var com_glue_entities_GImage = function(id) {
-	com_glue_entities_GEntity.call(this);
+var com_glue_display_GImage = function(id) {
+	com_glue_display_GEntity.call(this);
 	this._image = com_glue_data_GLoader.getImage(id);
 	this._skin.addChild(this._image);
 	this._width = this._skin.get_width();
 	this._height = this._skin.get_height();
 };
-$hxClasses["com.glue.entities.GImage"] = com_glue_entities_GImage;
-com_glue_entities_GImage.__name__ = ["com","glue","entities","GImage"];
-com_glue_entities_GImage.__super__ = com_glue_entities_GEntity;
-com_glue_entities_GImage.prototype = $extend(com_glue_entities_GEntity.prototype,{
+$hxClasses["com.glue.display.GImage"] = com_glue_display_GImage;
+com_glue_display_GImage.__name__ = ["com","glue","display","GImage"];
+com_glue_display_GImage.__super__ = com_glue_display_GEntity;
+com_glue_display_GImage.prototype = $extend(com_glue_display_GEntity.prototype,{
 	destroy: function() {
-		com_glue_entities_GEntity.prototype.destroy.call(this);
+		com_glue_display_GEntity.prototype.destroy.call(this);
 	}
-	,__class__: com_glue_entities_GImage
+	,__class__: com_glue_display_GImage
 });
-var com_glue_entities_GSprite = function() {
+var com_glue_display_GMultipleSprite = function() {
 	this._animations = new haxe_ds_StringMap();
 	this.animation = "";
-	com_glue_entities_GEntity.call(this);
+	com_glue_display_GEntity.call(this);
 };
-$hxClasses["com.glue.entities.GSprite"] = com_glue_entities_GSprite;
-com_glue_entities_GSprite.__name__ = ["com","glue","entities","GSprite"];
-com_glue_entities_GSprite.__super__ = com_glue_entities_GEntity;
-com_glue_entities_GSprite.prototype = $extend(com_glue_entities_GEntity.prototype,{
+$hxClasses["com.glue.display.GMultipleSprite"] = com_glue_display_GMultipleSprite;
+com_glue_display_GMultipleSprite.__name__ = ["com","glue","display","GMultipleSprite"];
+com_glue_display_GMultipleSprite.__super__ = com_glue_display_GEntity;
+com_glue_display_GMultipleSprite.prototype = $extend(com_glue_display_GEntity.prototype,{
 	addAnimation: function(name,id) {
 		{
 			this._animations.set(name,id);
@@ -4107,19 +4130,58 @@ com_glue_entities_GSprite.prototype = $extend(com_glue_entities_GEntity.prototyp
 	,onEndAnimation: function() {
 	}
 	,update: function() {
-		com_glue_entities_GEntity.prototype.update.call(this);
+		com_glue_display_GEntity.prototype.update.call(this);
 	}
 	,destroy: function() {
-		com_glue_entities_GEntity.prototype.destroy.call(this);
+		com_glue_display_GEntity.prototype.destroy.call(this);
 	}
-	,__class__: com_glue_entities_GSprite
+	,__class__: com_glue_display_GMultipleSprite
 });
-var com_glue_entities_GTextAlignMode = function() {
+var com_glue_display_GSprite = function(atlasId,spriteId,fps) {
+	if(fps == null) fps = 30;
+	this._currentFrameIndex = 0;
+	this._frames = [];
+	com_glue_display_GEntity.call(this);
+	this._fps = fps;
+	this._deltaTimeAux = this._fps / 60;
+	var data = com_glue_data_GLoader.getJson(atlasId);
+	var _g1 = 0;
+	var _g = data.frames.length;
+	while(_g1 < _g) {
+		var i = _g1++;
+		var filename = data.frames[i].filename;
+		filename = filename.substring(0,filename.length - 4);
+		if(filename == spriteId) this._frames.push(data.frames[i]);
+	}
+	this._width = this._frames[0].sourceSize.w * this._scaleX;
+	this._height = this._frames[0].sourceSize.h * this._scaleY;
+	this._image = com_glue_data_GLoader.getImage(atlasId);
+	this._mask = new openfl_display_Sprite();
+	this._mask.get_graphics().beginFill(0);
+	this._mask.get_graphics().drawRect(0,0,this._width,this._height);
+	this._mask.get_graphics().endFill();
+	this._image.set_mask(this._mask);
+	this._skin.addChild(this._image);
 };
-$hxClasses["com.glue.entities.GTextAlignMode"] = com_glue_entities_GTextAlignMode;
-com_glue_entities_GTextAlignMode.__name__ = ["com","glue","entities","GTextAlignMode"];
-com_glue_entities_GTextAlignMode.prototype = {
-	__class__: com_glue_entities_GTextAlignMode
+$hxClasses["com.glue.display.GSprite"] = com_glue_display_GSprite;
+com_glue_display_GSprite.__name__ = ["com","glue","display","GSprite"];
+com_glue_display_GSprite.__super__ = com_glue_display_GEntity;
+com_glue_display_GSprite.prototype = $extend(com_glue_display_GEntity.prototype,{
+	update: function() {
+		this._currentFrameIndex += this._deltaTimeAux;
+		var rounded = Math.floor(this._currentFrameIndex) % this._frames.length;
+		this._image.set_x(-this._frames[rounded].frame.x);
+		this._image.set_y(-this._frames[rounded].frame.y);
+		com_glue_display_GEntity.prototype.update.call(this);
+	}
+	,__class__: com_glue_display_GSprite
+});
+var com_glue_display_GTextAlignMode = function() {
+};
+$hxClasses["com.glue.display.GTextAlignMode"] = com_glue_display_GTextAlignMode;
+com_glue_display_GTextAlignMode.__name__ = ["com","glue","display","GTextAlignMode"];
+com_glue_display_GTextAlignMode.prototype = {
+	__class__: com_glue_display_GTextAlignMode
 };
 var com_glue_game_GCamera = function() {
 	this._delayFactor = 0.1;
@@ -5517,7 +5579,7 @@ com_glue_utils_GVector2D.rotate = function(v,angle) {
 	var ry = v.x * Math.sin(angle) + v.y * Math.cos(angle);
 	return new com_glue_utils_GVector2D(rx,ry);
 };
-com_glue_utils_GVector2D.pointProduct = function(a,b) {
+com_glue_utils_GVector2D.dotProduct = function(a,b) {
 	return a.x * b.x + a.y + b.y;
 };
 com_glue_utils_GVector2D.create = function(x,y) {
@@ -5530,7 +5592,7 @@ com_glue_utils_GVector2D.prototype = {
 	,__class__: com_glue_utils_GVector2D
 };
 var com_plug_entities_Player = function() {
-	com_glue_entities_GSprite.call(this);
+	com_glue_display_GMultipleSprite.call(this);
 	this.addAnimation("stand","player_stand");
 	this.addAnimation("walk","player_walk");
 	this.addAnimation("die","player_die");
@@ -5539,16 +5601,16 @@ var com_plug_entities_Player = function() {
 };
 $hxClasses["com.plug.entities.Player"] = com_plug_entities_Player;
 com_plug_entities_Player.__name__ = ["com","plug","entities","Player"];
-com_plug_entities_Player.__super__ = com_glue_entities_GSprite;
-com_plug_entities_Player.prototype = $extend(com_glue_entities_GSprite.prototype,{
+com_plug_entities_Player.__super__ = com_glue_display_GMultipleSprite;
+com_plug_entities_Player.prototype = $extend(com_glue_display_GMultipleSprite.prototype,{
 	update: function() {
 		var _g = this.state;
 		switch(_g) {
 		case 0:
-			com_glue_entities_GSprite.prototype.update.call(this);
+			com_glue_display_GMultipleSprite.prototype.update.call(this);
 			break;
 		case 1:
-			com_glue_entities_GSprite.prototype.update.call(this);
+			com_glue_display_GMultipleSprite.prototype.update.call(this);
 			break;
 		case 2:
 			break;
@@ -5558,10 +5620,11 @@ com_plug_entities_Player.prototype = $extend(com_glue_entities_GSprite.prototype
 });
 var com_plug_ui_SceneGame = function() {
 	com_glue_ui_GScene.call(this);
-	this._image = new com_glue_entities_GImage("image");
-	this._image.setPosition(-500,100);
+	this._image = new com_glue_display_GSprite("world","ButtonPlay");
+	this._image.setPosition(100,100);
 	this.addEntity(this._image);
 	this.camera.follow(this._image);
+	haxe_Log.trace(com_glue_data_GLoader.getJson("config"),{ fileName : "SceneGame.hx", lineNumber : 41, className : "com.plug.ui.SceneGame", methodName : "new"});
 };
 $hxClasses["com.plug.ui.SceneGame"] = com_plug_ui_SceneGame;
 com_plug_ui_SceneGame.__name__ = ["com","plug","ui","SceneGame"];
@@ -39366,10 +39429,10 @@ com_glue_data_GLoader._files = [];
 com_glue_data_GLoader._loadedFiles = new haxe_ds_StringMap();
 com_glue_data_GLoader.downloadedFiles = 0;
 com_glue_data_GLoader.totalFiles = 0;
-com_glue_entities_GEntity.__meta__ = { obj : { 'final' : null}};
-com_glue_entities_GTextAlignMode.LEFT = 0;
-com_glue_entities_GTextAlignMode.CENTER = 1;
-com_glue_entities_GTextAlignMode.RIGHT = 2;
+com_glue_display_GEntity.__meta__ = { obj : { 'final' : null}};
+com_glue_display_GTextAlignMode.LEFT = 0;
+com_glue_display_GTextAlignMode.CENTER = 1;
+com_glue_display_GTextAlignMode.RIGHT = 2;
 com_glue_game_GCamera.__meta__ = { obj : { 'final' : null}};
 com_glue_game_GCamera.STATE_FOLLOW = 1;
 com_glue_game_GCamera.STATE_FOLLOW_X = 3;

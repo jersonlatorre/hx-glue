@@ -5,7 +5,7 @@
 	{ type:"image", url:"img/background_game.png", id:"background_game" },
 	
 	// [ ------ sprites ------ ]
-	{ type:"sprite", url:"img/button_play", id:"button_play" },
+	{ type:"atlas", url:"img/world", id:"world" },
 	{ type:"sprite", url:"img/button_replay", id:"button_replay" },
 	
 	{ type:"sprite", url:"img/item_bad_1_stand", id:"item_bad_1_stand" },

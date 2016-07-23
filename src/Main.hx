@@ -17,6 +17,8 @@ class Main extends Sprite
 		
 		GLoader.queue({ type:"image", src:"img/background_game.png", id:"background_game" });
 		GLoader.queue({ type:"image", src:"img/play.png", id:"image" });
+		GLoader.queue({ type:"data", src:"data/config.json", id:"config" });
+		GLoader.queue({ type:"atlas", src:"img/world.png", data:"img/world.json", id:"world" });
 		
 		GEngine.start({
 			stage: stage,

@@ -139,7 +139,7 @@ class ApplicationMain {
 		
 		config = {
 			
-			build: "165",
+			build: "176",
 			company: "Plug",
 			file: "GlueTest",
 			fps: 60,

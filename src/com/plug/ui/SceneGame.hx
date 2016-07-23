@@ -5,6 +5,7 @@ import bitmapFont.BitmapTextField;
 import com.glue.data.GLoader;
 import com.glue.display.GBitmapText;
 import com.glue.display.GImage;
+import com.glue.display.GSprite;
 import com.glue.display.GTextAlignMode;
 import com.glue.GEngine;
 import com.glue.input.GMouse;
@@ -25,22 +26,23 @@ import openfl.display.Sprite;
 
 class SceneGame extends GScene
 {
-	var _image:GImage;
+	var _image:GSprite;
 	
 	public function new() 
 	{
 		super();
 		
-		_image = new GImage("image");
-		_image.setPosition(-500, 100);
+		_image = new GSprite("world", "Anim");
+		_image.setPosition(0, 0);
 		addEntity(_image);
 		
-		camera.follow(_image);
+		//camera.follow(_image);
+		
 	}
 	
 	override public function update():Void
 	{
-		_image.position.x += 0.15 * GTime.deltaTime;
+		//_image.position.x += 0.15 * GTime.deltaTime;
 		super.update();
 	}
 }

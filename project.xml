@@ -21,11 +21,6 @@
 	
 	<!-- assets -->
 	<icon path="assets/icon.png" />
-	<assets path="assets/img" rename="img" />
-	<assets path="assets/fonts" rename="fonts" />
-	<assets path="assets/data" rename="data" />
-	<assets path="assets/sound" rename="sound" include="*.ogg" unless="flash" />
-	<assets path="assets/sound" rename="sound" include="*.mp3" if="flash" />
 	
 	<!-- optimize output
 	<haxeflag name="-dce full" /> -->

@@ -1,6 +1,6 @@
 package com.plug.entities;
 
-import com.glue.display.GSprite;
+import com.glue.display.GMultipleSprite;
 import com.glue.input.GKeyboard;
 import com.glue.input.GMouse;
 import com.glue.ui.GSceneManager;
@@ -13,7 +13,7 @@ import openfl.display.Sprite;
  * @author Uno
  */
 
-class Player extends GSprite
+class Player extends GMultipleSprite
 {
 	static public inline var STATE_ALIVE:Int = 0;
 	static public inline var STATE_DIYING:Int = 1;

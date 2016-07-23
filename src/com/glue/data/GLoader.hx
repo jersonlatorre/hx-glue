@@ -34,6 +34,14 @@ class GLoader
 			var loader:Loader = new Loader();
 			_files.push( { type:data.type, id: data.id, url: data.src, loader:loader } );
 		}
+		else if (data.type == "atlas")
+		{
+			var loader1:Loader = new Loader();
+			_files.push( { type: "image", id: data.id, url: data.src, loader:loader1 } );
+			
+			var loader2:URLLoader = new URLLoader();
+			_files.push( { type: "data", id: data.id + "_data", url: data.data, loader:loader2 } );
+		}
 		else
 		{
 			var loader:URLLoader = new URLLoader();
@@ -106,14 +114,42 @@ class GLoader
 	
 	static public function getImage(id:String):Bitmap
 	{
-		var bitmap:Bitmap = new Bitmap(_loadedFiles.get(id).bitmapData.clone());
-		bitmap.smoothing = true;
-		return bitmap;
+		if (!_loadedFiles.exists(id))
+		{
+			trace("Image with the id: " + id + " not found.");
+			return null;
+		}
+		else
+		{
+			var bitmap:Bitmap = new Bitmap(_loadedFiles.get(id).bitmapData.clone());
+			bitmap.smoothing = true;
+			return bitmap;
+		}
 	}
 	
-	static public function getJson(id:String):Dynamic
+	static public function getAtlasData(id:String):Dynamic
 	{
-		return null;
+		id += "_data";
+		
+		if (!_loadedFiles.exists(id))
+		{
+			trace("Data with the id: " + id + " not found.");
+			return null;
+		}
+		else
+		{
+			var data:Dynamic = _loadedFiles.get(id);
+			try
+			{
+				//var data:String = data.toString();
+				return Json.parse(data);
+			}
+			catch (e:Error)
+			{
+				trace("JSON file with the id: " + id + " is not a valid JSON data.");
+				return null;
+			}
+		}
 	}
 	
 	//static public function getJson(id:String):Dynamic

@@ -1,112 +1,69 @@
 package com.glue.display;
+import com.glue.data.GLoader;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display.Sprite;
 
 /**
  * ...
- * @author uno
- * 
+ * @author one
  */
-
 class GSprite extends GEntity
 {
-	public var animation:String = "";
+	var _image:Bitmap;
+	var _mask:Sprite;
+	var _frames:Array<Dynamic> = new Array<Dynamic>();
+	var _currentFrameIndex:Int = 0;
+	var _fps:Int;
+	var _deltaTimeAux:Float;
 	
-	var _animations:Map<String, String> = new Map<String, String>();
-	//var _sprite:GSpriteAux;
-	
-	public function new():Void
+	public function new(atlasId:String, spriteId:String, fps:Int = 30) 
 	{
 		super();
-	}
-	
-	public function addAnimation(name:String, id:String):Void 
-	{
-		_animations[name] = id;
-	}
-
-	public function setAnimation(name:String):Void 
-	{
-		if (animation == name) return;
 		
-		while (_skin.numChildren > 0)
+		_fps = fps;
+		_deltaTimeAux = _fps / 60;
+		
+		var data:Dynamic = GLoader.getAtlasData(atlasId);
+		
+		for (i in 0...data.frames.length)
 		{
-			_skin.removeChildAt(0);
+			var filename:String = data.frames[i].filename;
+			filename = filename.substring(0, filename.length - 4);
+			
+			if (filename == spriteId) _frames.push(data.frames[i]);
 		}
 		
-		//_sprite = new GSpriteAux(_animations[name]);
-		//_sprite.onEndAnimation = onEndAnimation;
-		//
-		//_content.addChild(_sprite.canvas);
+		_width = _frames[0].sourceSize.w * _scaleX;
+		_height = _frames[0].sourceSize.h * _scaleY;
 		
-		animation = name;
+		_image = GLoader.getImage(atlasId);
+		_mask = new Sprite();
+		_mask.graphics.beginFill(0);
+		_mask.graphics.drawRect(0, 0, _width, _height);
+		_mask.graphics.endFill();
+		_image.mask = _mask;
+		_skin.addChild(_image);
+		
+		trace(_frames[0].frame.x, _frames[0].frame.y);
+		_mask.x = _frames[0].frame.x;
+		_mask.y = _frames[0].frame.y;
+		_image.x = -_frames[0].frame.x;
+		_image.y = _frames[0].frame.y;
 		
 		update();
-	}
-	
-	public function onEndAnimation():Void 
-	{
 		
 	}
 	
 	override public function update():Void 
 	{
-		//if (_sprite != null) _sprite.update();
+		_currentFrameIndex += 1;
+		_currentFrameIndex = Math.floor(_currentFrameIndex) % _frames.length;
+		_mask.x = _frames[_currentFrameIndex].frame.x;
+		_mask.y = _frames[_currentFrameIndex].frame.y;
+		_image.x = -_frames[_currentFrameIndex].frame.x;
+		_image.y = _frames[_currentFrameIndex].frame.y;
 		super.update();
 	}
 	
-	override public function destroy():Void 
-	{
-		//_sprite.destroy();
-		super.destroy();
-		//_animations = null;
-	}
 }
-
-//class GSpriteAux extends GEntity
-//{
-	//var _spriteFrames:Array<BitmapData>;
-	//var _skinBitmap:Bitmap;
-	//var _totalFrames:Int;
-	//var _id:String;
-	//
-	//public var currentFrame:Int = 0;
-	//public var onEndAnimation:Dynamic = null;
-	//
-	//public function new(id:String) 
-	//{
-		//super();
-		//
-		//_id = id;
-		//GImageManager.setSpriteFrames(id);
-		//_totalFrames = GImageManager.spriteFrames.get(id).length;
-		//
-		//_skinBitmap = new Bitmap();
-		//_skinBitmap.smoothing = true;
-		//canvas.addChild(_skinBitmap);
-	//}
-	//
-	//override public function update():Void
-	//{
-		//_skinBitmap.bitmapData = GImageManager.spriteFrames.get(_id)[currentFrame];
-		//
-		//currentFrame++;
-		//
-		//if (currentFrame >= _totalFrames)
-		//{
-			//currentFrame = 0;
-			//if (onEndAnimation != null) onEndAnimation();
-		//}
-		//
-		//super.update();
-	//}
-	//
-	//override public function destroy():Void 
-	//{
-		//_spriteFrames = null;
-		//_skinBitmap = null;
-		//
-		//super.destroy();
-	//}
-//}
