@@ -1,12 +1,7 @@
 package com.plug.ui;
-import bitmapFont.BitmapFont;
-import bitmapFont.BitmapTextAlign;
-import bitmapFont.BitmapTextField;
 import com.glue.data.GLoader;
-import com.glue.display.GBitmapText;
 import com.glue.display.GImage;
 import com.glue.display.GSprite;
-import com.glue.display.GTextAlignMode;
 import com.glue.GEngine;
 import com.glue.input.GMouse;
 import com.glue.ui.GScene;
@@ -32,9 +27,11 @@ class SceneGame extends GScene
 	{
 		super();
 		
-		_image = new GSprite("world", "Anim", 30);
-		_image.setPosition(0, 0).setAnchor(0, 0);
-		addEntity(_image);
+		//_image = new GSprite("world", "Anim", 30);
+		//_image.setPosition(0, 0).setAnchor(0, 0);
+		//addEntity(_image);
+		
+		_image = new GSprite(
 		
 		//camera.follow(_image);
 		

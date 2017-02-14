@@ -17,7 +17,6 @@
 	<source path="src" />
 	<haxelib name="openfl" />
 	<haxelib name="actuate" />
-	<haxelib name="bitmapfont" />
 	
 	<!-- assets -->
 	<icon path="assets/icon.png" />
