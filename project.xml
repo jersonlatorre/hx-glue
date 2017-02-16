@@ -19,7 +19,8 @@
 	<haxelib name="actuate" />
 	
 	<!-- assets -->
-	<icon path="assets/icon.png" />
+	<!--<icon path="assets/icon.png" />-->
+	<assets path="assets/img" rename="img" />
 	
 	<!-- optimize output
 	<haxeflag name="-dce full" /> -->

@@ -21,17 +21,20 @@ import openfl.display.Sprite;
 
 class SceneGame extends GScene
 {
-	var _image:GSprite;
+	var _image:GImage;
+	var _anim:GSprite;
 	
 	public function new() 
 	{
 		super();
 		
-		//_image = new GSprite("world", "Anim", 30);
+		_image = new GImage("background_game");
+		addEntity(_image);
+		_anim = new GSprite("world", "Anim", 60);
+		// _anim = new Gsprite.fromAnimate("world", "Anim", fps);
+		// _anim = new Gsprite.fromFrames("id", width, height, fps);
 		//_image.setPosition(0, 0).setAnchor(0, 0);
-		//addEntity(_image);
-		
-		_image = new GSprite(
+		addEntity(_anim);
 		
 		//camera.follow(_image);
 		
@@ -41,5 +44,6 @@ class SceneGame extends GScene
 	{
 		//_image.position.x += 0.15 * GTime.deltaTime;
 		super.update();
+		_anim.update();
 	}
 }
