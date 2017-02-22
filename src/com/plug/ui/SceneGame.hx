@@ -16,7 +16,7 @@ import openfl.display.Sprite;
 
 /**
  * ...
- * @author Uno
+ * @author Jerson La Torre
  *
  */
 

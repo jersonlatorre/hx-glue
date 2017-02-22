@@ -1,8 +1,10 @@
 package com.glue.utils;
+
 /**
  * ...
- * @author guarajeno
+ * @author Jerson La Torre
  */
+
 class GMath 
 {
 	

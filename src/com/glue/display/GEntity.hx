@@ -7,7 +7,7 @@ import openfl.geom.Rectangle;
 
 /**
  * ...
- * @author uno
+ * @author Jerson La Torre
  * 
  */
 

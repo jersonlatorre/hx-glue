@@ -14,7 +14,7 @@ import com.glue.ui.GPreloader;
 
 /**
  * ...
- * @author Uno
+ * @author Jerson La Torre
  */
 
 @final class GEngine

@@ -4,7 +4,7 @@ import haxe.Timer;
 
 /**
  * ...
- * @author wara
+ * @author Jerson La Torre
  */
 
 @final class GTime 

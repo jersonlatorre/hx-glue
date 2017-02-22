@@ -10,7 +10,7 @@ import openfl.display.Sprite;
 
 /**
  * ...
- * @author Uno
+ * @author Jerson La Torre
  */
 
 class Player extends GMultipleSprite

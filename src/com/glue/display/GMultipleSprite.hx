@@ -5,7 +5,7 @@ import openfl.display.Sprite;
 
 /**
  * ...
- * @author uno
+ * @author Jerson La Torre
  * 
  */
 

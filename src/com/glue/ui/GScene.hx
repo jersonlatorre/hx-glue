@@ -11,7 +11,7 @@ import motion.easing.Quad;
 
 /**
  * ...
- * @author uno
+ * @author Jerson La Torre
  */
 
 class GScene 

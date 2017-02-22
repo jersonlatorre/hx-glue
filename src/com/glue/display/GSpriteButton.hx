@@ -9,7 +9,7 @@ import openfl.events.MouseEvent;
 
 /**
  * ...
- * @author guarajeno
+ * @author Jerson La Torre
  */
 
 class GSpriteButton extends GEntity

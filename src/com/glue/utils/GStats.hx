@@ -10,6 +10,7 @@ import openfl.text.TextFormat;
  * FPS class extension to display memory usage.
  * @author Kirill Poletaev
  */
+ 
 class GStats extends TextField
 {
 	private var times:Array<Float>;

@@ -6,7 +6,7 @@ import openfl.ui.Keyboard;
 
 /**
  * ...
- * @author guarajeno
+ * @author Jerson La Torre
  */
 
 class GKeyboard 

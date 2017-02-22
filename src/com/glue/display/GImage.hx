@@ -4,7 +4,7 @@ import flash.display.Bitmap;
 
 /**
  * ...
- * @author uno
+ * @author Jerson La Torre
  * 
  */
 

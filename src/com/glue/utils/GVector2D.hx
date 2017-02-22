@@ -3,7 +3,7 @@ package com.glue.utils;
 import flash.geom.Vector3D;
 /**
  * ...
- * @author Uno
+ * @author Jerson La Torre
  */
 
 @final class GVector2D 

@@ -13,7 +13,7 @@ import openfl.net.URLRequest;
 
 /**
  * ...
- * @author uno
+ * @author Jerson La Torre
  */
 
 class GLoader

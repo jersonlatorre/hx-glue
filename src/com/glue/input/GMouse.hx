@@ -7,8 +7,9 @@ import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
 /**
  * ...
- * @author gtr
+ * @author Jerson La Torre
  */	
+ 
 class GMouse 
 {
 	// public

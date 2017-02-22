@@ -5,7 +5,7 @@ import openfl.geom.Point;
 
 /**
  * ...
- * @author Uno
+ * @author Jerson La Torre
  */
 
 class Global

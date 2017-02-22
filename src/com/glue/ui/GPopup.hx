@@ -5,7 +5,7 @@ import flash.display.Sprite;
 
 /**
  * ...
- * @author guarajeno
+ * @author Jerson La Torre
  */
 
 class GPopup 

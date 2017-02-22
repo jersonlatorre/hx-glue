@@ -8,7 +8,7 @@ import haxe.Timer;
 
 /**
  * ...
- * @author one
+ * @author Jerson La Torre
  */
 
 class GSprite extends GEntity

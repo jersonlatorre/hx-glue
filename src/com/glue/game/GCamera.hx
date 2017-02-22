@@ -4,7 +4,7 @@ import com.glue.utils.GVector2D;
 
 /**
  * ...
- * @author Uno
+ * @author Jerson La Torre
  */
 
 @final class GCamera

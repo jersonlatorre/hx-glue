@@ -2,7 +2,7 @@ package com.glue.utils;
 
 /**
  * ...
- * @author Uno
+ * @author Jerson La Torre
  */
 
 @final class GRectBounds

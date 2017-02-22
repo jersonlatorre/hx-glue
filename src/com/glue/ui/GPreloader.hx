@@ -7,7 +7,7 @@ import openfl.display.Sprite;
 
 /**
  * ...
- * @author Uno
+ * @author Jerson La Torre
  */
 class GPreloader extends GScene
 {
