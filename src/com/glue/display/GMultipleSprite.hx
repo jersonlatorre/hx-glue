@@ -39,7 +39,7 @@ class GMultipleSprite extends GEntity
 			_skin.removeChildAt(0);
 		}
 		
-		_sprite = new GSprite(_atlasId, _animations[name].id, _animations[name].fps);
+		_sprite = new GSprite(_animations[name].id, _animations[name].fps);
 		_sprite.addToLayer(_skin);
 		_sprite.setAnchor(0, 0);
 		_width = _sprite._width;

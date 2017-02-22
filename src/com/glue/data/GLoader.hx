@@ -34,13 +34,13 @@ class GLoader
 			var loader:Loader = new Loader();
 			_files.push( { type:data.type, id: data.id, url: data.src, loader:loader } );
 		}
-		else if (data.type == "atlas")
+		else if (data.type == "sprite")
 		{
 			var loader1:Loader = new Loader();
-			_files.push( { type: "image", id: data.id, url: data.src, loader:loader1 } );
+			_files.push( { type: "image", id: data.id, url: data.src + ".png", loader:loader1 } );
 			
 			var loader2:URLLoader = new URLLoader();
-			_files.push( { type: "data", id: data.id + "_data", url: data.data, loader:loader2 } );
+			_files.push( { type: "data", id: data.id + "_data", url: data.src + ".json", loader:loader2 } );
 		}
 		else
 		{
@@ -121,13 +121,14 @@ class GLoader
 		}
 		else
 		{
-			var bitmap:Bitmap = new Bitmap(_loadedFiles.get(id).bitmapData.clone());
+			// var bitmap:Bitmap = new Bitmap(_loadedFiles.get(id).bitmapData.clone());
+			var bitmap:Bitmap = new Bitmap(_loadedFiles.get(id).bitmapData);
 			bitmap.smoothing = true;
 			return bitmap;
 		}
 	}
 	
-	static public function getAtlasData(id:String):Dynamic
+	static public function getSpriteData(id:String):Dynamic
 	{
 		id += "_data";
 		

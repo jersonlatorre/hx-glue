@@ -17,33 +17,45 @@ import openfl.display.Sprite;
 /**
  * ...
  * @author Uno
+ *
  */
 
 class SceneGame extends GScene
 {
 	var _image:GImage;
-	var _anim:GSprite;
+	var _anims:Array<GSprite> = new Array<GSprite>();
+	var _elapsed:Int = 0;
 	
-	public function new() 
+	public function new()
 	{
 		super();
 		
 		_image = new GImage("background_game");
 		addEntity(_image);
-		_anim = new GSprite("world", "Anim", 60);
-		// _anim = new Gsprite.fromAnimate("world", "Anim", fps);
-		// _anim = new Gsprite.fromFrames("id", width, height, fps);
+		
+		addAnim();
+
 		//_image.setPosition(0, 0).setAnchor(0, 0);
-		addEntity(_anim);
 		
 		//camera.follow(_image);
-		
+	}
+
+	function addAnim()
+	{
+		var anim = new GSprite("circle_idle", 30);
+		anim.position.x = Math.random() * 500;
+		anim.position.y = Math.random() * 500;
+		_anims.push(anim);
+		addEntity(anim);
 	}
 	
 	override public function update():Void
 	{
-		//_image.position.x += 0.15 * GTime.deltaTime;
 		super.update();
-		_anim.update();
+
+		for (i in 0..._anims.length)
+		{
+			_anims[i].update();
+		}
 	}
 }
