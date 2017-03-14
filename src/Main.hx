@@ -15,11 +15,6 @@ class Main extends Sprite
 	{
 		super();
 		
-		var s = new Sprite();
-		s.graphics.beginFill();
-		
-		trace("aaaaaaaaaa");
-		
 		GLoader.queue({ type:"image", src:"img/background_game.png", id:"background_game" });
 		GLoader.queue({ type:"sprite", src:"img/circle_idle", id:"circle_idle" });
 		
