@@ -1,9 +1,9 @@
 package com.glue.display;
 import com.glue.utils.GRectBounds;
 import com.glue.utils.GVector2D;
-import nape.phys.Body;
-import nape.phys.BodyType;
-import nape.shape.Polygon;
+// import nape.phys.Body;
+// import nape.phys.BodyType;
+// import nape.shape.Polygon;
 import openfl.display.DisplayObject;
 import openfl.display.Sprite;
 import openfl.geom.Rectangle;
@@ -26,7 +26,7 @@ import openfl.geom.Rectangle;
 	public var height:Float = 0;
 	public var isDestroyed:Bool = false;
 	
-	var shape:Body;
+	// var shape:Body;
 	var isPhysics:Bool = false;
 
 	public var position:GVector2D;
@@ -116,10 +116,10 @@ import openfl.geom.Rectangle;
 	
 	public function setBounds(left:Float, top:Float, w:Float, h:Float):Void 
 	{
-		shape = new Body(BodyType.KINEMATIC);
-		shape.shapes.add(new Polygon(Polygon.box(16, 32)));
-		shape.position.setxy(100, 100);
-		shape.space = GEngine.space;
+		// shape = new Body(BodyType.KINEMATIC);
+		// shape.shapes.add(new Polygon(Polygon.box(16, 32)));
+		// shape.position.setxy(100, 100);
+		// shape.space = GEngine.space;
 
 		isPhysics = true;
 	}
@@ -128,7 +128,7 @@ import openfl.geom.Rectangle;
 	{
 		if (isPhysics)
 		{
-			shape.position.setxy(position.x, position.y);
+			// shape.position.setxy(position.x, position.y);
 			_canvas.x = position.x;
 			_canvas.y = position.y;
 		}

@@ -17,7 +17,7 @@
 	<source path="src" />
 	<haxelib name="openfl" />
 	<haxelib name="actuate" />
-	<haxelib name="nape" />
+	<!--<haxelib name="nape" />-->
 	
 	<!-- assets -->
 	<!--<icon path="assets/icon.png" />-->
