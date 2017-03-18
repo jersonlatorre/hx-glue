@@ -19,8 +19,8 @@ class GImage extends GEntity
 		_image = GLoader.getImage(id);
 		_skin.addChild(_image);
 		
-		_width = _skin.width;
-		_height = _skin.height;
+		width = _skin.width;
+		height = _skin.height;
 	}
 	
 	override public function destroy():Void 

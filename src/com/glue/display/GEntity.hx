@@ -1,6 +1,9 @@
 package com.glue.display;
 import com.glue.utils.GRectBounds;
 import com.glue.utils.GVector2D;
+import nape.phys.Body;
+import nape.phys.BodyType;
+import nape.shape.Polygon;
 import openfl.display.DisplayObject;
 import openfl.display.Sprite;
 import openfl.geom.Rectangle;
@@ -19,11 +22,16 @@ import openfl.geom.Rectangle;
 	private var _scaleX:Float = 1;
 	private var _scaleY:Float = 1;
 	private var _alpha:Float = 1;
-	private var _width:Float = 0;
-	private var _height:Float = 0;
+	public var width:Float = 0;
+	public var height:Float = 0;
 	public var isDestroyed:Bool = false;
 	
+	var shape:Body;
+	var isPhysics:Bool = false;
+
 	public var position:GVector2D;
+	public var velocity:GVector2D;
+	public var acceleration:GVector2D;
 	
 	public function new():Void
 	{
@@ -31,6 +39,8 @@ import openfl.geom.Rectangle;
 		_skin = new Sprite();
 		_canvas.addChild(_skin);
 		position = new GVector2D(0, 0);
+		velocity = new GVector2D(0, 0);
+		acceleration = new GVector2D(0, 0);
 		_anchor = new GVector2D(0, 0);
 	}
 	
@@ -76,8 +86,8 @@ import openfl.geom.Rectangle;
 	{
 		_anchor.x = x;
 		_anchor.y = y;
-		_skin.x = -_width * _anchor.x;
-		_skin.y = -_height * _anchor.y;
+		_skin.x = -width * _anchor.x;
+		_skin.y = -height * _anchor.y;
 		return this;
 	}
 	
@@ -104,15 +114,30 @@ import openfl.geom.Rectangle;
 		return layer.contains(_canvas);
 	}
 	
-	//public function setBounds(left:Float, top:Float, w:Float, h:Float):Void 
-	//{
-		//bounds = new GRectBounds(left, top, w, h);
-	//}
+	public function setBounds(left:Float, top:Float, w:Float, h:Float):Void 
+	{
+		shape = new Body(BodyType.KINEMATIC);
+		shape.shapes.add(new Polygon(Polygon.box(16, 32)));
+		shape.position.setxy(100, 100);
+		shape.space = GEngine.space;
+
+		isPhysics = true;
+	}
 	
 	public function update():Void 
 	{
-		_canvas.x = position.x;
-		_canvas.y = position.y;
+		if (isPhysics)
+		{
+			shape.position.setxy(position.x, position.y);
+			_canvas.x = position.x;
+			_canvas.y = position.y;
+		}
+		else
+		{
+			_canvas.x = position.x;
+			_canvas.y = position.y;
+		}
+		
 		_canvas.scaleX = _scaleX;
 		_canvas.scaleY = _scaleY;
 		_canvas.alpha = _alpha;

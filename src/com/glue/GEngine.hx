@@ -3,13 +3,17 @@ import com.glue.data.GLoader;
 import com.glue.input.GKeyboard;
 import com.glue.input.GMouse;
 import com.glue.ui.GSceneManager;
-import com.glue.utils.GStats;
 import com.glue.utils.GTime;
-import openfl.display.FPS;
+import nape.geom.Vec2;
+import nape.phys.Body;
+import nape.phys.BodyType;
+import nape.shape.Polygon;
+import nape.space.Space;
+import nape.util.BitmapDebug;
+import nape.util.Debug;
 import openfl.display.Sprite;
 import openfl.display.Stage;
 import openfl.events.Event;
-import openfl.text.TextFieldAutoSize;
 import com.glue.ui.GPreloader;
 
 /**
@@ -25,6 +29,10 @@ import com.glue.ui.GPreloader;
 	static public var width:Int;
 	static public var height:Int;
 	static public var canvas:Sprite;
+	
+	static public var space:Space;
+	static public var debug:Debug;
+	static public var box:Body;
 
 	static public function start(data:Dynamic)
 	{
@@ -51,7 +59,14 @@ import com.glue.ui.GPreloader;
 			GSceneManager.gotoScene(GPreloader);
 		}
 		
+		initializePhysics();
+		
 		GLoader.load(onAssetsDownloaded);
+	}
+	
+	static private function initializePhysics():Void
+	{
+		space = new Space(Vec2.weak(0, 600));
 	}
 	
 	static function onAssetsDownloaded() 
@@ -62,6 +77,9 @@ import com.glue.ui.GPreloader;
 	static public function onUpdate(e:Event):Void
 	{
 		stage.focus = canvas;
+		space.step(1 / 60);
+		
+		//trace(box.position);
 		
 		GMouse.update();
 		GSceneManager.update();

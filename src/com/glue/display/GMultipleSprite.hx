@@ -12,16 +12,14 @@ import openfl.display.Sprite;
 class GMultipleSprite extends GEntity
 {
 	public var animation:String = "";
-	public var onEndAnimation:Dynamic = null;
+	var _onEndAnimation:Dynamic = null;
 	
 	var _animations:Map<String, Dynamic> = new Map<String, Dynamic>();
-	var _atlasId:String;
 	var _sprite:GSprite;
 	
-	public function new(atlasId):Void
+	public function new():Void
 	{
 		super();
-		_atlasId = atlasId;
 	}
 	
 	public function addAnimation(name:String, animationId:String, fps:Int = 30):GMultipleSprite 
@@ -41,12 +39,18 @@ class GMultipleSprite extends GEntity
 		
 		_sprite = new GSprite(_animations[name].id, _animations[name].fps);
 		_sprite.addToLayer(_skin);
-		_sprite.setAnchor(0, 0);
-		_width = _sprite._width;
-		_height = _sprite._height;
-		animation = name;
+		if (_onEndAnimation != null) _sprite.onEndAnimation(_onEndAnimation);
 		
-		_sprite.onEndAnimation = onEndAnimation;
+		width = _sprite.width;
+		height = _sprite.height;
+		setAnchor(_anchor.x, _anchor.y);
+		update();
+		animation = name;
+	}
+	
+	public function onEndAnimation(callback:Dynamic):Void
+	{
+		_onEndAnimation = callback;
 	}
 	
 	override public function update():Void 

@@ -6,7 +6,7 @@ import flash.geom.Vector3D;
  * @author Jerson La Torre
  */
 
-@final class GVector2D 
+class GVector2D 
 {
 	public var x:Float;
 	public var y:Float;

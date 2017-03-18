@@ -17,7 +17,6 @@ class GMouse
 	static public var isDown:Bool;
 	static public var isUp:Bool;
 	static public var isPressed:Bool;
-	static public var isClick:Bool;
 	
 	public function new() 
 	{

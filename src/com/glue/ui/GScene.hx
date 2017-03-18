@@ -124,7 +124,7 @@ class GScene
 		
 		// canvas
 		_entitiesCanvas.x = -camera.position.x + GEngine.width / 2;
-		_entitiesCanvas.y = camera.position.y +  GEngine.height / 2;
+		_entitiesCanvas.y = -camera.position.y + GEngine.height / 2;
 		
 		
 		// world coordinates

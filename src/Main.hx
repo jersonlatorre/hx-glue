@@ -7,26 +7,23 @@ import openfl.display.Sprite;
 
 /**
  * ...
- * @author Uno
+ * @author Jerson La Torre
  */
+
 class Main extends Sprite 
 {
 	public function new()
 	{
 		super();
 		
-		var s = new Sprite();
-		s.graphics.beginFill();
-		
-		trace("aaaaaaaaaa");
-		
 		GLoader.queue({ type:"image", src:"img/background_game.png", id:"background_game" });
-		GLoader.queue({ type:"sprite", src:"img/circle_idle", id:"circle_idle" });
+		GLoader.queue({ type:"image", src:"img/floor.png", id:"floor" });
+		GLoader.queue({ type:"sprite", src:"img/player_idle", id:"player_idle" });
 		
 		GEngine.start({
 			stage: stage,
-			width: 800,
-			height: 600,
+			width: 1080,
+			height: 1920,
 			mainScene: SceneGame
 		});
 	}
