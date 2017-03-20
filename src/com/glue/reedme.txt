@@ -1,3 +1,8 @@
 1. onEndAnimation tiene que ponerse antes del setAnimation
 2. setAnchor en GMultipleSprite se tiene que volver a poner, encontrar una manera más elegante de arreglar eso.
 3. tal vez crear getters and setters para las propiedades / verificar los accesos
+4. crear sobrecarga de operadores para la clase GVector2D
+5. integrar nape
+6. Main.hx debería estar dentro del proyecto?
+7. GLoader debería poder cargar más assets en cualquier momento dentro del juego y mostrar siempre el porcentaje de avance
+8. los sprites se deberían poder crear de muchas maneras, dependiendo de la herramienta que se use, algo tipo: Sprite.createFromFlash(), Sprite.createFromSpine()

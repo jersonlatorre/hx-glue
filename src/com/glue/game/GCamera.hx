@@ -1,6 +1,6 @@
 package com.glue.game;
+
 import com.glue.display.GEntity;
-import com.glue.utils.GTools;
 import com.glue.utils.GVector2D;
 
 /**

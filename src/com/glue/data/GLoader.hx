@@ -1,9 +1,7 @@
 package com.glue.data;
 
 import haxe.Json;
-import openfl.Assets;
 import openfl.display.Bitmap;
-import openfl.display.BitmapData;
 import openfl.display.Loader;
 import openfl.errors.Error;
 import openfl.events.Event;

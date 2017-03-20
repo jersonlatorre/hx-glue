@@ -2,8 +2,6 @@ package com.glue.input;
 
 import com.glue.GEngine;
 import com.glue.utils.GVector2D;
-import flash.display.Stage;
-import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
 /**
  * ...

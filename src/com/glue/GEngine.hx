@@ -1,15 +1,13 @@
 package com.glue;
+
+import haxe.Json;
+import openfl.net.URLRequest;
+import openfl.net.URLLoader;
 import com.glue.data.GLoader;
 import com.glue.input.GKeyboard;
 import com.glue.input.GMouse;
 import com.glue.ui.GSceneManager;
 import com.glue.utils.GTime;
-// import nape.phys.Body;
-// import nape.phys.BodyType;
-// import nape.shape.Polygon;
-// import nape.space.Space;
-// import nape.util.BitmapDebug;
-// import nape.util.Debug;
 import openfl.display.Sprite;
 import openfl.display.Stage;
 import openfl.events.Event;
@@ -28,19 +26,35 @@ import com.glue.ui.GPreloader;
 	static public var width:Int;
 	static public var height:Int;
 	static public var canvas:Sprite;
+	static var loader:URLLoader;
 	
-	// static public var space:Space;
-	// static public var debug:Debug;
-	// static public var box:Body;
-
 	static public function start(data:Dynamic)
 	{
 		GEngine.stage = data.stage;
-		GEngine.stage.addEventListener(Event.ENTER_FRAME, onUpdate);
 		GEngine.width = data.width;
 		GEngine.height = data.height;
 		GEngine.mainScene = data.mainScene;
+
+		loader = new URLLoader();
+		loader.addEventListener(Event.COMPLETE, onAssetsManifestComplete);
+		loader.load(new URLRequest(data.assets));
+
+		// trace("holaaaaaaaaa: " + data.assets);
+		// var assets:Dynamic = Json.parse(data.assets);
+		// trace("holaaaaaaaaa: ", assets);
+	}
+
+	static function onAssetsManifestComplete(e:Event)
+	{
+		var assets:Array<Dynamic> = Json.parse(loader.data);
 		
+		for (asset in assets)
+		{
+			GLoader.queue(asset);
+		}
+
+		GEngine.stage.addEventListener(Event.ENTER_FRAME, onUpdate);
+
 		canvas = new Sprite();
 		GEngine.stage.addChild(canvas);
 		
@@ -58,14 +72,7 @@ import com.glue.ui.GPreloader;
 			GSceneManager.gotoScene(GPreloader);
 		}
 		
-		initializePhysics();
-		
 		GLoader.load(onAssetsDownloaded);
-	}
-	
-	static private function initializePhysics():Void
-	{
-		// space = new Space(Vec2.weak(0, 600));
 	}
 	
 	static function onAssetsDownloaded() 
@@ -75,11 +82,6 @@ import com.glue.ui.GPreloader;
 	
 	static public function onUpdate(e:Event):Void
 	{
-		// stage.focus = canvas;
-		// space.step(1 / 60);
-		
-		//trace(box.position);
-		
 		GMouse.update();
 		GSceneManager.update();
 		GMouse.clear();

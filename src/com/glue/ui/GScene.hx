@@ -1,10 +1,7 @@
 package com.glue.ui;
 
 import com.glue.display.GEntity;
-import com.glue.display.GImage;
 import com.glue.game.GCamera;
-import com.glue.input.GMouse;
-import flash.display.MovieClip;
 import flash.display.Sprite;
 import motion.Actuate;
 import motion.easing.Quad;

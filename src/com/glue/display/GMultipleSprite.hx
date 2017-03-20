@@ -1,7 +1,4 @@
 package com.glue.display;
-import openfl.display.Bitmap;
-import openfl.display.BitmapData;
-import openfl.display.Sprite;
 
 /**
  * ...

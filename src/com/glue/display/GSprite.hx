@@ -1,10 +1,9 @@
 package com.glue.display;
+
 import com.glue.data.GLoader;
 import com.glue.utils.GTime;
 import openfl.display.Bitmap;
-import openfl.display.BitmapData;
 import openfl.display.Sprite;
-import haxe.Timer;
 
 /**
  * ...

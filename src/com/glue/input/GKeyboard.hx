@@ -2,7 +2,6 @@ package com.glue.input;
 
 import com.glue.GEngine;
 import flash.events.KeyboardEvent;
-import openfl.ui.Keyboard;
 
 /**
  * ...
