@@ -1,7 +1,7 @@
 package com.glue.display;
 
 import com.glue.data.GLoader;
-import flash.display.Bitmap;
+import openfl.display.Bitmap;
 
 /**
  * ...
@@ -23,7 +23,7 @@ class GImage extends GEntity
 		width = _skin.width;
 		height = _skin.height;
 	}
-	
+
 	override public function destroy():Void 
 	{
 		super.destroy();

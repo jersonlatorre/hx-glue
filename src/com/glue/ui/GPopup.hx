@@ -1,7 +1,6 @@
 package com.glue.ui;
 
-import flash.display.MovieClip;
-import flash.display.Sprite;
+import openfl.display.Sprite;
 
 /**
  * ...

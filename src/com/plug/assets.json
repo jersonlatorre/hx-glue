@@ -1,0 +1,5 @@
+[
+	{	"type":"image", "src":"img/background_game.png", "id":"background_game"	},
+	{	"type":"image",	"src":"img/floor.png", "id":"floor"	},
+	{	"type":"sprite", "src":"img/player_idle",	"id":"player_idle" }
+]

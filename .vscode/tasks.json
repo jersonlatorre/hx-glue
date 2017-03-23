@@ -1,6 +1,6 @@
 {
     "version": "0.1.0",
-    "command": "lime build",
+    "command": "sudo lime build html5",
     "isShellCommand": true,
     "args": [],
     "showOutput": "always",

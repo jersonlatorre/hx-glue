@@ -21,7 +21,7 @@ import haxe.Timer;
 	static public function init():Void 
 	{
 		timelapse = 0;
-		framerate = GEngine.stage.frameRate;
+		framerate = Glue.stage.frameRate;
 		
 		_last = _now = Timer.stamp() * 1000;
 		_dtLast = deltaTime = 0;

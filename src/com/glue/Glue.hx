@@ -1,8 +1,5 @@
 package com.glue;
 
-import haxe.Json;
-import openfl.net.URLRequest;
-import openfl.net.URLLoader;
 import com.glue.data.GLoader;
 import com.glue.input.GKeyboard;
 import com.glue.input.GMouse;
@@ -13,12 +10,7 @@ import openfl.display.Stage;
 import openfl.events.Event;
 import com.glue.ui.GPreloader;
 
-/**
- * ...
- * @author Jerson La Torre
- */
-
-@final class GEngine
+@final class Glue
 {
 	static public var stage:Stage;
 	static public var mainScene:Dynamic;
@@ -26,37 +18,17 @@ import com.glue.ui.GPreloader;
 	static public var width:Int;
 	static public var height:Int;
 	static public var canvas:Sprite;
-	static var loader:URLLoader;
 	
 	static public function start(data:Dynamic)
 	{
-		GEngine.stage = data.stage;
-		GEngine.width = data.width;
-		GEngine.height = data.height;
-		GEngine.mainScene = data.mainScene;
-
-		loader = new URLLoader();
-		loader.addEventListener(Event.COMPLETE, onAssetsManifestComplete);
-		loader.load(new URLRequest(data.assets));
-
-		// trace("holaaaaaaaaa: " + data.assets);
-		// var assets:Dynamic = Json.parse(data.assets);
-		// trace("holaaaaaaaaa: ", assets);
-	}
-
-	static function onAssetsManifestComplete(e:Event)
-	{
-		var assets:Array<Dynamic> = Json.parse(loader.data);
-		
-		for (asset in assets)
-		{
-			GLoader.queue(asset);
-		}
-
-		GEngine.stage.addEventListener(Event.ENTER_FRAME, onUpdate);
+		Glue.stage = data.stage;
+		Glue.width = data.width;
+		Glue.height = data.height;
+		Glue.mainScene = data.mainScene;
+		Glue.stage.addEventListener(Event.ENTER_FRAME, onUpdate);
 
 		canvas = new Sprite();
-		GEngine.stage.addChild(canvas);
+		Glue.stage.addChild(canvas);
 		
 		GTime.init();
 		GMouse.init();
@@ -74,10 +46,10 @@ import com.glue.ui.GPreloader;
 		
 		GLoader.load(onAssetsDownloaded);
 	}
-	
+
 	static function onAssetsDownloaded() 
 	{
-		GSceneManager.gotoScene(GEngine.mainScene);
+		GSceneManager.gotoScene(Glue.mainScene);
 	}
 	
 	static public function onUpdate(e:Event):Void

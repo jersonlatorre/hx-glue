@@ -22,14 +22,14 @@ import com.glue.utils.GVector2D;
 	
 	var _leftLimit:Float = Math.NEGATIVE_INFINITY;
 	var _rightLimit:Float = Math.POSITIVE_INFINITY;
-	var _topLimit:Float = Math.POSITIVE_INFINITY;
-	var _bottomLimit:Float = Math.NEGATIVE_INFINITY;
+	var _topLimit:Float = Math.NEGATIVE_INFINITY;
+	var _bottomLimit:Float = Math.POSITIVE_INFINITY;
 	var _mode:Int = STATE_NONE;
 	var _delayFactor:Float = 0.1;
 	
 	public function new() 
 	{
-		position = GVector2D.create(GEngine.width / 2, GEngine.height / 2);
+		position = GVector2D.create(Glue.width / 2, Glue.height / 2);
 	}
 	
 	public function follow(target:GEntity, delayFactor:Float = 0.1):GCamera
@@ -108,25 +108,25 @@ import com.glue.utils.GVector2D;
 				
 			}
 		}
-		
-		if (position.x < _leftLimit + GEngine.width / 2)
+
+		if (position.x > _rightLimit - Glue.width / 2)
 		{
-			position.x = _leftLimit + GEngine.width / 2;
+			position.x = _rightLimit - Glue.width / 2;
 		}
 		
-		if (position.x > _rightLimit - GEngine.width / 2)
+		if (position.x < _leftLimit + Glue.width / 2)
 		{
-			position.x = _rightLimit - GEngine.width / 2;
+			position.x = _leftLimit + Glue.width / 2;
 		}
 		
-		if (position.y > _bottomLimit - GEngine.height / 2)
+		if (position.y > _bottomLimit - Glue.height / 2)
 		{
-			position.y = _bottomLimit - GEngine.height / 2;
+			position.y = _bottomLimit - Glue.height / 2;
 		}
 		
-		if (position.y >_topLimit)
+		if ( position.y < _topLimit + Glue.height / 2)
 		{
-			position.y = _topLimit;
+			position.y = _topLimit + Glue.height / 2;
 		}
 	}
 	

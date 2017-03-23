@@ -1,7 +1,7 @@
 package;
 
-import com.glue.GEngine;
 import com.glue.data.GLoader;
+import com.glue.Glue;
 import com.plug.ui.SceneGame;
 import openfl.display.Sprite;
 
@@ -16,11 +16,14 @@ class Main extends Sprite
 	{
 		super();
 
-		GEngine.start({
+		GLoader.queue({ type:"image", src:"img/background_game.png", id:"background_game"});
+		GLoader.queue({ type:"image", src:"img/floor.png", id:"floor"});
+		GLoader.queue({ type:"sprite", src:"img/player_idle", id:"player_idle"});
+
+		Glue.start({
 			stage: stage,
 			width: 1080,
 			height: 1920,
-			assets: "./assets.json",
 			mainScene: SceneGame
 		});
 	}

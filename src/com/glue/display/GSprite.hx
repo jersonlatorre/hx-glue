@@ -8,9 +8,76 @@ import openfl.display.Sprite;
 /**
  * ...
  * @author Jerson La Torre
+ * 
  */
 
 class GSprite extends GEntity
+{
+	public var animation:String = "";
+	var _onEndAnimation:Dynamic = null;
+	
+	var _animations:Map<String, Dynamic> = new Map<String, Dynamic>();
+	var _sprite:__GSpriteBase;
+	
+	public function new():Void
+	{
+		super();
+	}
+
+	public function addAnimation(value1:String, ?value2:String, ?fps:Int = 30):GSprite 
+	{
+		if (value2 == null)
+		{
+			_animations["default"] = { id: value1, fps: fps };
+		}
+		else
+		{
+			_animations[value1] = { id: value2, fps: fps };
+		}
+		
+		return this;
+	}
+
+	public function play(?name:String = "default"):GSprite
+	{
+		if (animation == name) return null;
+		
+		while (_skin.numChildren > 0)
+		{
+			_skin.removeChildAt(0);
+		}
+		
+		_sprite = new __GSpriteBase(_animations[name].id, _animations[name].fps);
+		_sprite.addToLayer(_skin);
+		if (_onEndAnimation != null) _sprite.onEndAnimation(_onEndAnimation);
+		
+		width = _sprite.width;
+		height = _sprite.height;
+		setAnchor(_anchor.x, _anchor.y);
+		update();
+		animation = name;
+
+		return this;
+	}
+	
+	public function onEndAnimation(callback:Dynamic):Void
+	{
+		_onEndAnimation = callback;
+	}
+	
+	override public function update():Void 
+	{
+		if (_sprite != null) _sprite.update();
+		super.update();
+	}
+	
+	override public function destroy():Void 
+	{
+		super.destroy();
+	}
+}
+
+@final class __GSpriteBase extends GEntity
 {
 	var _image:Bitmap;
 	var _mask:Sprite;
@@ -41,7 +108,7 @@ class GSprite extends GEntity
 		_skin.addChild(_mask);
 	}
 	
-	public function onEndAnimation(callback:Dynamic):GSprite
+	public function onEndAnimation(callback:Dynamic):__GSpriteBase
 	{
 		_onEndAnimation = callback;
 		return this;

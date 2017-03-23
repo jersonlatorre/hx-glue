@@ -2,7 +2,7 @@ package com.glue.ui;
 
 import com.glue.display.GEntity;
 import com.glue.game.GCamera;
-import flash.display.Sprite;
+import openfl.display.Sprite;
 import motion.Actuate;
 import motion.easing.Quad;
 
@@ -21,8 +21,6 @@ class GScene
 	var _mask:Sprite;
 	
 	public var camera:GCamera;
-	//public var mouseX:Float;
-	//public var mouseY:Float;
 	
 	public function new()
 	{
@@ -44,7 +42,7 @@ class GScene
 		
 		// mask
 		_mask.graphics.beginFill(0xFF0000, 0.3);
-		_mask.graphics.drawRect(0, 0, GEngine.width, GEngine.height);
+		_mask.graphics.drawRect(0, 0, Glue.width, Glue.height);
 		_mask.graphics.endFill();
 		_mask.x = 0;
 		_mask.y = 0;
@@ -86,8 +84,6 @@ class GScene
 		
 		if (index >= 0)
 		{
-			var i:Int;
-			
 			for (layerName in _layers.keys())
 			{
 				if (entity.isChildOfLayer(_layers.get(layerName)))
@@ -101,27 +97,14 @@ class GScene
 		}
 	}
 	
-	//public function collide(e1:GImage, e2:GImage):Bool
-	//{
-		//if (e1.position.x + e1.bounds.left > e2.position.x + e2.bounds.right ||
-			//e1.position.x + e1.bounds.right < e2.position.x + e2.bounds.left ||
-			//e1.position.y + e1.bounds.top > e2.position.y + e2.bounds.bottom ||
-			//e1.position.y + e2.bounds.bottom < e2.position.y + e2.bounds.top)
-		//{
-			//return false;
-		//}
-		//
-		//return true;
-	//}
-	
 	public function update():Void
 	{
 		// camera
 		camera.update();
 		
 		// canvas
-		_entitiesCanvas.x = -camera.position.x + GEngine.width / 2;
-		_entitiesCanvas.y = -camera.position.y + GEngine.height / 2;
+		_entitiesCanvas.x = -camera.position.x + Glue.width / 2;
+		_entitiesCanvas.y = -camera.position.y + Glue.height / 2;
 		
 		
 		// world coordinates
@@ -160,7 +143,7 @@ class GScene
 	{
 		var fade:Sprite = new Sprite();
 		fade.graphics.beginFill(0);
-		fade.graphics.drawRect(0, 0, GEngine.width, GEngine.height);
+		fade.graphics.drawRect(0, 0, Glue.width, Glue.height);
 		fade.graphics.endFill();
 		
 		fade.x = 0;

@@ -14,7 +14,7 @@ import openfl.net.URLRequest;
  * @author Jerson La Torre
  */
 
-class GLoader
+@final class GLoader
 {
 	static var _callback:Dynamic;
 	static var _currentFileIndex:Int = 0;

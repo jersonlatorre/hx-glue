@@ -1,5 +1,6 @@
 package com.glue.display;
 
+import com.glue.ui.GScene;
 import com.glue.utils.GVector2D;
 import openfl.display.Sprite;
 
@@ -37,46 +38,52 @@ import openfl.display.Sprite;
 		acceleration = new GVector2D(0, 0);
 		_anchor = new GVector2D(0, 0);
 	}
+
+	public function addTo(scene:GScene):Dynamic
+	{
+		scene.addEntity(this);
+		return this;
+	}
 	
-	public function setPosition(x:Float, y:Float):GEntity
+	public function setPosition(x:Float, y:Float):Dynamic
 	{
 		position.x = x;
 		position.y = y;
 		return this;
 	}
 	
-	public function setPositionX(x:Float):GEntity
+	public function setPositionX(x:Float):Dynamic
 	{
 		position.x = x;
 		return this;
 	}
 	
-	public function setPositionY(y:Float):GEntity
+	public function setPositionY(y:Float):Dynamic
 	{
 		position.y = y;
 		return this;
 	}
 	
-	public function setScale(scaleX:Float, scaleY:Float):GEntity
+	public function setScale(scaleX:Float, scaleY:Float):Dynamic
 	{
 		_scaleX = scaleX;
 		_scaleY = scaleY;
 		return this;
 	}
 	
-	public function setScaleX(scaleX:Float):GEntity
+	public function setScaleX(scaleX:Float):Dynamic
 	{
 		_scaleX = scaleX;
 		return this;
 	}
 	
-	public function setScaleY(scaleY:Float):GEntity
+	public function setScaleY(scaleY:Float):Dynamic
 	{
 		_scaleY = scaleY;
 		return this;
 	}
 	
-	public function setAnchor(x:Float, y:Float):GEntity
+	public function setAnchor(x:Float, y:Float):Dynamic
 	{
 		_anchor.x = x;
 		_anchor.y = y;
@@ -85,19 +92,20 @@ import openfl.display.Sprite;
 		return this;
 	}
 	
-	public function setAlpha(alpha:Float):GEntity
+	public function setAlpha(alpha:Float):Dynamic
 	{
 		this._alpha = alpha;
 		return this;
 	}
 	
-	public function addToLayer(layer:Sprite):GEntity
+	@:access(GScene, GMultipleSprite)
+	public function addToLayer(layer:Sprite):Dynamic
 	{
 		layer.addChild(_canvas);
 		return this;
 	}
 	
-	public function removeFromLayer(layer:Sprite):GEntity
+	public function removeFromLayer(layer:Sprite):Dynamic
 	{
 		layer.removeChild(_canvas);
 		return this;
@@ -106,11 +114,6 @@ import openfl.display.Sprite;
 	public function isChildOfLayer(layer:Sprite):Bool
 	{
 		return layer.contains(_canvas);
-	}
-	
-	public function setBounds(left:Float, top:Float, w:Float, h:Float):Void 
-	{
-		isPhysics = true;
 	}
 	
 	public function update():Void 
@@ -130,28 +133,6 @@ import openfl.display.Sprite;
 		_canvas.scaleY = _scaleY;
 		_canvas.alpha = _alpha;
 	}
-	
-	//public function collide(entity:GEntity) 
-	//{
-		//if (position.x + bounds.left > entity.position.x + entity.bounds.right)
-		//{
-			//return false;
-		//}
-		//if (position.x + bounds.right < entity.position.x + entity.bounds.left)
-		//{
-			//return false;
-		//}
-		//if (position.y + bounds.top < entity.position.y + entity.bounds.bottom)
-		//{
-			//return false;
-		//}
-		//if (position.y + bounds.bottom > entity.position.y + entity.bounds.top)
-		//{
-			//return false;
-		//}
-		//
-		//return true;
-	//}
 	
 	public function destroy():Void
 	{

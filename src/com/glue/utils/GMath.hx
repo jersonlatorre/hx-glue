@@ -5,7 +5,7 @@ package com.glue.utils;
  * @author Jerson La Torre
  */
 
-class GMath 
+@final class GMath 
 {
 	
 	public function GMath() 

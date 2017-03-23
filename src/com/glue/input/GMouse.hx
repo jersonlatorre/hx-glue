@@ -1,14 +1,14 @@
 package com.glue.input;
 
-import com.glue.GEngine;
+import com.glue.Glue;
 import com.glue.utils.GVector2D;
-import flash.events.MouseEvent;
+import openfl.events.MouseEvent;
 /**
  * ...
  * @author Jerson La Torre
  */	
  
-class GMouse 
+@final class GMouse 
 {
 	// public
 	static public var position:GVector2D;
@@ -23,8 +23,8 @@ class GMouse
 	
 	static public function init():Void
 	{
-		GEngine.stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
-		GEngine.stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+		Glue.stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+		Glue.stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
 		
 		position = new GVector2D(0, 0);
 	}
@@ -44,8 +44,8 @@ class GMouse
 	
 	static public function update():Void
 	{
-		position.x = GEngine.stage.mouseX;
-		position.y = GEngine.stage.mouseY;
+		position.x = Glue.stage.mouseX;
+		position.y = Glue.stage.mouseY;
 	}
 	
 	static public function clear():Void

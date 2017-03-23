@@ -1,6 +1,5 @@
 package com.glue.display;
 
-import com.glue.data.GImageManager;
 import com.glue.data.GSoundManager;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
@@ -12,7 +11,7 @@ import openfl.events.MouseEvent;
  * @author Jerson La Torre
  */
 
-class GSpriteButton extends GEntity
+class GButton extends GEntity
 {
 	var _id:String;
 	var _image:Bitmap;

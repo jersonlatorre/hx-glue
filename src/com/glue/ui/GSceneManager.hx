@@ -1,14 +1,14 @@
 package com.glue.ui;
 
-import com.glue.GEngine;
-import flash.display.Sprite;
+import com.glue.Glue;
+import openfl.display.Sprite;
 
 /**
  * ...
  * @author Jerson La Torre
  */
 
-class GSceneManager 
+@final class GSceneManager 
 {
 	static public var canvas:Sprite;
 	static public var popupCanvas:Sprite;
@@ -19,7 +19,7 @@ class GSceneManager
 	
 	static public function init():Void
 	{
-		GSceneManager.canvas = GEngine.canvas;
+		GSceneManager.canvas = Glue.canvas;
 		
 		popupCanvas = new Sprite();
 		sceneCanvas = new Sprite();
@@ -46,8 +46,8 @@ class GSceneManager
 		currentScene = Type.createInstance(screenClass, []);
 		currentScene.update();
 		
-		GEngine.stage.stageFocusRect = false;
-		GEngine.stage.focus = sceneCanvas;
+		Glue.stage.stageFocusRect = false;
+		Glue.stage.focus = sceneCanvas;
 	}
 	
 	static public function showPopup(popupClass:Dynamic):Void

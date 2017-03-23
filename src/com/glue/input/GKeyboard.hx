@@ -1,14 +1,15 @@
 package com.glue.input;
 
-import com.glue.GEngine;
-import flash.events.KeyboardEvent;
+import com.glue.Glue;
+import openfl.events.KeyboardEvent;
+import openfl.ui.Keyboard;
 
 /**
  * ...
  * @author Jerson La Torre
  */
 
-class GKeyboard 
+@final class GKeyboard 
 {
 	static public inline var LEFT:Int = 37;
 	static public inline var RIGHT:Int = 39;
@@ -44,8 +45,8 @@ class GKeyboard
 	
 	static public function init():Void
 	{
-		GEngine.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-		GEngine.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+		Glue.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+		Glue.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 		
 	}
 	
