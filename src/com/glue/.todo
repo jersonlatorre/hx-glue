@@ -13,7 +13,7 @@ HaxeGlue - v0.7:
     ✔ @high@today Terminar GButton. @done (3/25/2017, 2:10:16 AM)
     ✔ @high@today Hacer hit con transparencia para los botones. @done (3/25/2017, 2:10:22 AM)
     ☐ Hacerle shake a la cámara.
-    ☐ Precaché de las imágenes a utilizar en el juego.
+    ✔ Precaché de las imágenes a utilizar en el juego. @done (3/26/2017, 3:32:05 PM)
     ✔ Revisar que fadein y fadeout de GScene sigue funcionando. @done (3/26/2017, 5:57:35 AM)
     ☐ Cambiarle de nombre a las clases para que sean más "humanas".
     ✔ Verificar todos los destroys. @done (3/26/2017, 5:57:43 AM)
