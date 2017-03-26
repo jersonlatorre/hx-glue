@@ -1,7 +1,7 @@
 package com.glue.ui;
 
-import com.glue.ui.GScene;
 import com.glue.data.GLoader;
+import com.glue.ui.GScene;
 import openfl.display.Sprite;
 
 /**
@@ -15,6 +15,7 @@ class GPreloader extends GScene
 	public function new() 
 	{
 		super();
+
 		_bar = new Sprite();
 		_canvas.addChild(_bar);
 	}
@@ -24,9 +25,6 @@ class GPreloader extends GScene
 		var width:Float = Glue.width;
 		var height:Float = Glue.height;
 
-		_bar.graphics.beginFill(0x110000);
-		_bar.graphics.drawRect(0, 0, width , height);
-		_bar.graphics.endFill();
 		_bar.graphics.beginFill(0xFF0000);
 		_bar.graphics.drawRect(0, height / 2 - 3, width * GLoader.downloadedFiles / GLoader.totalFiles, 6);
 		_bar.graphics.endFill();

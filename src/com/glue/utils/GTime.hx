@@ -1,5 +1,6 @@
 package com.glue.utils;
 
+import openfl.Lib;
 import haxe.Timer;
 
 /**
@@ -20,24 +21,23 @@ import haxe.Timer;
 	
 	static public function init():Void 
 	{
-		timelapse = 0;
-		framerate = Glue.stage.frameRate;
+		// timelapse = 0;
+		// framerate = Glue.stage.frameRate;
+		_now = _last = Timer.stamp();
 		
-		_last = _now = Timer.stamp() * 1000;
-		_dtLast = deltaTime = 0;
 	}
 	
 	static public function update():Void 
 	{
-		_now = Timer.stamp() * 1000;
-		deltaTime = (_now - _last);
+		_now = Timer.stamp();
+		deltaTime = _now - _last;
 		
-		if (deltaTime == 0) deltaTime = _dtLast;
+		// if (deltaTime == 0) deltaTime = _dtLast;
 		
-		framerate = Std.int(1000 / deltaTime);
-		
+		// framerate = Std.int(1 / deltaTime);
+		// trace(1 / deltaTime);
 		_last = _now;
-		_dtLast = deltaTime;
-		timelapse += deltaTime;
+		// _dtLast = deltaTime;
+		// timelapse += deltaTime;
 	}
 }

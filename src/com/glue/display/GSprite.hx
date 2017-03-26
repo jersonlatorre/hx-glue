@@ -24,7 +24,7 @@ class GSprite extends GEntity
 		super();
 	}
 
-	public function addAnimation(value1:String, ?value2:String, ?fps:Int = 30):GSprite 
+	public function addAnimation(value1:String, ?value2:String, ?fps:Int = 30):Dynamic 
 	{
 		if (value2 == null)
 		{
@@ -38,7 +38,7 @@ class GSprite extends GEntity
 		return this;
 	}
 
-	public function play(?name:String = "default"):GSprite
+	public function play(?name:String = "default"):Dynamic
 	{
 		if (animation == name) return null;
 		
@@ -59,10 +59,11 @@ class GSprite extends GEntity
 
 		return this;
 	}
-	
-	public function onEndAnimation(callback:Dynamic):Void
+
+	public function onEndAnimation(callback:Dynamic):Dynamic
 	{
 		_onEndAnimation = callback;
+		return this;
 	}
 	
 	override public function update():Void 
@@ -91,8 +92,7 @@ class GSprite extends GEntity
 		super();
 		_fps = fps;
 
-		var data:Dynamic = GLoader.getSpriteData(spriteId);
-		for (i in 0...data.frames.length) _frames.push(data.frames[i]);
+		_frames = GLoader.getJson(spriteId + "_data").frames;
 		
 		width = _frames[0].sourceSize.w * _scaleX;
 		height = _frames[0].sourceSize.h * _scaleY;
@@ -108,7 +108,7 @@ class GSprite extends GEntity
 		_skin.addChild(_mask);
 	}
 	
-	public function onEndAnimation(callback:Dynamic):__GSpriteBase
+	public function onEndAnimation(callback:Dynamic)
 	{
 		_onEndAnimation = callback;
 		return this;
@@ -116,7 +116,7 @@ class GSprite extends GEntity
 	
 	override public function update():Void
 	{
-		_currentFrameIndex += _fps * GTime.deltaTime / 1000;
+		_currentFrameIndex += _fps * GTime.deltaTime;
 		
 		if (_currentFrameIndex >= _frames.length && onEndAnimation != null)
 		{

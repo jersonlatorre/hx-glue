@@ -11,22 +11,12 @@ import openfl.display.Sprite;
 @final class GSceneManager 
 {
 	static public var canvas:Sprite;
-	static public var popupCanvas:Sprite;
-	static public var sceneCanvas:Sprite;
-	
 	static public var currentScene:GScene;
 	static public var currentPopup:GScene;
 	
 	static public function init():Void
 	{
 		GSceneManager.canvas = Glue.canvas;
-		
-		popupCanvas = new Sprite();
-		sceneCanvas = new Sprite();
-		
-		canvas.addChild(sceneCanvas);
-		canvas.addChild(popupCanvas);
-		
 		currentScene = null;
 	}
 	
@@ -34,7 +24,7 @@ import openfl.display.Sprite;
 	{
 		if (Type.getSuperClass(screenClass) != GScene)
 		{
-			trace("GScreenManager::gotoScreen -> screenClass need to be a GScreen");
+			throw "GScreenManager::gotoScreen -> screenClass needs to be GScreen";
 			return;
 		}
 		
@@ -47,14 +37,13 @@ import openfl.display.Sprite;
 		currentScene.update();
 		
 		Glue.stage.stageFocusRect = false;
-		Glue.stage.focus = sceneCanvas;
 	}
 	
 	static public function showPopup(popupClass:Dynamic):Void
 	{
 		if (Type.getSuperClass(popupClass) != GPopup)
 		{
-			trace("GScreenManager::showPopup -> popupClass need to be a GPopup");
+			trace("GScreenManager::showPopup -> popupClass needs to be GPopup");
 			return;
 		}
 		

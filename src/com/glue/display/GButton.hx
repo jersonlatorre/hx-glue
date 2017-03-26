@@ -1,8 +1,10 @@
 package com.glue.display;
 
-import com.glue.data.GSoundManager;
-import openfl.display.Bitmap;
+import openfl.geom.Point;
+import openfl.geom.Rectangle;
 import openfl.display.BitmapData;
+import com.glue.data.GLoader;
+import openfl.display.Bitmap;
 import openfl.display.Sprite;
 import openfl.events.MouseEvent;
 
@@ -13,117 +15,123 @@ import openfl.events.MouseEvent;
 
 class GButton extends GEntity
 {
-	var _id:String;
 	var _image:Bitmap;
-	//var _hitArea:Sprite;
-	//var _hitAreaBmp:Bitmap;
+	var _hitBmd:BitmapData;
+	var _mask:Sprite;
+	var _frames:Array<Dynamic> = new Array<Dynamic>();
 	var _callback:Dynamic;
-	
-	var _overSoundId:String = "";
-	var _downSoundId:String = "";
-	
-	public function new(id:String, alignType:Int, callback:Dynamic):Void
+	var _isDown:Bool;
+
+	public function new(spriteId:String = null):Void
 	{
-		super(alignType);
+		super();
+
+		var data:Dynamic = GLoader.getJson(spriteId + "_data");
+		for (i in 0...data.frames.length) _frames.push(data.frames[i]);
+
+		width = _frames[0].sourceSize.w * _scaleX;
+		height = _frames[0].sourceSize.h * _scaleY;
 		
-		_id = id;
-		GImageManager.setSpriteFrames(id);
-		
-		_callback = callback;
-		
-		_image = new Bitmap(GImageManager.spriteFrames.get(_id)[0].clone());
+		_image = GLoader.getImage(spriteId);
 		_image.smoothing = true;
+		_mask = new Sprite();
+		_mask.graphics.beginFill(0);
+		_mask.graphics.drawRect(0, 0, width, height);
+		_mask.graphics.endFill();
+		_image.mask = _mask;
+
+		if (_frames[3] != null)
+		{
+			_hitBmd = new BitmapData(_frames[3].frame.w, _frames[3].frame.h, true, 0x00000000);
+			_hitBmd.copyPixels(_image.bitmapData, new Rectangle(_frames[3].frame.x, _frames[3].frame.y, _frames[3].frame.w, _frames[3].frame.h) , new Point(0, 0), null, null, true);
+		}
+		else
+		{
+			var _hit:Sprite = new Sprite();
+			_hit.graphics.beginFill(0xFF0000);
+			_hit.graphics.drawRect(0, 0, _frames[0].sourceSize.w, _frames[0].sourceSize.h);
+			_hit.graphics.endFill();
+			_hitBmd = new BitmapData(_frames[0].sourceSize.w, _frames[0].sourceSize.h, true, 0x00000000);
+			_hitBmd.draw(_hit);
+		}
+		
 		_skin.addChild(_image);
-		
-		//_hitAreaBmp = new Bitmap(_spriteFrames[3]);
-		//_hitAreaBmp.pixelSnapping = PixelSnapping.ALWAYS;
-		
-		//_hitArea = new Sprite();
-		//_hitArea.addChild(_hitAreaBmp);
-		//addChild(_hitArea);
-		//_hitArea.alpha = 0;
-		
-		_skin.buttonMode = true;
-		//_content.hitArea = _hitArea;
-		
-		_skin.addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
-		_skin.addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
-		_skin.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
-		_skin.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
-		_skin.addEventListener(MouseEvent.CLICK, onMouseClick);
-	}
-	
-	function onMouseClick(e:MouseEvent):Void 
-	{
-		_callback();
-	}
-	
-	function onMouseUp(e:MouseEvent):Void 
-	{
-		if (_image != null) _image.bitmapData = GImageManager.spriteFrames.get(_id)[0].clone();
-	}
-	
-	function onMouseDown(e:MouseEvent):Void 
-	{
-		if (_downSoundId != "")
+		_skin.addChild(_mask);
+
+		setNormal();
+
+		_skin.addEventListener(MouseEvent.MOUSE_MOVE, function(e:MouseEvent):Void
 		{
-			GSoundManager.play(_downSoundId);
-		}
-		
-		if (_image != null) _image.bitmapData = GImageManager.spriteFrames.get(_id)[2].clone();
-	}
-	
-	function onMouseOut(e:MouseEvent):Void 
-	{
-		if (_image != null) _image.bitmapData = GImageManager.spriteFrames.get(_id)[0].clone();
-	}
-	
-	function onMouseOver(e:MouseEvent):Void 
-	{
-		if (_overSoundId != "")
+			if (_hitBmd.getPixel32(Std.int(e.localX), Std.int(e.localY)) != 0)
+			{
+				if (!e.buttonDown) setOver();
+				_skin.buttonMode = true;
+			}
+			else
+			{
+				setNormal();
+				_skin.buttonMode = false;
+			}
+		});
+
+		_skin.addEventListener(MouseEvent.MOUSE_OUT, function(e:MouseEvent):Void
 		{
-			GSoundManager.play(_overSoundId);
-		}
-		
-		if (_image != null) _image.bitmapData = GImageManager.spriteFrames.get(_id)[1].clone();
+				setNormal();
+				_isDown = false;
+				_skin.buttonMode = false;
+		});
+
+		_skin.addEventListener(MouseEvent.MOUSE_DOWN, function(e:MouseEvent):Void
+		{
+			if (_hitBmd.getPixel32(Std.int(e.localX), Std.int(e.localY)) != 0)
+			{
+				_isDown = true;
+				setDown();
+			}
+			else
+			{
+				e.preventDefault();
+			}
+		});
+
+		_skin.addEventListener(MouseEvent.MOUSE_UP, function(e:MouseEvent):Void
+		{
+			if (_hitBmd.getPixel32(Std.int(e.localX), Std.int(e.localY)) != 0 && _isDown)
+			{
+				setOver();
+				_skin.buttonMode = false;
+				if (_callback != null) _callback();
+			}
+			else
+			{
+				e.preventDefault();
+			}
+
+			_isDown = false;
+		});
 	}
 	
-	override public function update():Void 
+	public function onClick(callback:Dynamic):GButton
 	{
-		super.update();
+		_callback = callback;
+		return this;
 	}
-	
-	public function addOverSound(id:String) 
+
+	function setNormal():Void
 	{
-		_overSoundId = id;
+		_image.x = -_frames[0].frame.x;
+		_image.y = -_frames[0].frame.y;
 	}
-	
-	public function addDownSound(id:String) 
+
+	function setOver():Void
 	{
-		_downSoundId = id;
+		_image.x = -_frames[1].frame.x;
+		_image.y = -_frames[1].frame.y;
 	}
-	
-	override public function destroy():Void 
+
+	function setDown():Void
 	{
-		_skin.addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
-		_skin.addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
-		_skin.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
-		_skin.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
-		_skin.addEventListener(MouseEvent.CLICK, onMouseClick);
-		
-		super.destroy();
-		_image.bitmapData.dispose();
-		_image = null;
-	}
-	
-	function playOverSound(e:MouseEvent)
-	{
-		GSoundManager.play(_overSoundId);
-	}
-	
-	function playDownSound(e:MouseEvent)
-	{
-		GSoundManager.play(_downSoundId);
+		_image.x = -_frames[2].frame.x;
+		_image.y = -_frames[2].frame.y;
 	}
 }
-

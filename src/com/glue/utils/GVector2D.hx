@@ -1,14 +1,14 @@
 package com.glue.utils;
 
 @:forward 
-abstract GVector2D(_GVectorBase) from _GVectorBase to _GVectorBase
+abstract GVector2D(__GVectorBase) from __GVectorBase to __GVectorBase
 {
   public function new(x:Float, y:Float)
   {
-    return new _GVectorBase(x, y);
+    return new __GVectorBase(x, y);
   }
 
-	static public function create(x:Float, y:Float)
+  static public function create(x:Float, y:Float)
   {
     return new GVector2D(x, y);
   }
@@ -39,7 +39,7 @@ abstract GVector2D(_GVectorBase) from _GVectorBase to _GVectorBase
   }
 }
 
-@final class _GVectorBase
+@final class __GVectorBase
 {
   public var x:Float;
   public var y:Float;
@@ -48,7 +48,7 @@ abstract GVector2D(_GVectorBase) from _GVectorBase to _GVectorBase
   {
     this.x = x;
     this.y = y;
-	}
+  }
 
   public function magnitude():Float
   {
@@ -56,38 +56,38 @@ abstract GVector2D(_GVectorBase) from _GVectorBase to _GVectorBase
   }
 
   public function normalize():Void
-	{
+  {
     var factor = 1 / magnitude();
     x *= factor;
     y *= factor;
-	}
+  }
 
   public function normalized():GVector2D
-	{
+  {
     var factor = 1 / magnitude();
-		return (new GVector2D(x * factor, y * factor));
-	}
+    return (new GVector2D(x * factor, y * factor));
+  }
 
   public function rotate(angle:Float):GVector2D
-	{
-		var rx:Float = x * Math.cos(angle) - y * Math.sin(angle);
-		var ry:Float = x * Math.sin(angle) + y * Math.cos(angle);
+  {
+    var rx:Float = x * GMath.cos(angle) - y * GMath.sin(angle);
+    var ry:Float = x * GMath.sin(angle) + y * GMath.cos(angle);
 		
-		return new GVector2D(rx, ry);
-	}
+    return new GVector2D(rx, ry);
+  }
 
   public function dot(a:GVector2D):Float
-	{
-		return (a.x * x + a.y + y);
-	}
+  {
+    return (a.x * x + a.y + y);
+  }
 
   public function cross(a:GVector2D):Float
-	{
-		return (x * a.y - y * a.x);
-	}
+  {
+    return (x * a.y - y * a.x);
+  }
 
   public function toString():String
-	{
-		return "[" + x + ", " + y + "]";
-	}
+  {
+    return "[" + x + ", " + y + "]";
+  }
 }

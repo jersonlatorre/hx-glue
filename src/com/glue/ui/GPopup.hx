@@ -9,12 +9,12 @@ import openfl.display.Sprite;
 
 class GPopup 
 {	
-	public var canvas:Sprite;
+	var _canvas:Sprite;
 	
 	public function new() 
 	{
-		canvas = new Sprite();
-		GSceneManager.popupCanvas.addChild(canvas);
+		_canvas = new Sprite();
+		GSceneManager.canvas.addChild(_canvas);
 	}
 	
 	public function update():Void
@@ -23,11 +23,13 @@ class GPopup
 	
 	public function destroy():Void
 	{
-		while (GSceneManager.popupCanvas.numChildren > 0)
+		while (_canvas.numChildren > 0)
 		{
-			GSceneManager.popupCanvas.removeChildAt(0);
+			_canvas.removeChildAt(0);
 		}
+
+		GSceneManager.canvas.removeChild(_canvas);
 		
-		canvas = null;
+		_canvas = null;
 	}
 }

@@ -1,5 +1,8 @@
 package com.glue.data;
 
+import com.glue.ui.GScene;
+import com.glue.ui.GSceneManager;
+import com.glue.display.GImage;
 import haxe.Json;
 import openfl.display.Bitmap;
 import openfl.display.Loader;
@@ -17,7 +20,6 @@ import openfl.net.URLRequest;
 @final class GLoader
 {
 	static var _callback:Dynamic;
-	static var _currentFileIndex:Int = 0;
 	static var _files:Array<Dynamic> = new Array<Dynamic>();
 	static var _loadedFiles:Map<String, Dynamic> = new Map<String, Dynamic>();
 	static public var downloadedFiles = 0;
@@ -25,86 +27,97 @@ import openfl.net.URLRequest;
 	
 	static public function queue(data:Dynamic):Void
 	{
-		totalFiles++;
-		
-		if (data.type == "image")
+		switch (data.type)
 		{
-			var loader:Loader = new Loader();
-			_files.push( { type:data.type, id: data.id, url: data.src, loader:loader } );
-		}
-		else if (data.type == "sprite")
-		{
-			var loader1:Loader = new Loader();
-			_files.push( { type: "image", id: data.id, url: data.src + ".png", loader:loader1 } );
-			
-			var loader2:URLLoader = new URLLoader();
-			_files.push( { type: "data", id: data.id + "_data", url: data.src + ".json", loader:loader2 } );
-		}
-		else
-		{
-			var loader:URLLoader = new URLLoader();
-			_files.push( { type:data.type, id: data.id, url: data.src, loader:loader } );
+			case "image":
+			{
+				var loader:Loader = new Loader();
+				_files.push( { type:data.type, id: data.id, url: data.src, loader:loader } );
+				totalFiles += 1;
+			}
+
+			case "sprite":
+			{
+				var loader1:Loader = new Loader();
+				_files.push( { type: "image", id: data.id, url: data.src + ".png", loader:loader1 } );
+				
+				var loader2:URLLoader = new URLLoader();
+				_files.push( { type: "data", id: data.id + "_data", url: data.src + ".json", loader:loader2 } );
+
+				totalFiles += 2;
+			}
+
+			case "data":
+			{
+				var loader:URLLoader = new URLLoader();
+				_files.push( { type:data.type, id: data.id, url: data.src, loader:loader } );
+				totalFiles += 1;
+			}
 		}
 	}
 	
 	static public function load(callback:Dynamic):Void
 	{
 		_callback = callback;
-		downloadFile();
-	}
-	
-	static function downloadFile(e:Event = null):Void 
-	{	
-		if (_currentFileIndex > 0)
+
+		trace("--- Initialize loading.");
+
+		for (file in _files)
 		{
-			if (_files[_currentFileIndex - 1].type == "image")
+			if (file.type == "image")
 			{
-				_files[_currentFileIndex - 1].loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, downloadFile);
-				_files[_currentFileIndex - 1].loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, onError);
-				var data = _files[_currentFileIndex - 1].loader.content;
-				_loadedFiles.set(_files[_currentFileIndex - 1].id, data);
+				file.loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onDownloadFileComplete(file));
+				file.loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onError(file));
 			}
 			else
 			{
-				_files[_currentFileIndex - 1].loader.removeEventListener(Event.COMPLETE, downloadFile);
-				_files[_currentFileIndex - 1].loader.removeEventListener(IOErrorEvent.IO_ERROR, onError);
-				var data = _files[_currentFileIndex - 1].loader.data;
-				_loadedFiles.set(_files[_currentFileIndex - 1].id, data);
+				file.loader.addEventListener(Event.COMPLETE, onDownloadFileComplete(file));
+				file.loader.addEventListener(IOErrorEvent.IO_ERROR, onError(file));
+			}
+
+			file.loader.load(new URLRequest(file.url));
+		}
+	}
+
+	static function onDownloadFileComplete(file:Dynamic)
+	{
+		return function(e:Event)
+		{
+			trace("downloaded file: " + file.id);
+
+			if (file.type == "image")
+			{
+				_loadedFiles.set(file.id, file.loader.content);
+				file.loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, onDownloadFileComplete);
+				
+				// preload images
+				var _img = new GImage(file.id);
+				_img.addToLayer(Glue.cacheCanvas);
+			}
+			else
+			{
+				_loadedFiles.set(file.id, file.loader.data);
+				file.loader.removeEventListener(Event.COMPLETE, onDownloadFileComplete);
+			}
+
+			downloadedFiles++;
+			
+			if (downloadedFiles == totalFiles)
+			{
+				trace("--- Loading complete.");
+				_callback();
 			}
 		}
-		
-		if (_currentFileIndex == _files.length)
-		{
-			onLoadComplete();
-			return;
-		}
-		
-		trace("file: " + _files[_currentFileIndex].id);
-		
-		if (_files[_currentFileIndex].type == "image")
-		{
-			_files[_currentFileIndex].loader.contentLoaderInfo.addEventListener(Event.COMPLETE, downloadFile);
-			_files[_currentFileIndex].loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onError);
-		}
-		else
-		{
-			_files[_currentFileIndex].loader.addEventListener(Event.COMPLETE, downloadFile);
-			_files[_currentFileIndex].loader.addEventListener(IOErrorEvent.IO_ERROR, onError);
-		}
-		
-		_files[_currentFileIndex].loader.load(new URLRequest(_files[_currentFileIndex].url));
-		
-		
-		GLoader.downloadedFiles++;
-		
-		_currentFileIndex++;
 	}
 	
-	static function onError(e:IOErrorEvent)
+	static function onError(file:Dynamic)
 	{
-		trace("Error Downloading " + _files[_currentFileIndex - 1].id + " " + e);
+		return function(e:IOErrorEvent)
+		{
+			trace("Error Downloading " + file.id);
+		}
 	}
-	
+
 	static function onLoadComplete():Void 
 	{
 		_callback();
@@ -114,22 +127,22 @@ import openfl.net.URLRequest;
 	{
 		if (!_loadedFiles.exists(id))
 		{
-			trace("Image with the id: " + id + " not found.");
+			throw "--- File " + id + " not found.";
 			return null;
 		}
 		else
 		{
+			// var bitmap:Bitmap = _loadedFiles.get(id);
 			// var bitmap:Bitmap = new Bitmap(_loadedFiles.get(id).bitmapData.clone());
 			var bitmap:Bitmap = new Bitmap(_loadedFiles.get(id).bitmapData);
-			bitmap.smoothing = true;
+			// bitmap.cacheAsBitmap = true;
+			// bitmap.smoothing = true;
 			return bitmap;
 		}
 	}
 	
-	static public function getSpriteData(id:String):Dynamic
+	static public function getJson(id:String):Dynamic
 	{
-		id += "_data";
-		
 		if (!_loadedFiles.exists(id))
 		{
 			trace("Data with the id: " + id + " not found.");
@@ -140,7 +153,6 @@ import openfl.net.URLRequest;
 			var data:Dynamic = _loadedFiles.get(id);
 			try
 			{
-				//var data:String = data.toString();
 				return Json.parse(data);
 			}
 			catch (e:Error)
@@ -150,53 +162,6 @@ import openfl.net.URLRequest;
 			}
 		}
 	}
-	
-	//static public function getJson(id:String):Dynamic
-	//{
-		//if (GEngine.isEmbedded)
-		//{
-			//if(_embeddedFiles.exists(id))
-			//{
-				//try
-				//{
-					//return Json.parse(_embeddedFiles.get(id));
-				//}
-				//catch (e:Error)
-				//{
-					//trace(e.message);
-				//}
-			//}
-			//else
-			//{
-				//throw "Data id: " + id + " not found";
-			//}
-			//
-			//return null;
-		//}
-		//else
-		//{
-			//if(_loadedFiles.exists(id))
-			//{
-				//var data:Dynamic = _loadedFiles.get(id);
-				//
-				//try
-				//{
-					//var data:String = data.toString();
-					//return Json.parse(data);
-				//}
-				//catch (e:Error)
-				//{
-					//trace("La codificación JSON no está en UTF8");
-				//}
-			//}
-			//else
-			//{
-				//throw "Data id: " + id + " not found";
-			//}
-			//
-			//return null;
-		//}
-	//}
 	
 	//static public function getText(id:String):Dynamic
 	//{

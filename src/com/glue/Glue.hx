@@ -1,5 +1,6 @@
 package com.glue;
 
+import haxe.Timer;
 import com.glue.data.GLoader;
 import com.glue.input.GKeyboard;
 import com.glue.input.GMouse;
@@ -18,6 +19,7 @@ import com.glue.ui.GPreloader;
 	static public var width:Int;
 	static public var height:Int;
 	static public var canvas:Sprite;
+	static public var cacheCanvas:Sprite;
 	
 	static public function start(data:Dynamic)
 	{
@@ -26,6 +28,11 @@ import com.glue.ui.GPreloader;
 		Glue.height = data.height;
 		Glue.mainScene = data.mainScene;
 		Glue.stage.addEventListener(Event.ENTER_FRAME, onUpdate);
+
+		cacheCanvas = new Sprite();
+		cacheCanvas.x = Math.NEGATIVE_INFINITY;
+		cacheCanvas.alpha = 0.0001;
+		Glue.stage.addChild(cacheCanvas);
 
 		canvas = new Sprite();
 		Glue.stage.addChild(canvas);
@@ -49,15 +56,25 @@ import com.glue.ui.GPreloader;
 
 	static function onAssetsDownloaded() 
 	{
+		#if html5
+		// prudential time to preload all files for html5
+		var timer = new Timer(2500);
+		timer.run = function()
+		{
+			GSceneManager.gotoScene(Glue.mainScene);
+			timer.stop();
+		};
+		#else
 		GSceneManager.gotoScene(Glue.mainScene);
+		#end
 	}
 	
 	static public function onUpdate(e:Event):Void
 	{
+		GTime.update();	
 		GMouse.update();
 		GSceneManager.update();
 		GMouse.clear();
-		GTime.update();
 	}
 	
 	static public function setScale(x:Float, y:Float)

@@ -14,21 +14,26 @@ import motion.easing.Quad;
 class GScene 
 {
 	var _canvas:Sprite;
-	var _entitiesCanvas:Sprite;
 	var _effectCanvas:Sprite;
 	var _layers:Map<String, Sprite> = new Map<String, Sprite>();
 	var _entities:Array<GEntity> = new Array<GEntity>();
 	var _mask:Sprite;
+
+	var _sceneCanvas:Sprite;
+	var _popupCanvas:Sprite;
 	
 	public var camera:GCamera;
 	
 	public function new()
 	{
 		_canvas = new Sprite();
-		GSceneManager.sceneCanvas.addChild(_canvas);
+		GSceneManager.canvas.addChild(_canvas);
 		
-		_entitiesCanvas = new Sprite();
-		_canvas.addChild(_entitiesCanvas);
+		_sceneCanvas = new Sprite();
+		_canvas.addChild(_sceneCanvas);
+
+		_popupCanvas = new Sprite();
+		_canvas.addChild(_popupCanvas);
 		
 		_effectCanvas = new Sprite();
 		_canvas.addChild(_effectCanvas);
@@ -37,6 +42,8 @@ class GScene
 		_canvas.addChild(_mask);
 		
 		addLayer("default");
+
+		Glue.stage.focus = _sceneCanvas;
 		
 		camera = new GCamera();
 		
@@ -56,7 +63,7 @@ class GScene
 		if (!_layers.exists(layerName))
 		{
 			var layer:Sprite = new Sprite();
-			_entitiesCanvas.addChild(layer);
+			_sceneCanvas.addChild(layer);
 			_layers.set(layerName, layer);
 		}
 		else
@@ -103,13 +110,13 @@ class GScene
 		camera.update();
 		
 		// canvas
-		_entitiesCanvas.x = -camera.position.x + Glue.width / 2;
-		_entitiesCanvas.y = -camera.position.y + Glue.height / 2;
+		_sceneCanvas.x = -camera.position.x + Glue.width / 2;
+		_sceneCanvas.y = -camera.position.y + Glue.height / 2;
 		
 		
 		// world coordinates
-		//mouseX = GMouse.position.x / GEngine.stage.scaleX - _entitiesCanvas.x;
-		//mouseY = GMouse.position.y / GEngine.stage.scaleY - _entitiesCanvas.y;
+		//mouseX = GMouse.position.x / GEngine.stage.scaleX - _sceneCanvas.x;
+		//mouseY = GMouse.position.y / GEngine.stage.scaleY - _sceneCanvas.y;
 		
 		// entities
 		var i:Int = 0;
@@ -139,7 +146,7 @@ class GScene
 		}
 	}
 	
-	public function fadeIn(duration:Float = 0.5)
+	public function fadeIn(duration:Float = 0.35)
 	{
 		var fade:Sprite = new Sprite();
 		fade.graphics.beginFill(0);
@@ -151,7 +158,7 @@ class GScene
 		
 		_effectCanvas.addChild(fade);
 		
-		Actuate.tween(fade, duration, { alpha: 0 } ).ease(Quad.easeIn).onComplete(function()
+		Actuate.tween(fade, duration, { alpha: 0 } ).ease(Quad.easeInOut).onComplete(function()
 		{
 			_effectCanvas.removeChild(fade);
 		});
@@ -159,17 +166,18 @@ class GScene
 	
 	public function destroy():Void
 	{
-		while (GSceneManager.sceneCanvas.numChildren > 0)
+		while (_sceneCanvas.numChildren > 0)
 		{
-			GSceneManager.sceneCanvas.removeChildAt(0);
+			_sceneCanvas.removeChildAt(0);
 		}
-		
-		while (_entitiesCanvas.numChildren > 0)
+
+		while (_popupCanvas.numChildren > 0)
 		{
-			_entitiesCanvas.removeChildAt(0);
+			_popupCanvas.removeChildAt(0);
 		}
+
+		GSceneManager.canvas.removeChild(_canvas);
 		
-		var i:Int = 0;
 		while (_entities.length > 0)
 		{
 			_entities[0].destroy();

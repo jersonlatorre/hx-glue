@@ -7,24 +7,40 @@ HaxeGlue - v0.7:
     ✔ @low@today GLoader debería cargar los assets desde un archivo externo? @done (3/23/2017, 2:32:59 AM)
     ✔ @low@today Verificar clases @final. @done (3/23/2017, 1:40:10 AM)
     ✔ @low Cambiar GEngine por Glue. @done (3/23/2017, 1:48:10 AM)
-    ✔ @low Poder hacer llamadas en cadena para Entity, GSprite y GImage. @done (3/23/2017, 1:30:48 AM)
+    ✔ @low Poder hacer llamadas en cadena para GEntity, GSprite y GImage. @done (3/23/2017, 1:30:48 AM)
+  
+    ☐ Métodos para ordenar el z-index de las entidades.
+    ✔ @high@today Terminar GButton. @done (3/25/2017, 2:10:16 AM)
+    ✔ @high@today Hacer hit con transparencia para los botones. @done (3/25/2017, 2:10:22 AM)
+    ☐ Hacerle shake a la cámara.
+    ☐ Precaché de las imágenes a utilizar en el juego.
+    ✔ Revisar que fadein y fadeout de GScene sigue funcionando. @done (3/26/2017, 5:57:35 AM)
+    ☐ Cambiarle de nombre a las clases para que sean más "humanas".
+    ✔ Verificar todos los destroys. @done (3/26/2017, 5:57:43 AM)
+    ☐ Quitar dependencia de Actuate.
 
   Bugs:
-    ☐ @high setAnchor en GMultipleSprite se tiene que volver a poner, encontrar una manera más elegante de arreglar eso.
-    ☐ @high onEndAnimation tiene que llamarse antes del setAnimation.
-    ☐ @high Terminar GButton.
-    ✘ @low Crear getters and setters para las propiedades dependiendo del performance. @cancelled (3/23/2017, 1:54:37 AM)
+    ☐ @low Resolver problema de llamada en cadena y el intellisense.
+    ✔ @low Crear getters and setters para las propiedades dependiendo del performance. @done (3/23/2017, 3:18:58 AM)
 
 
 HaxeGlue - v0.8:
 
   Features:
     ☐ @critical Integrar Nape para físicas AABB.
-    ☐ Poder manejar el audio por canales.
+      ☐ Todo es un elemento físico dormido por defecto.
+      ☐ onFloor(), onCeil()
+      ☐ Activar y desactivar colisión.
+      ☐ Colisiones por grupos.
+      ☐ onCollisionEnter(), onCollision(), onCollisionExit()
+    ☐ @critical Crear GSound y poder manejar el audio por canales.
+    ☐ @high Poder ponerle sonidos a los botones.
+    ☐ Poder crear mapas.
+    ☐ @low@today Mecanismo para controlar al flujo del juego (pause, unpause).
+    ☐ Permitir prototipar sin tener gráficos (paquete prototype que contiene PlatformCharacter, Box, etc).
     ☐ Arreglar el sistema de updates.
-    ☐ @low Mecanismo para controlar al flujo del juego (pause, unpause).
+    ☐ Implementar el uso de bitmapfonts.
     ☐ Reescribir GKeyboard para soportar acciones.
-    ☐ Agregar doubleclick a GMouse.
 
 HaxeGlue - v0.9:
 
@@ -36,6 +52,10 @@ HaxeGlue - v0.9:
     ☐ Se podrá hacer que los updates funcionen como en Unity? Es decir, crear solo init y update.
     ☐ @low Crear documentación.
 
+  Bugs:
+    ☐ @high setAnchor() en GSprite se tiene que volver a poner, para poder cambiar de ancla en diferentes animaciones.
+    ☐ @high onEndAnimation() tiene que llamarse antes de play(). (Replicar!)
+
 
 
 HaxeGlue - v1.0:
@@ -46,7 +66,7 @@ HaxeGlue - v1.0:
     ☐ @low Sistema UI.
     ☐ Permitir escalar el canvas principal.
     ☐ Motor de isometría.
-    ☐ @low Sistema de partículas.
+    ☐ @low Sistema de partículas con presets (humo, fuego, polvo, etc).
     ☐ @low Los sprites se deberían poder crear de muchas maneras? dependiendo de la herramienta que se use(Sprite.createFromFlash(), Sprite.createFromSpine()).
 
 

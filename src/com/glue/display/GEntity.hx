@@ -22,8 +22,6 @@ import openfl.display.Sprite;
 	public var height:Float = 0;
 	public var isDestroyed:Bool = false;
 	
-	var isPhysics:Bool = false;
-
 	public var position:GVector2D;
 	public var velocity:GVector2D;
 	public var acceleration:GVector2D;
@@ -39,9 +37,9 @@ import openfl.display.Sprite;
 		_anchor = new GVector2D(0, 0);
 	}
 
-	public function addTo(scene:GScene):Dynamic
+	public function addTo(scene:GScene, ?layer:String):Dynamic
 	{
-		scene.addEntity(this);
+		scene.addEntity(this, layer);
 		return this;
 	}
 	
@@ -94,11 +92,11 @@ import openfl.display.Sprite;
 	
 	public function setAlpha(alpha:Float):Dynamic
 	{
+		this._skin.alpha = alpha;
 		this._alpha = alpha;
 		return this;
 	}
 	
-	@:access(GScene, GMultipleSprite)
 	public function addToLayer(layer:Sprite):Dynamic
 	{
 		layer.addChild(_canvas);
@@ -118,17 +116,8 @@ import openfl.display.Sprite;
 	
 	public function update():Void 
 	{
-		if (isPhysics)
-		{
-			_canvas.x = position.x;
-			_canvas.y = position.y;
-		}
-		else
-		{
-			_canvas.x = position.x;
-			_canvas.y = position.y;
-		}
-		
+		_canvas.x = position.x;
+		_canvas.y = position.y;
 		_canvas.scaleX = _scaleX;
 		_canvas.scaleY = _scaleY;
 		_canvas.alpha = _alpha;

@@ -89,18 +89,18 @@ import com.glue.utils.GVector2D;
 		{
 			case STATE_FOLLOW:
 			{
-				position.x += (_target.position.x - position.x) * _delayFactor;
-				position.y += (_target.position.y - position.y) * _delayFactor;
+				position.x += Std.int((_target.position.x - position.x) * _delayFactor);
+				position.y += Std.int((_target.position.y - position.y) * _delayFactor);
 			}
 			
 			case STATE_FOLLOW_X:
 			{
-				position.x += (_target.position.x - position.x) * _delayFactor;
+				position.x += Std.int((_target.position.x - position.x) * _delayFactor);
 			}
 			
 			case STATE_FOLLOW_Y:
 			{
-				position.y += (_target.position.y - position.y) * _delayFactor;
+				position.y += Std.int((_target.position.y - position.y) * _delayFactor);
 			}
 			
 			case STATE_NONE:
