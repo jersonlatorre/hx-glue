@@ -13,33 +13,48 @@ abstract GVector2D(__GVectorBase) from __GVectorBase to __GVectorBase
     return new GVector2D(x, y);
   }
 
-  @:op(A + B) static public function add(a:GVector2D, b:GVector2D):GVector2D
+  static public function lerp(v1:GVector2D, v2:GVector2D, t:Float):GVector2D
   {
-    return new GVector2D(a.x + b.x, a.y + b.y);
+    return v1 + (v2 - v1) * t;
   }
 
-  @:op(A - B) static public function sub(a:GVector2D, b:GVector2D):GVector2D
+  static public function distance(v1:GVector2D, v2:GVector2D)
   {
-    return new GVector2D(a.x - b.x, a.y - b.y);
+    return (v1 - v2).magnitude();
   }
 
-  @:op(A * B) static public function scaleleft(k:Float, a:GVector2D):GVector2D
+  static public function distanceSq(v1:GVector2D, v2:GVector2D)
   {
-    return new GVector2D(k * a.x, k * a.y);
+    return (v1 - v2).magnitudeSq();
   }
 
-  @:op(A * B) static public function scaleright(a:GVector2D, k:Float):GVector2D
+  @:op(A + B) static public function add(v1:GVector2D, v2:GVector2D):GVector2D
   {
-    return new GVector2D(k * a.x, k * a.y);
+    return new GVector2D(v1.x + v2.x, v1.y + v2.y);
   }
 
-  @:op(A / B) static public function div(a:GVector2D, k:Float):GVector2D
+  @:op(A - B) static public function sub(v1:GVector2D, v2:GVector2D):GVector2D
   {
-    return new GVector2D(a.x / k, a.y / k);
+    return new GVector2D(v1.x - v2.x, v1.y - v2.y);
+  }
+
+  @:op(A * B) static public function scaleleft(k:Float, v:GVector2D):GVector2D
+  {
+    return new GVector2D(k * v.x, k * v.y);
+  }
+
+  @:op(A * B) static public function scaleright(v:GVector2D, k:Float):GVector2D
+  {
+    return new GVector2D(k * v.x, k * v.y);
+  }
+
+  @:op(A / B) static public function div(v:GVector2D, k:Float):GVector2D
+  {
+    return new GVector2D(v.x / k, v.y / k);
   }
 }
 
-@final class __GVectorBasehttps://www.codeproject.com/Articles/3386/A-Java-Style-Vector-Class-in-C
+@final class __GVectorBasehttps
 {
   public var x:Float;
   public var y:Float;
@@ -50,22 +65,52 @@ abstract GVector2D(__GVectorBase) from __GVectorBase to __GVectorBase
     this.y = y;
   }
 
+  public function clone():GVector2D
+  {
+    return GVector2D.create(x, y);
+  }
+
+  public function scale(factor:Float):GVector2D
+  {
+    x *= factor;
+    y *= factor;
+    return this;
+  }
+
   public function magnitude():Float
   {
     return Math.sqrt(x * x + y * y);
   }
 
-  public function normalize():Void
+  public function magnitudeSq():Float
+  {
+    return (x * x + y * y);
+  }
+
+  public function normalize():GVector2D
   {
     var factor = 1 / magnitude();
     x *= factor;
     y *= factor;
+    return this;
   }
 
   public function normalized():GVector2D
   {
     var factor = 1 / magnitude();
     return (new GVector2D(x * factor, y * factor));
+  }
+
+  public function truncate(maxMagnitude:Float):GVector2D
+  {
+    if (magnitude() > maxMagnitude) normalize().scale(maxMagnitude);
+    return this;
+  }
+
+  public function truncated(maxMagnitude:Float):GVector2D
+  {
+    if (magnitude() > maxMagnitude) return normalized().scale(maxMagnitude)
+    else return clone();
   }
   
   public function rotate(angle:Float):GVector2D
@@ -74,11 +119,6 @@ abstract GVector2D(__GVectorBase) from __GVectorBase to __GVectorBase
     var ry:Float = x * GMath.sin(angle) + y * GMath.cos(angle);
 		
     return new GVector2D(rx, ry);
-  }
-
-  public function distance(v1:GVector2D, v2:GVector2D):GVector2D
-  {
-    return (v1 - v2).magnitude;
   }
 
   public function dot(a:GVector2D):Float
