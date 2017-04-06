@@ -1,8 +1,8 @@
 package;
 
+import example1.Example1;
 import glue.data.GLoader;
 import glue.Glue;
-import plug.ui.SceneMenu;
 import openfl.display.Sprite;
 
 /**
@@ -17,17 +17,14 @@ class Main extends Sprite
 		super();
 
 		GLoader.queue({ type:"image", src:"img/background_game.png", id:"background_game"});
-		GLoader.queue({ type:"image", src:"img/background_game2.png", id:"background_game2"});
 		GLoader.queue({ type:"image", src:"img/floor.png", id:"floor"});
-		GLoader.queue({ type:"image", src:"img/floor2.png", id:"floor2"});
 		GLoader.queue({ type:"sprite", src:"img/player_idle", id:"player_idle"});
-		GLoader.queue({ type:"sprite", src:"img/button", id:"button"});
 
 		Glue.start({
 			stage: stage,
 			width: 1080,
 			height: 1920,
-			mainScene: SceneMenu
+			mainScene: Example1
 		});
 	}
 }
