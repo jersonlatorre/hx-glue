@@ -1,4 +1,4 @@
-package plug.entities;
+package example2.entities;
 
 import glue.Glue;
 import glue.display.GSprite;

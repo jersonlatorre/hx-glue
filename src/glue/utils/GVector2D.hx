@@ -67,7 +67,7 @@ abstract GVector2D(__GVectorBase) from __GVectorBase to __GVectorBase
     var factor = 1 / magnitude();
     return (new GVector2D(x * factor, y * factor));
   }
-
+  
   public function rotate(angle:Float):GVector2D
   {
     var rx:Float = x * GMath.cos(angle) - y * GMath.sin(angle);

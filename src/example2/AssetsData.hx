@@ -1,4 +1,4 @@
-package plug;
+package example2;
 
 /**
  * ...
