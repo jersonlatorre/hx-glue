@@ -23,8 +23,6 @@ import openfl.display.Sprite;
 	public var isDestroyed:Bool = false;
 	
 	public var position:GVector2D;
-	public var velocity:GVector2D;
-	public var acceleration:GVector2D;
 	
 	public function new():Void
 	{
@@ -32,8 +30,6 @@ import openfl.display.Sprite;
 		_skin = new Sprite();
 		_canvas.addChild(_skin);
 		position = new GVector2D(0, 0);
-		velocity = new GVector2D(0, 0);
-		acceleration = new GVector2D(0, 0);
 		_anchor = new GVector2D(0, 0);
 	}
 
