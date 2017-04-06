@@ -1,8 +1,8 @@
 package;
 
-import com.glue.data.GLoader;
-import com.glue.Glue;
-import com.plug.ui.SceneMenu;
+import glue.data.GLoader;
+import glue.Glue;
+import plug.ui.SceneMenu;
 import openfl.display.Sprite;
 
 /**
