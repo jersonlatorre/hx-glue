@@ -16,12 +16,7 @@
 	<source path="src" />
 	<haxelib name="openfl" />
 	<haxelib name="actuate" />
-	<!--<haxelib name="nape" />-->
 	
 	<!-- assets -->
-	<!--<icon path="assets/icon.png" />-->
 	<assets path="assets/img" rename="img" />
-	
-	<!-- optimize output
-	<haxeflag name="-dce full" /> -->
 </project>
