@@ -1,6 +1,6 @@
 package glue;
 
-import haxe.Timer;
+import openfl.Lib;
 import glue.data.GLoader;
 import glue.input.GKeyboard;
 import glue.input.GMouse;
@@ -16,19 +16,22 @@ import glue.ui.GPreloader;
 	static public var stage:Stage;
 	static public var mainScene:Dynamic;
 	static public var customPreloader:Dynamic;
-	static public var width:Int;
-	static public var height:Int;
+	static public var width:Int = 800;
+	static public var height:Int = 600;
 	static public var canvas:Sprite;
 	static public var cacheCanvas:Sprite;
+	static public var isDebug:Bool = false;
 	
 	static public function start(data:Dynamic)
 	{
-		Glue.stage = data.stage;
-		Glue.width = data.width;
-		Glue.height = data.height;
+		Glue.stage = Lib.application.window.stage;
+		Glue.width = Lib.application.window.width;
+		Glue.height = Lib.application.window.height;
+		
 		Glue.mainScene = data.mainScene;
+		Glue.isDebug = data.isDebug;
 		Glue.stage.addEventListener(Event.ENTER_FRAME, onUpdate);
-
+			
 		cacheCanvas = new Sprite();
 		cacheCanvas.x = Math.NEGATIVE_INFINITY;
 		cacheCanvas.alpha = 0.0001;
@@ -41,6 +44,12 @@ import glue.ui.GPreloader;
 		GMouse.init();
 		GKeyboard.init();
 		GSceneManager.init();
+
+		if (data.assets == null)
+		{
+			GSceneManager.gotoScene(Glue.mainScene);
+			return;
+		}
 		
 		if (customPreloader != null)
 		{
@@ -51,22 +60,20 @@ import glue.ui.GPreloader;
 			GSceneManager.gotoScene(GPreloader);
 		}
 		
-		GLoader.load(onAssetsDownloaded);
+		if (data.assets != null)
+		{
+			for (i in 0...data.assets.length)
+			{
+				GLoader.load(data.assets[i]);
+			}
+
+			GLoader.startDownload(onAssetsDownloaded);
+		}
 	}
 
 	static function onAssetsDownloaded() 
 	{
-		#if html5
-		// prudential time to preload all files for html5
-		var timer = new Timer(1000);
-		timer.run = function()
-		{
-			GSceneManager.gotoScene(Glue.mainScene);
-			timer.stop();
-		};
-		#else
 		GSceneManager.gotoScene(Glue.mainScene);
-		#end
 	}
 	
 	static public function onUpdate(e:Event):Void
