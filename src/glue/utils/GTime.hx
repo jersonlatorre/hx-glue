@@ -11,7 +11,6 @@ import haxe.Timer;
 @final class GTime 
 {
 	static public var deltaTime:Float;
-	static public var factor:Float;
 	static public var timelapse:Float;
 	static public var framerate:Float;
 	
@@ -21,8 +20,7 @@ import haxe.Timer;
 	
 	static public function init():Void 
 	{
-		// timelapse = 0;
-		// framerate = Glue.stage.frameRate;
+		deltaTime = 0;
 		_now = _last = Timer.stamp();
 		
 	}
