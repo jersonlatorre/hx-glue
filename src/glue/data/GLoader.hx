@@ -1,7 +1,5 @@
 package glue.data;
 
-import glue.ui.GScene;
-import glue.ui.GSceneManager;
 import glue.display.GImage;
 import haxe.Json;
 import openfl.display.Bitmap;
@@ -62,7 +60,6 @@ import openfl.net.URLRequest;
 
 		if (totalFiles == 0)
 		{
-			trace("--- No files to download.");
 			_callback();
 			return;
 		}
@@ -139,11 +136,9 @@ import openfl.net.URLRequest;
 		}
 		else
 		{
-			// var bitmap:Bitmap = _loadedFiles.get(id);
-			// var bitmap:Bitmap = new Bitmap(_loadedFiles.get(id).bitmapData.clone());
 			var bitmap:Bitmap = new Bitmap(_loadedFiles.get(id).bitmapData);
-			// bitmap.cacheAsBitmap = true;
-			// bitmap.smoothing = true;
+			bitmap.cacheAsBitmap = true;
+			bitmap.smoothing = true;
 			return bitmap;
 		}
 	}
@@ -169,44 +164,4 @@ import openfl.net.URLRequest;
 			}
 		}
 	}
-	
-	//static public function getText(id:String):Dynamic
-	//{
-		//if (GEngine.isEmbedded)
-		//{
-			//if(_embeddedFiles.exists(id))
-			//{
-				//return Std.string(_embeddedFiles.get(id));
-			//}
-			//else
-			//{
-				//throw "Data id: " + id + " not found";
-			//}
-			//
-			//return null;
-		//}
-		//else
-		//{
-			//if(_loadedFiles.exists(id))
-			//{
-				//var data:Dynamic = _loadedFiles.get(id);
-				//
-				//try
-				//{
-					//var data:String = data.toString();
-					//return data;
-				//}
-				//catch (e:Error)
-				//{
-					//trace("La codificación JSON no está en UTF8");
-				//}
-			//}
-			//else
-			//{
-				//throw "Data id: " + id + " not found";
-			//}
-			//
-			//return null;
-		//}
-	//}
 }
