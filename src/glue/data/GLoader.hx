@@ -22,8 +22,9 @@ import openfl.net.URLRequest;
 	static var _loadedFiles:Map<String, Dynamic> = new Map<String, Dynamic>();
 	static public var downloadedFiles = 0;
 	static public var totalFiles = 0;
+	static public var isDownloading = false;
 	
-	static public function queue(data:Dynamic):Void
+	static public function load(data:Dynamic):Void
 	{
 		switch (data.type)
 		{
@@ -34,12 +35,13 @@ import openfl.net.URLRequest;
 				totalFiles += 1;
 			}
 
-			case "sprite":
+			case "spritesheet":
 			{
 				var loader1:Loader = new Loader();
-				_files.push( { type: "image", id: data.id, url: data.src + ".png", loader:loader1 } );
+				_files.push( { type: "image", id: data.id, url: data.src, loader:loader1 } );
 				
 				var loader2:URLLoader = new URLLoader();
+				data.src = data.src.substr(0, data.src.lastIndexOf('.'));
 				_files.push( { type: "data", id: data.id + "_data", url: data.src + ".json", loader:loader2 } );
 
 				totalFiles += 2;
@@ -54,20 +56,25 @@ import openfl.net.URLRequest;
 		}
 	}
 	
-	static public function load(callback:Dynamic):Void
+	@:allow(glue.ui.GScene, glue.Glue)
+	static function startDownload(callback:Dynamic):Void
 	{
+		isDownloading = true;
 		_callback = callback;
 
 		if (totalFiles == 0)
 		{
-			_callback();
+			if (_callback != null) _callback();
+			isDownloading = false;
 			return;
 		}
 
-		trace("--- Initialize loading.");
+		trace("Initialize loading...");
 
 		for (file in _files)
 		{
+			if (_loadedFiles.exists(file.id)) continue;
+			
 			if (file.type == "image")
 			{
 				file.loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onDownloadFileComplete(file));
@@ -87,7 +94,7 @@ import openfl.net.URLRequest;
 	{
 		return function(e:Event)
 		{
-			trace("downloaded file: " + file.id);
+			trace("--- file: " + file.id);
 
 			if (file.type == "image")
 			{
@@ -108,8 +115,11 @@ import openfl.net.URLRequest;
 			
 			if (downloadedFiles == totalFiles)
 			{
-				trace("--- Loading complete.");
-				_callback();
+				downloadedFiles = 0;
+				totalFiles = 0;
+				isDownloading = false;
+				trace("Loading complete.\n");
+				if (_callback != null) _callback();
 			}
 		}
 	}
@@ -131,7 +141,7 @@ import openfl.net.URLRequest;
 	{
 		if (!_loadedFiles.exists(id))
 		{
-			throw "--- File " + id + " not found.";
+			throw "-- File " + id + " not found.";
 			return null;
 		}
 		else
