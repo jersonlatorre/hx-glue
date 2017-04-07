@@ -58,7 +58,7 @@ import glue.ui.GPreloader;
 	{
 		#if html5
 		// prudential time to preload all files for html5
-		var timer = new Timer(2500);
+		var timer = new Timer(1000);
 		timer.run = function()
 		{
 			GSceneManager.gotoScene(Glue.mainScene);
