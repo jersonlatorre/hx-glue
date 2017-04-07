@@ -26,6 +26,12 @@ class GScene
 	
 	public function new()
 	{
+		// #if debug
+		var a:Array<String> = cast(Type.getClassName(Type.getClass(this)), String).split(".");
+		var className:String = a[a.length - 1];
+		trace("--- Scene: " + className);
+		// #end
+
 		_canvas = new Sprite();
 		GSceneManager.canvas.addChild(_canvas);
 		
