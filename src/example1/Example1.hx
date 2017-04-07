@@ -1,5 +1,6 @@
 package example1;
 
+import glue.data.GLoader;
 import glue.utils.GVector2D;
 import glue.utils.GTime;
 import glue.Glue;
@@ -22,13 +23,21 @@ class Example1 extends GScene
 	var _velocity:GVector2D = GVector2D.create(0, 0);
 	var _gravity:GVector2D = GVector2D.create(0, 800);
 	var _jumpImpulse:GVector2D = GVector2D.create(0, -1000);
-	
-	public function new()
-	{
-		super();
 
-		addLayer("world");
-		addLayer("ui");
+	override public function load():Void
+	{
+		/**
+		 *  Load scene assets.
+		 */
+		// GLoader.load({ type:"image", src:"img/background_game.png", id:"background_game" });
+		GLoader.load({ type:"image", src:"img/floor.png", id:"floor" });
+		GLoader.load({ type:"spritesheet", src:"img/player_idle.png", id:"player_idle" });
+	}
+
+	override public function init():Void
+	{
+			addLayer("world");
+			addLayer("ui");
 
 		_background = new GImage("background_game")
 			.setAnchor(0, 0).addTo(this, "world");
@@ -43,6 +52,8 @@ class Example1 extends GScene
 			.play()
 			.setPosition(200, 200)
 			.addTo(this, "world");
+
+		fadeIn();
 	}
 	
 	override public function update():Void
