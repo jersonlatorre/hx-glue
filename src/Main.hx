@@ -1,7 +1,6 @@
 package;
 
 import example1.Example1;
-import glue.data.GLoader;
 import glue.Glue;
 import openfl.display.Sprite;
 
@@ -16,15 +15,19 @@ class Main extends Sprite
 	{
 		super();
 
-		GLoader.queue({ type:"image", src:"img/background_game.png", id:"background_game"});
-		GLoader.queue({ type:"image", src:"img/floor.png", id:"floor"});
-		GLoader.queue({ type:"sprite", src:"img/player_idle", id:"player_idle"});
+		/**
+		 * All assets in one loading process. 
+		 */
+		var assets:Array<Any> = [
+			{ type:"image", src:"img/background_game.png", id:"background_game" }
+			// { type:"image", src:"img/floor.png", id:"floor" },
+			// { type:"sprite", src:"img/player_idle", id:"player_idle" }
+		];
 
 		Glue.start({
-			stage: stage,
-			width: 1080,
-			height: 1920,
-			mainScene: Example1
+			mainScene: Example1,
+			assets: assets,
+			isDebug: true
 		});
 	}
 }
