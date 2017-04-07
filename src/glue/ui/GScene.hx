@@ -1,5 +1,6 @@
 package glue.ui;
 
+import glue.data.GLoader;
 import glue.display.GEntity;
 import glue.game.GCamera;
 import openfl.display.Sprite;
@@ -26,11 +27,9 @@ class GScene
 	
 	public function new()
 	{
-		// #if debug
 		var a:Array<String> = cast(Type.getClassName(Type.getClass(this)), String).split(".");
 		var className:String = a[a.length - 1];
-		trace("--- Scene: " + className);
-		// #end
+		trace("Scene: " + className);
 
 		_canvas = new Sprite();
 		GSceneManager.canvas.addChild(_canvas);
@@ -62,7 +61,16 @@ class GScene
 		_mask.mouseEnabled = false;
 		_mask.doubleClickEnabled = false;
 		_canvas.mask = _mask;
+
+		load();
+		GLoader.startDownload(init);
 	}
+
+	public function load():Void { }
+
+	public function init():Void	{	}
+
+	public function update():Void {	}
 	
 	public function addLayer(layerName:String):Void
 	{
@@ -110,15 +118,17 @@ class GScene
 		}
 	}
 	
-	public function update():Void
+	@:allow(glue.ui.GSceneManager)
+	function superUpdate():Void
 	{
+		if (!GLoader.isDownloading) update();
+
 		// camera
 		camera.update();
 		
 		// canvas
 		_sceneCanvas.x = -camera.position.x + Glue.width / 2;
 		_sceneCanvas.y = -camera.position.y + Glue.height / 2;
-		
 		
 		// world coordinates
 		//mouseX = GMouse.position.x / GEngine.stage.scaleX - _sceneCanvas.x;
