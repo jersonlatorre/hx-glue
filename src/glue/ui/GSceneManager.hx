@@ -34,7 +34,7 @@ import openfl.display.Sprite;
 		}
 		
 		currentScene = Type.createInstance(screenClass, []);
-		currentScene.update();
+		currentScene.superUpdate();
 		
 		Glue.stage.stageFocusRect = false;
 	}
@@ -53,7 +53,7 @@ import openfl.display.Sprite;
 		}
 		
 		currentPopup = Type.createInstance(popupClass, []);
-		currentPopup.update();
+		currentPopup.superUpdate();
 	}
 	
 	static public function removePopup():Void
@@ -69,12 +69,12 @@ import openfl.display.Sprite;
 	{
 		if (currentScene != null)
 		{
-			currentScene.update();
+			currentScene.superUpdate();
 		}
 		
 		if (currentPopup != null)
 		{
-			currentPopup.update();
+			currentPopup.superUpdate();
 		}
 	}
 }
