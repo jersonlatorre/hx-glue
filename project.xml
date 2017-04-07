@@ -16,7 +16,7 @@
 	<source path="src" />
 	<haxelib name="openfl" />
 	<haxelib name="actuate" />
-	
+
 	<!-- assets -->
-	<assets path="assets/img" rename="img" />
+	<assets path="assets/" rename="./" />
 </project>
