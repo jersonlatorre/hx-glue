@@ -13,15 +13,18 @@ import glue.ui.GPreloader;
 
 @final class Glue
 {
+	static var mainScene:Dynamic;
+	static var customPreloader:Dynamic;
+
 	static public var stage:Stage;
-	static public var mainScene:Dynamic;
-	static public var customPreloader:Dynamic;
 	static public var width:Int = 800;
 	static public var height:Int = 600;
 	static public var canvas:Sprite;
-	static public var cacheCanvas:Sprite;
 	static public var isDebug:Bool = false;
-	
+
+	@:allow(glue.data.GLoader)
+	static var cacheCanvas:Sprite;
+
 	static public function start(data:Dynamic)
 	{
 		Glue.stage = Lib.application.window.stage;
@@ -30,6 +33,7 @@ import glue.ui.GPreloader;
 		
 		Glue.mainScene = data.mainScene;
 		Glue.isDebug = data.isDebug;
+		
 		Glue.stage.addEventListener(Event.ENTER_FRAME, onUpdate);
 			
 		cacheCanvas = new Sprite();
@@ -76,7 +80,7 @@ import glue.ui.GPreloader;
 		GSceneManager.gotoScene(Glue.mainScene);
 	}
 	
-	static public function onUpdate(e:Event):Void
+	static function onUpdate(e:Event):Void
 	{
 		GTime.update();	
 		GMouse.update();
