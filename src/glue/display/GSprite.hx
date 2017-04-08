@@ -19,9 +19,14 @@ class GSprite extends GEntity
 	var _animations:Map<String, Dynamic> = new Map<String, Dynamic>();
 	var _sprite:__GSpriteBase;
 	
-	public function new():Void
+	public function new(spriteID:String = null, fps = 30):Void
 	{
 		super();
+
+		if (spriteID != null)
+		{
+			_animations["default"] = { id: spriteID, fps: fps };
+		}
 	}
 
 	public function addAnimation(value1:String, ?value2:String, ?fps:Int = 30):Dynamic 
@@ -47,6 +52,16 @@ class GSprite extends GEntity
 			_skin.removeChildAt(0);
 		}
 		
+		/**
+		 *  If there is no any sprite.
+		 */
+		if (_animations[name] == null)
+		{
+			var a:Array<String> = cast(Type.getClassName(Type.getClass(this)), String).split(".");
+			var className:String = a[a.length - 1];
+			throw className + " -> A sprite ID must be provided!";
+		}
+
 		_sprite = new __GSpriteBase(_animations[name].id, _animations[name].fps);
 		_sprite.addToLayer(_skin);
 		if (_onEndAnimation != null) _sprite.onEndAnimation(_onEndAnimation);
@@ -54,7 +69,7 @@ class GSprite extends GEntity
 		width = _sprite.width;
 		height = _sprite.height;
 		setAnchor(_anchor.x, _anchor.y);
-		update();
+		// update();
 		animation = name;
 
 		return this;
