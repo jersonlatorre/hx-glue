@@ -92,31 +92,39 @@ import openfl.display.Sprite;
 		this._alpha = alpha;
 		return this;
 	}
-	
-	public function addToLayer(layer:Sprite):Dynamic
+
+	@:allow(glue.ui.GScene.addEntity, glue.data.GLoader.onDownloadFileComplete)
+	function addToLayer(layer:Sprite):Dynamic
 	{
 		layer.addChild(_canvas);
 		return this;
 	}
 	
-	public function removeFromLayer(layer:Sprite):Dynamic
+	@:allow(glue.ui.GScene.preUpdate, glue.ui.GScene.removeEntity)
+	function removeFromLayer(layer:Sprite):Dynamic
 	{
 		layer.removeChild(_canvas);
 		return this;
 	}
 	
-	public function isChildOfLayer(layer:Sprite):Bool
+	@:allow(glue.ui.GScene.preUpdate, glue.ui.GScene.removeEntity)
+	function isChildOfLayer(layer:Sprite):Bool
 	{
 		return layer.contains(_canvas);
 	}
 	
-	public function update():Void 
+	public function update():Void { }
+
+	@:allow(glue.ui.GScene.preUpdate)
+	function preUpdate():Void 
 	{
 		_canvas.x = position.x;
 		_canvas.y = position.y;
 		_canvas.scaleX = _scaleX;
 		_canvas.scaleY = _scaleY;
 		_canvas.alpha = _alpha;
+
+		update();
 	}
 	
 	public function destroy():Void
