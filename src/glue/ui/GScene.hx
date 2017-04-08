@@ -63,6 +63,7 @@ class GScene
 		_canvas.mask = _mask;
 
 		load();
+		
 		GLoader.startDownload(init);
 	}
 
@@ -119,7 +120,7 @@ class GScene
 	}
 	
 	@:allow(glue.ui.GSceneManager)
-	function superUpdate():Void
+	function preUpdate():Void
 	{
 		if (!GLoader.isDownloading) update();
 
@@ -156,7 +157,7 @@ class GScene
 			}
 			else
 			{
-				entity.update();
+				entity.preUpdate();
 				i++;
 			}
 		}
