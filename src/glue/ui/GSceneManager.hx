@@ -2,6 +2,7 @@ package glue.ui;
 
 import glue.Glue;
 import openfl.display.Sprite;
+import glue.utils.GTools;
 
 /**
  * ...
@@ -24,27 +25,30 @@ import openfl.display.Sprite;
 	{
 		if (Type.getSuperClass(screenClass) != GScene)
 		{
-			throw "GScreenManager::gotoScreen -> screenClass needs to be GScreen";
-			return;
+			throw "Screen class needs to be GScreen";
 		}
 		
 		if (currentScene != null)
 		{
 			currentScene.destroy();
 		}
-		
+
 		currentScene = Type.createInstance(screenClass, []);
-		currentScene.superUpdate();
-		
 		Glue.stage.stageFocusRect = false;
+
+		preInitScene();
 	}
 	
+	static function preInitScene()
+	{
+		currentScene.preInit();
+	}
+
 	static public function showPopup(popupClass:Dynamic):Void
 	{
 		if (Type.getSuperClass(popupClass) != GPopup)
 		{
-			trace("GScreenManager::showPopup -> popupClass needs to be GPopup");
-			return;
+			throw "Popup Class needs to be GPopup";
 		}
 		
 		if (currentPopup != null)
@@ -53,7 +57,7 @@ import openfl.display.Sprite;
 		}
 		
 		currentPopup = Type.createInstance(popupClass, []);
-		currentPopup.superUpdate();
+		currentPopup.preUpdate();
 	}
 	
 	static public function removePopup():Void
@@ -69,12 +73,12 @@ import openfl.display.Sprite;
 	{
 		if (currentScene != null)
 		{
-			currentScene.superUpdate();
+			currentScene.preUpdate();
 		}
 		
 		if (currentPopup != null)
 		{
-			currentPopup.superUpdate();
+			currentPopup.preUpdate();
 		}
 	}
 }
