@@ -35,14 +35,16 @@ import openfl.net.URLRequest;
 				totalFiles += 1;
 			}
 
-			case "spritesheet":
+			case "spritesheet", "button":
 			{
 				var loader1:Loader = new Loader();
 				_files.push( { type: "image", id: data.id, url: data.src, loader:loader1 } );
 				
 				var loader2:URLLoader = new URLLoader();
-				data.src = data.src.substr(0, data.src.lastIndexOf('.'));
-				_files.push( { type: "data", id: data.id + "_data", url: data.src + ".json", loader:loader2 } );
+
+				var i:Int = Std.string(data.src).lastIndexOf('.');
+				var s:String = Std.string(data.src).substring(0, i);
+				_files.push({ type: "data", id: data.id + "_data", url: s + ".json", loader:loader2 });
 
 				totalFiles += 2;
 			}
@@ -53,23 +55,28 @@ import openfl.net.URLRequest;
 				_files.push( { type:data.type, id: data.id, url: data.src, loader:loader } );
 				totalFiles += 1;
 			}
+
+			default:
+			{
+				throw "Type " + data.type + " is not allowed.";
+			}
 		}
 	}
 	
 	@:allow(glue.ui.GScene, glue.Glue)
 	static function startDownload(callback:Dynamic):Void
 	{
+		trace("Initialize loading...");
 		isDownloading = true;
 		_callback = callback;
 
 		if (totalFiles == 0)
 		{
-			if (_callback != null) _callback();
+			trace("Loading complete........");
 			isDownloading = false;
+			if (_callback != null) _callback();
 			return;
 		}
-
-		trace("Initialize loading...");
 
 		for (file in _files)
 		{
@@ -94,7 +101,7 @@ import openfl.net.URLRequest;
 	{
 		return function(e:Event)
 		{
-			trace("--- file: " + file.id);
+			trace("--- downloaded: " + file.id);
 
 			if (file.type == "image")
 			{
@@ -118,7 +125,7 @@ import openfl.net.URLRequest;
 				downloadedFiles = 0;
 				totalFiles = 0;
 				isDownloading = false;
-				trace("Loading complete.\n");
+				trace("Loading complete.");
 				if (_callback != null) _callback();
 			}
 		}
@@ -128,7 +135,7 @@ import openfl.net.URLRequest;
 	{
 		return function(e:IOErrorEvent)
 		{
-			trace("Error Downloading " + file.id);
+			throw "Error Downloading " + file.id;
 		}
 	}
 
@@ -157,21 +164,29 @@ import openfl.net.URLRequest;
 	{
 		if (!_loadedFiles.exists(id))
 		{
-			trace("Data with the id: " + id + " not found.");
-			return null;
+			throw "Data with the id: " + id + " not found.";
 		}
 		else
 		{
-			var data:Dynamic = _loadedFiles.get(id);
+			var data:String = preventUtf8(_loadedFiles.get(id));
+
 			try
 			{
 				return Json.parse(data);
 			}
-			catch (e:Error)
+			catch (e:Any)
 			{
-				trace("JSON file with the id: " + id + " is not a valid JSON data.");
-				return null;
+				throw "JSON file with the id: " + id + " is not a valid JSON data.";
 			}
 		}
+	}
+
+	static function preventUtf8(utf8String:String):String
+	{
+		if (utf8String.charCodeAt(0) == 65533 || utf8String.charCodeAt(0) == 255)
+			utf8String = utf8String.substring(2, utf8String.length - 1);
+		var s:Array<String> = utf8String.split(String.fromCharCode(0));
+		var str:String = s.join("");
+		return str;
 	}
 }
