@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	<!-- metadata, make sure 'package' is at least 3 segments (ie. com.mycompany.myproject) -->
+	<meta title="GlueExamples" package="com.plug.GlueExamples" version="1.0.0" company="Plug" />
+	<android target-sdk-version="19" />
+	
+	<!-- output -->
+	<app main="Main" file="GlueTest" path="bin" />
+	
+	<window background="#000000" width="800" height="600"/>
+	<window vsync="true" hardware="true" />
+	
+	<!-- classpath, haxe libs -->
+	<source path="src" />
+	<haxelib name="openfl" />
+	<haxelib name="actuate" />
+	<haxelib name="glue" />
+
+	<!-- assets -->
+	<!--<assets path="assets/img" rename="img" />-->
+</project>
