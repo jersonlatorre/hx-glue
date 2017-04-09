@@ -1,6 +1,7 @@
 package glue.ui;
 
 import glue.data.GLoader;
+import glue.utils.GTools;
 import glue.display.GEntity;
 import glue.game.GCamera;
 import openfl.display.Sprite;
@@ -27,9 +28,7 @@ class GScene
 	
 	public function new()
 	{
-		var a:Array<String> = cast(Type.getClassName(Type.getClass(this)), String).split(".");
-		var className:String = a[a.length - 1];
-		trace("Scene: " + className);
+		trace("Scene: " + GTools.getClassName(this));
 
 		_canvas = new Sprite();
 		GSceneManager.canvas.addChild(_canvas);
@@ -60,20 +59,32 @@ class GScene
 		_mask.y = 0;
 		_mask.mouseEnabled = false;
 		_mask.doubleClickEnabled = false;
-		_canvas.mask = _mask;
+		_canvas.mask = _mask;		
+	}
 
-		load();
-		
+	public function preInit()
+	{
+		preload();
 		GLoader.startDownload(init);
 	}
 
-	public function load():Void { }
+	public function gotoScene(screenClass:Dynamic)
+	{
+		GSceneManager.gotoScene(screenClass);
+	}
 
-	public function init():Void	{	}
+	public function load(data:Any)
+	{
+		GLoader.load(data);
+	}
 
-	public function update():Void {	}
+	public function preload() { }
+
+	public function init() {	}
+
+	public function update() { }
 	
-	public function addLayer(layerName:String):Void
+	public function addLayer(layerName:String)
 	{
 		if (!_layers.exists(layerName))
 		{
@@ -83,11 +94,11 @@ class GScene
 		}
 		else
 		{
-			trace("Already exists a layer whit the name: " + layerName);
+			throw "Already exists a layer whit the name: " + layerName;
 		}
 	}
 	
-	public function addEntity(entity:GEntity, layerName:String = "default"):Void
+	public function addEntity(entity:GEntity, layerName:String = "default")
 	{
 		if (_layers.exists(layerName))
 		{
@@ -96,11 +107,11 @@ class GScene
 		}
 		else
 		{
-			trace("There is no any layer with the name: " + layerName);
+			throw "There is no any layer with the name: " + layerName;
 		}
 	}
 	
-	public function removeEntity(entity:GEntity):Void 
+	public function removeEntity(entity:GEntity) 
 	{
 		var index = _entities.indexOf(entity);
 		
@@ -120,9 +131,12 @@ class GScene
 	}
 	
 	@:allow(glue.ui.GSceneManager)
-	function preUpdate():Void
+	function preUpdate()
 	{
-		if (!GLoader.isDownloading) update();
+		if (!GLoader.isDownloading)
+		{
+			update();
+		}
 
 		// camera
 		camera.update();
@@ -181,7 +195,7 @@ class GScene
 		});
 	}
 	
-	public function destroy():Void
+	public function destroy()
 	{
 		while (_sceneCanvas.numChildren > 0)
 		{
