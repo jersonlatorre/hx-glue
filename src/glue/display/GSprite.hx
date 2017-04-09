@@ -69,7 +69,6 @@ class GSprite extends GEntity
 		width = _sprite.width;
 		height = _sprite.height;
 		setAnchor(_anchor.x, _anchor.y);
-		// update();
 		animation = name;
 
 		return this;
@@ -81,10 +80,10 @@ class GSprite extends GEntity
 		return this;
 	}
 	
-	override public function update():Void 
+	override public function preUpdate():Void 
 	{
-		if (_sprite != null) _sprite.update();
-		super.update();
+		if (_sprite != null) _sprite.preUpdate();
+		super.preUpdate();
 	}
 	
 	override public function destroy():Void 
@@ -129,7 +128,7 @@ class GSprite extends GEntity
 		return this;
 	}
 	
-	override public function update():Void
+	override public function preUpdate():Void
 	{
 		_currentFrameIndex += _fps * GTime.deltaTime;
 		
@@ -142,7 +141,5 @@ class GSprite extends GEntity
 		
 		_image.x = -_frames[rounded].frame.x;
 		_image.y = -_frames[rounded].frame.y;
-		
-		super.update();
 	}	
 }
