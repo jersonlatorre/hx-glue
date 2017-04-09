@@ -20,7 +20,9 @@ import openfl.display.Sprite;
 	private var _alpha:Float = 1;
 	public var width:Float = 0;
 	public var height:Float = 0;
-	public var isDestroyed:Bool = false;
+
+	@:allow(glue.ui.GScene.preUpdate)
+	var isDestroyed:Bool = false;
 	
 	public var position:GVector2D;
 	
@@ -31,7 +33,11 @@ import openfl.display.Sprite;
 		_canvas.addChild(_skin);
 		position = new GVector2D(0, 0);
 		_anchor = new GVector2D(0, 0);
+
+		init();
 	}
+
+	public function init() { }
 
 	public function addTo(scene:GScene, ?layer:String):Dynamic
 	{
