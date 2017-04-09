@@ -12,9 +12,11 @@
 	
 	<!-- classpath, haxe libs -->
 	<source path="src" />
+	<source path="../src" />
+
 	<haxelib name="openfl" />
 	<haxelib name="actuate" />
-	<haxelib name="glue" />
+	<!--<haxelib name="glue" />-->
 
 	<!-- assets -->
 	<assets path="assets/" rename="./" />
