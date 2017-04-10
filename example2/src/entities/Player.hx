@@ -5,7 +5,6 @@ import glue.Glue;
 import glue.display.GSprite;
 import glue.input.GMouse;
 import glue.utils.GTime;
-import glue.utils.GVector2D;
 
 /**
  * ...
@@ -14,40 +13,40 @@ import glue.utils.GVector2D;
 
 class Player extends GSprite
 {
-	static inline private var SPEED_X:Float = 90;
+	static inline private var SPEED_X:Float = 250;
 	private var _speedX:Float;
 	public var isPaused:Bool = false;
 
 	override public function init()
 	{
-		addAnimation("idle", "player_idle", 30);
-		addAnimation("walk", "player_walk", 30);
-		addAnimation("die", "player_die", 30);
+		addAnimation("idle", "player_idle", 45);
+		addAnimation("walk", "player_walk", 45);
+		addAnimation("die", "player_die", 45);
 		play("idle");
 
 		setAnchor(0.5, 1);
-		setPosition(Glue.width / 2, Glue.height - 250);
+		setPosition(Glue.width / 2, Glue.height - 150);
 	}
 	
 	override public function update()
 	{
 		if (isPaused) return;
 		
-		if (GKeyboard.isLeft || (GMouse.isDown && GMouse.position.x < 400))
+		if (GKeyboard.isLeft || (GMouse.isPressed && GMouse.position.x < 400))
 		{
 			_speedX = -SPEED_X;
 			setScaleX(-1);
 			play("walk");
 		}
 		
-		if (GKeyboard.isRight || (GMouse.isDown && GMouse.position.x >= 400))
+		if (GKeyboard.isRight || (GMouse.isPressed && GMouse.position.x >= 400))
 		{
 			_speedX = SPEED_X;
 			setScaleX(1);
 			play("walk");
 		}
 		
-		if (!GKeyboard.isRight && !GKeyboard.isLeft && !GMouse.isDown)
+		if (!GKeyboard.isRight && !GKeyboard.isLeft && !GMouse.isPressed)
 		{
 			_speedX = 0;
 			play("idle");
