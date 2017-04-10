@@ -26,7 +26,7 @@ class GameScene extends GScene
 
 	override public function init()
 	{
-		// _player = new Player().addTo(this);
+		_player = new Player().addTo(this);
 	}
 	
 	override public function update()
