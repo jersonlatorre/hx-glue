@@ -40,6 +40,11 @@ class GButton extends GEntity
 		_mask.graphics.endFill();
 		_image.mask = _mask;
 
+		if (_frames.length > 4)
+		{
+			throw "Button class must have only 3 or 4 frames.";
+		}
+
 		if (_frames[3] != null)
 		{
 			_hitBmd = new BitmapData(_frames[3].frame.w, _frames[3].frame.h, true, 0x00000000);
