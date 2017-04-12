@@ -2,6 +2,7 @@ package glue.display;
 
 import glue.data.GLoader;
 import glue.utils.GTime;
+import glue.utils.GTools;
 import openfl.display.Bitmap;
 import openfl.display.Sprite;
 
@@ -52,16 +53,11 @@ class GSprite extends GEntity
 			_skin.removeChildAt(0);
 		}
 		
-		/**
-		 *  If there is no any sprite.
-		 */
 		if (_animations[name] == null)
 		{
-			var a:Array<String> = cast(Type.getClassName(Type.getClass(this)), String).split(".");
-			var className:String = a[a.length - 1];
-			throw className + " -> A sprite ID must be provided!";
+			throw GTools.getClassName(this) + " -> A sprite ID must be provided!";
 		}
-
+		
 		_sprite = new __GSpriteBase(_animations[name].id, _animations[name].fps);
 		_sprite.addToLayer(_skin);
 		if (_onEndAnimation != null) _sprite.onEndAnimation(_onEndAnimation);
@@ -132,9 +128,9 @@ class GSprite extends GEntity
 	{
 		_currentFrameIndex += _fps * GTime.deltaTime;
 		
-		if (_currentFrameIndex >= _frames.length && onEndAnimation != null)
+		if (_onEndAnimation != null && _currentFrameIndex >= _frames.length)
 		{
-			if (_onEndAnimation != null) _onEndAnimation();
+			_onEndAnimation();
 		}
 		
 		var rounded:Int = Math.floor(_currentFrameIndex) % _frames.length;
