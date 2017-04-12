@@ -22,12 +22,10 @@ class GameScene extends GScene
 
 	override public function init()
 	{
-		trace("init game");
 		_player = new Player().addTo(this);
 	}
 	
 	override public function update()
 	{
-		trace("update game");
 	}
 }
