@@ -1,6 +1,7 @@
 package scenes;
 
 import glue.ui.GScene;
+import glue.display.GImage;
 
 /**
  * ...
@@ -10,6 +11,8 @@ import glue.ui.GScene;
 
 class MenuScene extends GScene
 {
+	var _background:GImage;
+	
 	override public function preload()
 	{
 		load({ type:"image", src:"img/game_background.png", id:"game_background" });
