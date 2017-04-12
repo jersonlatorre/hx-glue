@@ -68,18 +68,26 @@ import openfl.display.Sprite;
 	{
 		_scaleX = scaleX;
 		_scaleY = scaleY;
+		_canvas.scaleX = scaleX;
+		_canvas.scaleY = scaleY;
+		_canvas.width = Std.int(_canvas.width);
+		_canvas.height = Std.int(_canvas.height);
 		return this;
 	}
 	
 	public function setScaleX(scaleX:Float):Dynamic
 	{
 		_scaleX = scaleX;
+		_canvas.scaleX = scaleX;
+		_canvas.width = Std.int(_canvas.width);
 		return this;
 	}
 	
 	public function setScaleY(scaleY:Float):Dynamic
 	{
 		_scaleY = scaleY;
+		_canvas.scaleY = scaleY;
+		_canvas.height = Std.int(_canvas.height);
 		return this;
 	}
 	
@@ -124,12 +132,8 @@ import openfl.display.Sprite;
 	@:allow(glue.ui.GScene.preUpdate)
 	function preUpdate():Void 
 	{
-		_canvas.x = position.x;
-		_canvas.y = position.y;
-		_canvas.scaleX = _scaleX;
-		_canvas.scaleY = _scaleY;
-		_canvas.alpha = _alpha;
-
+		_canvas.x = Std.int(position.x);
+		_canvas.y = Std.int(position.y);
 		update();
 	}
 	
