@@ -3,6 +3,7 @@ package glue.data;
 import glue.display.GImage;
 import haxe.Json;
 import openfl.display.Bitmap;
+import openfl.display.BitmapData;
 import openfl.display.Loader;
 import openfl.errors.Error;
 import openfl.events.Event;
@@ -19,7 +20,9 @@ import openfl.net.URLRequest;
 {
 	static var _callback:Dynamic;
 	static var _files:Array<Dynamic> = new Array<Dynamic>();
+	static var _currentFiles:Array<Dynamic> = new Array<Dynamic>();
 	static var _loadedFiles:Map<String, Dynamic> = new Map<String, Dynamic>();
+	static var _currentLoadedFiles:Map<String, Dynamic> = new Map<String, Dynamic>();
 	static public var downloadedFiles = 0;
 	static public var totalFiles = 0;
 	static public var isDownloading = false;
@@ -31,20 +34,20 @@ import openfl.net.URLRequest;
 			case "image":
 			{
 				var loader:Loader = new Loader();
-				_files.push( { type:data.type, id: data.id, url: data.src, loader:loader } );
+				_currentFiles.push( { type:data.type, id: data.id, url: data.src, loader:loader } );
+
 				totalFiles += 1;
 			}
 
 			case "spritesheet", "button":
 			{
 				var loader1:Loader = new Loader();
-				_files.push( { type: "image", id: data.id, url: data.src, loader:loader1 } );
+				_currentFiles.push( { type: "image", id: data.id, url: data.src, loader:loader1 } );
 				
 				var loader2:URLLoader = new URLLoader();
-
 				var i:Int = Std.string(data.src).lastIndexOf('.');
 				var s:String = Std.string(data.src).substring(0, i);
-				_files.push({ type: "data", id: data.id + "_data", url: s + ".json", loader:loader2 });
+				_currentFiles.push({ type: "data", id: data.id + "_data", url: s + ".json", loader:loader2 });
 
 				totalFiles += 2;
 			}
@@ -52,7 +55,7 @@ import openfl.net.URLRequest;
 			case "data":
 			{
 				var loader:URLLoader = new URLLoader();
-				_files.push( { type:data.type, id: data.id, url: data.src, loader:loader } );
+				_currentFiles.push( { type:data.type, id: data.id, url: data.src, loader:loader } );
 				totalFiles += 1;
 			}
 
@@ -78,10 +81,8 @@ import openfl.net.URLRequest;
 			return;
 		}
 
-		for (file in _files)
+		for (file in _currentFiles)
 		{
-			if (_loadedFiles.exists(file.id)) continue;
-			
 			if (file.type == "image")
 			{
 				file.loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onDownloadFileComplete(file));
@@ -101,41 +102,62 @@ import openfl.net.URLRequest;
 	{
 		return function(e:Event)
 		{
-			trace("--- downloaded: " + file.id);
+			trace("--- " + file.id);
 
 			if (file.type == "image")
 			{
-				_loadedFiles.set(file.id, file.loader.content);
-				file.loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, onDownloadFileComplete);
+				_currentLoadedFiles.set(file.id, file.loader.content);
+				file.loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, onDownloadFileComplete(file));
 				
-				// preload images
-				var _img = new GImage(file.id);
-				_img.addToLayer(Glue.cacheCanvas);
+				// Cache images to preventing lag time showing images.
+				#if html5
+				var cache = new Bitmap(file.loader.content.bitmapData);
+				Glue.cacheCanvas.addChild(cache);
+				#end
 			}
 			else
 			{
-				_loadedFiles.set(file.id, file.loader.data);
-				file.loader.removeEventListener(Event.COMPLETE, onDownloadFileComplete);
+				_currentLoadedFiles.set(file.id, file.loader.data);
+				file.loader.removeEventListener(Event.COMPLETE, onDownloadFileComplete(file));
 			}
 
 			downloadedFiles++;
-			
+
 			if (downloadedFiles == totalFiles)
 			{
 				downloadedFiles = 0;
 				totalFiles = 0;
 				isDownloading = false;
+				updateLoadedFiles();
 				trace("Loading complete.");
 				if (_callback != null) _callback();
 			}
 		}
+	}
+
+	static function updateLoadedFiles()
+	{
+
+		for (key in _currentLoadedFiles.keys())
+		{
+			_loadedFiles.set(key, _currentLoadedFiles.get(key));
+		}
+
+		for (file in _currentFiles)
+		{
+			_files.push(file);
+		}
+
+		_currentFiles = new Array<Dynamic>();
+
+		_currentLoadedFiles = new Map<String, Dynamic>();
 	}
 	
 	static function onError(file:Dynamic)
 	{
 		return function(e:IOErrorEvent)
 		{
-			throw "Error Downloading " + file.id;
+			throw "Error Downloading '" + file.id + "'";
 		}
 	}
 
@@ -148,7 +170,7 @@ import openfl.net.URLRequest;
 	{
 		if (!_loadedFiles.exists(id))
 		{
-			throw "-- File " + id + " not found.";
+			throw "-- File '" + id + "' not found.";
 			return null;
 		}
 		else
@@ -164,7 +186,7 @@ import openfl.net.URLRequest;
 	{
 		if (!_loadedFiles.exists(id))
 		{
-			throw "Data with the id: " + id + " not found.";
+			throw "JSON file '" + id + "' not loaded.";
 		}
 		else
 		{
@@ -176,7 +198,7 @@ import openfl.net.URLRequest;
 			}
 			catch (e:Any)
 			{
-				throw "JSON file with the id: " + id + " is not a valid JSON data.";
+				throw "JSON file 'with id: '" + id + "' is not a valid JSON data.";
 			}
 		}
 	}
