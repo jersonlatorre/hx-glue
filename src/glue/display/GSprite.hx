@@ -135,7 +135,7 @@ class GSprite extends GEntity
 		
 		var rounded:Int = Math.floor(_currentFrameIndex) % _frames.length;
 		
-		_image.x = -_frames[rounded].frame.x;
-		_image.y = -_frames[rounded].frame.y;
+		_image.x = -Std.int(_frames[rounded].frame.x);
+		_image.y = -Std.int(_frames[rounded].frame.y);
 	}	
 }
