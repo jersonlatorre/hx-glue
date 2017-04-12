@@ -53,10 +53,10 @@ class GameScene extends GScene
 
 
 		/**
-		 *  You can chain all the methods in one line, like this:
+		 *  You can chain all the GSprite methods in one line, like this:
 		 */
 		_player = new GSprite("player_idle")
-		.play()
+		.play().setScale(0.85, 0.85)
 		.setAnchor(0.5, 1)
 		.setPosition(200, 200)
 		.addTo(this);
