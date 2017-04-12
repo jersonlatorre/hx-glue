@@ -1,10 +1,6 @@
 package scenes;
 
-import glue.Glue;
 import glue.ui.GScene;
-import glue.ui.GSceneManager;
-import glue.display.GButton;
-import glue.display.GImage;
 
 /**
  * ...
@@ -16,11 +12,13 @@ class MenuScene extends GScene
 {
 	override public function preload()
 	{
+		load({ type:"image", src:"img/game_background.png", id:"game_background" });
+		load({ type:"button", src:"img/button_play.png", id:"button_play" });
 	}
 
 	override public function init()
 	{
-		GSceneManager.gotoScene(GameScene);
+		gotoScene(GameScene);
 	}
 	
 	override public function update()
