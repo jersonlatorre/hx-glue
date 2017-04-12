@@ -21,7 +21,6 @@ class Player extends GSprite
 	{
 		addAnimation("idle", "player_idle", 45);
 		addAnimation("walk", "player_walk", 45);
-		addAnimation("die", "player_die", 45);
 		play("idle");
 
 		setAnchor(0.5, 1);
