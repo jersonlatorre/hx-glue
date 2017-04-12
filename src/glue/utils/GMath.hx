@@ -7,9 +7,12 @@ package glue.utils;
 
 @final class GMath 
 {
-	
-	public function GMath() 
+	static public function sign(x:Float):Int
 	{
+		var sign = 0;
+		if (x > 0) return sign = 1;
+		if (x < 0) return sign = -1;
+		return sign;
 	}
 	
 	static public function sin(x:Float):Float
@@ -65,17 +68,5 @@ package glue.utils;
 		}
 		
 		return cos;
-	}
-	
-	static public function sign(x:Float):Int
-	{
-		if (x == 0)
-		{
-			return 1;
-		}
-		else
-		{
-			return Std.int(x / Math.abs(x));
-		}
 	}
 }
