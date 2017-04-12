@@ -1,6 +1,7 @@
 package glue.display;
 
 import glue.ui.GScene;
+import glue.utils.GMath;
 import glue.utils.GVector2D;
 import openfl.display.Sprite;
 
@@ -70,8 +71,8 @@ import openfl.display.Sprite;
 		_scaleY = scaleY;
 		_canvas.scaleX = scaleX;
 		_canvas.scaleY = scaleY;
-		_canvas.width = Std.int(_canvas.width);
-		_canvas.height = Std.int(_canvas.height);
+		_canvas.width = Std.int(_canvas.width) * GMath.sign(scaleX);
+		_canvas.height = Std.int(_canvas.height) * GMath.sign(scaleY);
 		return this;
 	}
 	
@@ -79,7 +80,7 @@ import openfl.display.Sprite;
 	{
 		_scaleX = scaleX;
 		_canvas.scaleX = scaleX;
-		_canvas.width = Std.int(_canvas.width);
+		_canvas.width = Std.int(_canvas.width) * GMath.sign(scaleX);
 		return this;
 	}
 	
@@ -87,7 +88,7 @@ import openfl.display.Sprite;
 	{
 		_scaleY = scaleY;
 		_canvas.scaleY = scaleY;
-		_canvas.height = Std.int(_canvas.height);
+		_canvas.height = Std.int(_canvas.height) * GMath.sign(scaleY);
 		return this;
 	}
 	
