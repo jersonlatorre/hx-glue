@@ -66,35 +66,36 @@ import openfl.net.URLRequest;
 		}
 	}
 	
-	@:allow(glue.ui.GScene, glue.Glue)
-	static function startDownload(callback:Dynamic):Void
+	@:allow(glue.ui.GScene, glue.Glue, glue.ui.GSceneManager.showLoaderScene)
+	static function startDownload(callback:Dynamic = null):Void
 	{
-		trace("Initialize loading...");
-		isDownloading = true;
 		_callback = callback;
 
 		if (totalFiles == 0)
 		{
-			trace("Loading complete........");
 			isDownloading = false;
 			if (_callback != null) _callback();
-			return;
 		}
-
-		for (file in _currentFiles)
+		else
 		{
-			if (file.type == "image")
-			{
-				file.loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onDownloadFileComplete(file));
-				file.loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onError(file));
-			}
-			else
-			{
-				file.loader.addEventListener(Event.COMPLETE, onDownloadFileComplete(file));
-				file.loader.addEventListener(IOErrorEvent.IO_ERROR, onError(file));
-			}
+			trace("Initialize loading...");
+			isDownloading = true;
 
-			file.loader.load(new URLRequest(file.url));
+			for (file in _currentFiles)
+			{
+				if (file.type == "image")
+				{
+					file.loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onDownloadFileComplete(file));
+					file.loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onError(file));
+				}
+				else
+				{
+					file.loader.addEventListener(Event.COMPLETE, onDownloadFileComplete(file));
+					file.loader.addEventListener(IOErrorEvent.IO_ERROR, onError(file));
+				}
+
+				file.loader.load(new URLRequest(file.url));
+			}
 		}
 	}
 
@@ -170,8 +171,7 @@ import openfl.net.URLRequest;
 	{
 		if (!_loadedFiles.exists(id))
 		{
-			throw "-- File '" + id + "' not found.";
-			return null;
+			throw "Image '" + id + "' not loaded.";
 		}
 		else
 		{
@@ -198,7 +198,7 @@ import openfl.net.URLRequest;
 			}
 			catch (e:Any)
 			{
-				throw "JSON file 'with id: '" + id + "' is not a valid JSON data.";
+				throw "JSON file '" + id + "' is not a valid JSON data.";
 			}
 		}
 	}
