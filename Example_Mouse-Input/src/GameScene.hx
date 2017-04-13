@@ -1,12 +1,12 @@
 package;
 
 import glue.input.GMouse;
-import glue.utils.GVector2D;
+import glue.math.GVector2D;
 import glue.utils.GTime;
 import glue.Glue;
 import glue.display.GSprite;
 import glue.display.GImage;
-import glue.ui.GScene;
+import glue.scene.GScene;
 
 /**
  * ...
@@ -26,7 +26,7 @@ class GameScene extends GScene
 
 	static inline var FOLLOW_DRAG:Float = 2;
 
-	override public function preload():Void
+	override public function preload()
 	{
 		/**
 		 *  Load scene assets here.
@@ -35,7 +35,7 @@ class GameScene extends GScene
 		 */
 	}
 
-	override public function init():Void
+	override public function init()
 	{
 		/**
 		 *  Create an image and add it to the world.
@@ -68,7 +68,7 @@ class GameScene extends GScene
 		fadeIn();
 	}
 	
-	override public function update():Void
+	override public function update()
 	{
 		/**
 		 *  Doing the physics:
