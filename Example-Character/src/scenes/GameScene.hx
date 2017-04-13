@@ -23,9 +23,11 @@ class GameScene extends GScene
 	override public function init()
 	{
 		_player = new Player().addTo(this);
+		fadeIn();
 	}
 	
 	override public function update()
 	{
+		
 	}
 }
