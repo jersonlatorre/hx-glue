@@ -2,7 +2,7 @@ package scenes;
 
 import glue.display.GImage;
 import entities.Player;
-import glue.ui.GScene;
+import glue.scene.GScene;
 
 /**
  * ...
@@ -16,9 +16,9 @@ class GameScene extends GScene
 
 	override public function preload()
 	{
-		load({ type:"spritesheet", src:"img/player_idle.png", id:"player_idle" });
-		load({ type:"spritesheet", src:"img/player_walk.png", id:"player_walk" });
-		load({ type:"image", src:"img/game_background.png", id:"game_background" });
+		loadImage("game_background", "img/game_background.png");
+		loadSpritesheet("player_idle", "img/player_idle.png");
+		loadSpritesheet("player_walk", "img/player_walk.png");
 	}
 
 	override public function init()

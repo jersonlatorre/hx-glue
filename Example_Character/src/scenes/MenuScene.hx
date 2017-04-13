@@ -1,7 +1,7 @@
 package scenes;
 
 import glue.Glue;
-import glue.ui.GScene;
+import glue.scene.GScene;
 import glue.display.GImage;
 import glue.display.GButton;
 
@@ -15,8 +15,8 @@ class MenuScene extends GScene
 {
 	override public function preload()
 	{
-		load({ type:"image", src:"img/menu_background.png", id:"menu_background" });
-		load({ type:"button", src:"img/button_play.png", id:"button_play" });
+		loadImage("menu_background", "img/menu_background.png");
+		loadButton("button_play", "img/button_play.png");
 	}
 
 	override public function init()
@@ -24,13 +24,13 @@ class MenuScene extends GScene
 		new GImage("menu_background").addTo(this);
 
 		new GButton("button_play")
-			.addTo(this)
-			.setAnchor(0.5, 0.5)
-			.setPosition(Glue.width / 2, Glue.height / 2)
-			.onClick(function()
-			{
-				gotoScene(GameScene);
-			});
+		.addTo(this)
+		.setAnchor(0.5, 0.5)
+		.setPosition(Glue.width / 2, Glue.height / 2)
+		.onClick(function()
+		{
+			gotoScene(GameScene);
+		});
 
 		fadeIn();
 	}

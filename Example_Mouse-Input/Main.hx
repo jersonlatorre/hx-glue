@@ -17,21 +17,11 @@ class Main extends Sprite
 
 		/**
 		 *  You can preload all your assets before the game starts.
-		 *  
-		 *  Syntax:
-		 *  
-		 *  Glue.load(
-		 *  	{
-		 *  		type	:	[ "image" | "spritesheet" | "button" | data" ],
-		 *  		src		:	[ Path of the content. ],
-		 *  		id		:	[ Name by which the asset will be invoked from the code. ]
-		 *  	}
-		 *  );
 		 */
 
-		 Glue.load({ type:"image", src:"img/background_game.png", id:"background_game" });
-		 Glue.load({ type:"image", src:"img/floor.png", id:"floor" });
-		 Glue.load({ type:"spritesheet", src:"img/character_idle.png", id:"character_idle" });
+		 Glue.loadImage("background_game", "img/background_game.png");
+		 Glue.loadImage("floor", "img/floor.png");
+		 Glue.loadSpritesheet("character_idle", "img/character_idle.png");
 
 		/**
 		 *  Starts the game engine.
