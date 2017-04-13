@@ -11,14 +11,16 @@ import openfl.display.Sprite;
  * 
  */
 
-@final class GEntity
+class GEntity
 {
-	private var _canvas:Sprite;
-	private var _skin:Sprite;
-	private var _anchor:GVector2D;
-	private var _scaleX:Float = 1;
-	private var _scaleY:Float = 1;
-	private var _alpha:Float = 1;
+	var _canvas:Sprite;
+	var _skin:Sprite;
+	var _anchor:GVector2D;
+	var _scaleX:Float = 1;
+	var _scaleY:Float = 1;
+	var _rotation:Float = 0;
+	var _alpha:Float = 1;
+
 	public var width:Float = 0;
 	public var height:Float = 0;
 
@@ -39,6 +41,36 @@ import openfl.display.Sprite;
 	}
 
 	public function init() { }
+
+	public function createRectangleGraphic(width:Float, height:Float, color:UInt = 0x000000):Dynamic
+	{
+		this.width = width;
+		this.height = height;
+
+		var graphic = new Sprite();
+		graphic.graphics.beginFill(color);
+		graphic.graphics.drawRect(0, 0, width, height);
+		graphic.graphics.endFill();
+		_skin.addChild(graphic);
+		return this;
+	}
+
+	public function createCircleGraphic(radius:Float, color:UInt = 0x000000):Dynamic
+	{
+		this.width = this.height = 2 * radius;
+
+		var graphic = new Sprite();
+		graphic.graphics.beginFill(color);
+		graphic.graphics.drawCircle(radius, radius, radius);
+		graphic.graphics.endFill();
+		_skin.addChild(graphic);
+		return this;
+	}
+
+	function removeGraphics()
+	{
+		_skin.graphics.clear();
+	}
 
 	public function addTo(scene:GScene, ?layer:String):Dynamic
 	{
@@ -89,6 +121,13 @@ import openfl.display.Sprite;
 		_scaleY = scaleY;
 		_canvas.scaleY = scaleY;
 		_canvas.height = Std.int(_canvas.height) * GMath.sign(scaleY);
+		return this;
+	}
+
+	public function setRotation(angle:Float):Dynamic
+	{
+		_rotation = angle;
+		_canvas.rotation = (180 / 3.141519) * _rotation;
 		return this;
 	}
 	
