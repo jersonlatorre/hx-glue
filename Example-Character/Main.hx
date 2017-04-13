@@ -22,7 +22,6 @@ class Main extends Sprite
 		 *  
 		 *  Glue.start({
 		 *  	mainScene (required)	:	[ First Scene from where the engine will start. ],
-		 *  	assets (optional)			:	[ The assets array declared beore. ],
 		 *  	isDebug (optional)		: [ It will show traces in debugging mode. ]
 		 *  });
 		 */
