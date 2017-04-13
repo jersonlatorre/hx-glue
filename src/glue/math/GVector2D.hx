@@ -3,12 +3,12 @@ package glue.math;
 @:forward 
 abstract GVector2D(__GVectorBase) from __GVectorBase to __GVectorBase
 {
-  public function new(x:Float, y:Float)
+  public function new(x:Float = 0, y:Float = 0)
   {
     return new __GVectorBase(x, y);
   }
 
-  static public function create(x:Float, y:Float)
+  static public function create(x:Float = 0, y:Float = 0)
   {
     return new GVector2D(x, y);
   }
@@ -77,6 +77,11 @@ abstract GVector2D(__GVectorBase) from __GVectorBase to __GVectorBase
     return this;
   }
 
+  public function angle():Float
+  {
+    return Math.atan2(y, x);
+  }
+
   public function magnitude():Float
   {
     return Math.sqrt(x * x + y * y);
@@ -89,28 +94,63 @@ abstract GVector2D(__GVectorBase) from __GVectorBase to __GVectorBase
 
   public function normalize():GVector2D
   {
-    var factor = 1 / magnitude();
+    var factor:Float = 0;
+
+    if (magnitudeSq() != 0)
+    {
+      factor = 1 / magnitude();
+    }
+    
     x *= factor;
     y *= factor;
+
     return this;
   }
 
   public function normalized():GVector2D
   {
-    var factor = 1 / magnitude();
-    return (new GVector2D(x * factor, y * factor));
+    var normalized = new GVector2D();
+
+    if (magnitudeSq() != 0)
+    {
+      var factor = 1 / magnitude();
+      normalized = new GVector2D(x * factor, y * factor);
+    }
+    
+    return normalized;
   }
 
   public function truncate(maxMagnitude:Float):GVector2D
   {
-    if (magnitude() > maxMagnitude) normalize().scale(maxMagnitude);
+    if (magnitudeSq() > maxMagnitude * maxMagnitude)
+    {
+      normalize();
+      scale(maxMagnitude);
+    }
+
     return this;
   }
 
   public function truncated(maxMagnitude:Float):GVector2D
   {
-    if (magnitude() > maxMagnitude) return normalized().scale(maxMagnitude)
+    if (magnitudeSq() > maxMagnitude * maxMagnitude)
+    {
+      return normalized() * maxMagnitude;
+    }
+
     else return clone();
+  }
+
+  public function scaleTo(magnitude:Float):GVector2D
+  {
+    normalize();
+    scale(magnitude);
+    return this;
+  }
+
+  public function scaledTo(magnitude:Float):GVector2D
+  {
+    return normalized() * magnitude;
   }
   
   public function rotate(angle:Float):GVector2D
