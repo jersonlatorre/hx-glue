@@ -18,12 +18,12 @@ class Player extends GSprite
 
 	override public function init()
 	{
-		addAnimation("idle", "player_idle", 45);
-		addAnimation("walk", "player_walk", 45);
+		addAnimation("idle", "player_idle", 30);
+		addAnimation("walk", "player_walk", 30);
 		play("idle");
 
 		setAnchor(0.5, 1);
-		setPosition(Glue.width / 2, Glue.height - 150);
+		setPosition(Glue.width / 2, Glue.height - 60);
 	}
 	
 	override public function update()
@@ -50,14 +50,14 @@ class Player extends GSprite
 		
 		position.x += _speedX * GTime.deltaTime;
 		
-		if (position.x >= 800 - 30)
+		if (position.x >= 800 - 35)
 		{
-			position.x = 800 - 30;
+			position.x = 800 - 35;
 		}
 		
-		if (position.x <= 30)
+		if (position.x <= 35)
 		{
-			position.x = 30;
+			position.x = 35;
 		}
 	}
 }
