@@ -19,7 +19,7 @@ class GPreloader extends GPopup
 		_canvas.addChild(_bar);
 	}
 	
-	override public function update():Void 
+	override public function update()
 	{
 		var width:Float = Glue.width;
 		var height:Float = Glue.height;

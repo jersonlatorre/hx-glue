@@ -13,7 +13,7 @@ class GImage extends GEntity
 {
 	var _image:Bitmap;
 	
-	public function new(id:String):Void
+	public function new(id:String)
 	{
 		super();
 		
@@ -24,7 +24,7 @@ class GImage extends GEntity
 		height = _skin.height;
 	}
 
-	override public function destroy():Void 
+	override public function destroy() 
 	{
 		super.destroy();
 	}

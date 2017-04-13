@@ -78,7 +78,7 @@ import glue.ui.GPreloader;
 		GSceneManager.gotoScene(Glue.mainScene);
 	}
 	
-	static function onUpdate(e:Event):Void
+	static function onUpdate(e:Event)
 	{
 		GTime.update();	
 		GMouse.update();

@@ -20,7 +20,7 @@ class GSprite extends GEntity
 	var _animations:Map<String, Dynamic> = new Map<String, Dynamic>();
 	var _sprite:__GSpriteBase;
 	
-	public function new(spriteID:String = null, fps = 30):Void
+	public function new(spriteID:String = null, fps = 30)
 	{
 		super();
 
@@ -76,13 +76,13 @@ class GSprite extends GEntity
 		return this;
 	}
 	
-	override public function preUpdate():Void 
+	override public function preUpdate() 
 	{
 		if (_sprite != null) _sprite.preUpdate();
 		super.preUpdate();
 	}
 	
-	override public function destroy():Void 
+	override public function destroy() 
 	{
 		super.destroy();
 	}
@@ -124,7 +124,7 @@ class GSprite extends GEntity
 		return this;
 	}
 	
-	override public function preUpdate():Void
+	override public function preUpdate()
 	{
 		_currentFrameIndex += _fps * GTime.deltaTime;
 		

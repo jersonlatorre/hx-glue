@@ -22,7 +22,7 @@ class GButton extends GEntity
 	var _callback:Dynamic;
 	var _isDown:Bool;
 
-	public function new(spriteId:String = null):Void
+	public function new(spriteId:String = null)
 	{
 		super();
 
@@ -65,7 +65,7 @@ class GButton extends GEntity
 
 		setNormal();
 
-		_skin.addEventListener(MouseEvent.MOUSE_MOVE, function(e:MouseEvent):Void
+		_skin.addEventListener(MouseEvent.MOUSE_MOVE, function(e:MouseEvent)
 		{
 			if (_hitBmd.getPixel32(Std.int(e.localX), Std.int(e.localY)) != 0)
 			{
@@ -79,14 +79,14 @@ class GButton extends GEntity
 			}
 		});
 
-		_skin.addEventListener(MouseEvent.MOUSE_OUT, function(e:MouseEvent):Void
+		_skin.addEventListener(MouseEvent.MOUSE_OUT, function(e:MouseEvent)
 		{
 				setNormal();
 				_isDown = false;
 				_skin.buttonMode = false;
 		});
 
-		_skin.addEventListener(MouseEvent.MOUSE_DOWN, function(e:MouseEvent):Void
+		_skin.addEventListener(MouseEvent.MOUSE_DOWN, function(e:MouseEvent)
 		{
 			if (_hitBmd.getPixel32(Std.int(e.localX), Std.int(e.localY)) != 0)
 			{
@@ -99,7 +99,7 @@ class GButton extends GEntity
 			}
 		});
 
-		_skin.addEventListener(MouseEvent.MOUSE_UP, function(e:MouseEvent):Void
+		_skin.addEventListener(MouseEvent.MOUSE_UP, function(e:MouseEvent)
 		{
 			if (_hitBmd.getPixel32(Std.int(e.localX), Std.int(e.localY)) != 0 && _isDown)
 			{
@@ -122,19 +122,19 @@ class GButton extends GEntity
 		return this;
 	}
 
-	function setNormal():Void
+	function setNormal()
 	{
 		_image.x = -_frames[0].frame.x;
 		_image.y = -_frames[0].frame.y;
 	}
 
-	function setOver():Void
+	function setOver()
 	{
 		_image.x = -_frames[1].frame.x;
 		_image.y = -_frames[1].frame.y;
 	}
 
-	function setDown():Void
+	function setDown()
 	{
 		_image.x = -_frames[2].frame.x;
 		_image.y = -_frames[2].frame.y;

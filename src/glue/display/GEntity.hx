@@ -128,7 +128,7 @@ import openfl.display.Sprite;
 		return layer.contains(_canvas);
 	}
 	
-	public function update():Void { }
+	public function update() { }
 
 	@:allow(glue.ui.GScene.preUpdate, glue.ui.GPopup.preUpdate)
 	function preUpdate():Void 
@@ -138,7 +138,7 @@ import openfl.display.Sprite;
 		update();
 	}
 	
-	public function destroy():Void
+	public function destroy()
 	{
 		isDestroyed = true;
 	}

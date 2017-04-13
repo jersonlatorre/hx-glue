@@ -21,7 +21,7 @@ import openfl.events.MouseEvent;
 		
 	}
 	
-	static public function init():Void
+	static public function init()
 	{
 		Glue.stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 		Glue.stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
@@ -29,26 +29,26 @@ import openfl.events.MouseEvent;
 		position = new GVector2D(0, 0);
 	}
 	
-	static function onMouseDown(e:MouseEvent):Void
+	static function onMouseDown(e:MouseEvent)
 	{
 		isDown = true;
 		isPressed = true;
 	}
 	
-	static function onMouseUp(e:MouseEvent):Void 
+	static function onMouseUp(e:MouseEvent) 
 	{
 		isDown = false;
 		isUp = true;
 		isPressed = false;
 	}
 	
-	static public function update():Void
+	static public function update()
 	{
 		position.x = Glue.stage.mouseX;
 		position.y = Glue.stage.mouseY;
 	}
 	
-	static public function clear():Void
+	static public function clear()
 	{
 		isUp = false;
 		isDown = false;

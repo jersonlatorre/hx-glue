@@ -27,7 +27,7 @@ import openfl.net.URLRequest;
 	static public var totalFiles = 0;
 	static public var isDownloading = false;
 	
-	static public function load(data:Dynamic):Void
+	static public function load(data:Dynamic)
 	{
 		switch (data.type)
 		{
@@ -67,7 +67,7 @@ import openfl.net.URLRequest;
 	}
 	
 	@:allow(glue.ui.GScene, glue.Glue, glue.ui.GSceneManager.showLoaderScene)
-	static function startDownload(callback:Dynamic = null):Void
+	static function startDownload(callback:Dynamic = null)
 	{
 		_callback = callback;
 
@@ -162,7 +162,7 @@ import openfl.net.URLRequest;
 		}
 	}
 
-	static function onLoadComplete():Void 
+	static function onLoadComplete()
 	{
 		_callback();
 	}

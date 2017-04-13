@@ -43,14 +43,14 @@ import openfl.ui.Keyboard;
 		}
 	}
 	
-	static public function init():Void
+	static public function init()
 	{
 		Glue.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 		Glue.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 		
 	}
 	
-	static function onKeyDown(e:KeyboardEvent):Void 
+	static function onKeyDown(e:KeyboardEvent) 
 	{
 		switch (e.keyCode)
 		{
@@ -63,7 +63,7 @@ import openfl.ui.Keyboard;
 		}
 	}
 	
-	static function onKeyUp(e:KeyboardEvent):Void 
+	static function onKeyUp(e:KeyboardEvent) 
 	{
 		switch (e.keyCode)
 		{

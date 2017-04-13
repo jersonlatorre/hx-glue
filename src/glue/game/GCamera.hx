@@ -83,7 +83,7 @@ import glue.utils.GVector2D;
 		return this;
 	}
 	
-	public function update():Void
+	public function update()
 	{
 		switch(_mode)
 		{

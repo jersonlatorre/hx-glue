@@ -17,7 +17,7 @@ import haxe.Timer;
 	static var _last:Float;
 	static var _dtLast:Float;
 	
-	static public function init():Void 
+	static public function init()
 	{
 		deltaTime = 0;
 		timelapse = 0;
@@ -25,7 +25,7 @@ import haxe.Timer;
 		_now = _last = Timer.stamp();
 	}
 	
-	static public function update():Void 
+	static public function update()
 	{
 		_now = Timer.stamp();
 		deltaTime = _now - _last;
