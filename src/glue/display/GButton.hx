@@ -3,7 +3,7 @@ package glue.display;
 import openfl.geom.Point;
 import openfl.geom.Rectangle;
 import openfl.display.BitmapData;
-import glue.data.GLoader;
+import glue.assets.GLoader;
 import openfl.display.Bitmap;
 import openfl.display.Sprite;
 import openfl.events.MouseEvent;

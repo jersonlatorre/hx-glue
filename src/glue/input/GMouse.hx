@@ -1,7 +1,7 @@
 package glue.input;
 
 import glue.Glue;
-import glue.utils.GVector2D;
+import glue.math.GVector2D;
 import openfl.events.MouseEvent;
 /**
  * ...

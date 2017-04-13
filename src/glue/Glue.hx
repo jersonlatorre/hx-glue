@@ -1,15 +1,15 @@
 package glue;
 
 import openfl.Lib;
-import glue.data.GLoader;
+import glue.assets.GLoader;
+import glue.scene.GPreloader;
 import glue.input.GKeyboard;
 import glue.input.GMouse;
-import glue.ui.GSceneManager;
+import glue.scene.GSceneManager;
 import glue.utils.GTime;
 import openfl.display.Sprite;
 import openfl.display.Stage;
 import openfl.events.Event;
-import glue.ui.GPreloader;
 
 @final class Glue
 {
@@ -23,7 +23,7 @@ import glue.ui.GPreloader;
 	static public var canvas:Sprite;
 	static public var isDebug:Bool = false;
 
-	@:allow(glue.data.GLoader)
+	@:allow(glue.assets.GLoader)
 	static var cacheCanvas:Sprite;
 
 	static public function start(data:Dynamic)

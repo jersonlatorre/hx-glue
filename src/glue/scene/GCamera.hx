@@ -1,7 +1,7 @@
-package glue.game;
+package glue.scene;
 
 import glue.display.GEntity;
-import glue.utils.GVector2D;
+import glue.math.GVector2D;
 
 /**
  * ...

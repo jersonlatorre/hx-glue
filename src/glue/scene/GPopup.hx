@@ -1,50 +1,39 @@
-package glue.ui;
+package glue.scene;
 
-import glue.data.GLoader;
-import glue.utils.GTools;
-import glue.display.GEntity;
-import glue.game.GCamera;
 import openfl.display.Sprite;
-import motion.Actuate;
-import motion.easing.Quad;
+import glue.display.GEntity;
+import glue.utils.GTools;
+import glue.assets.GLoader;
 
 /**
  * ...
  * @author Jerson La Torre
  */
 
-class GScene 
-{
+class GPopup 
+{	
 	var _canvas:Sprite;
-	var _sceneCanvas:Sprite;
-	var _effectCanvas:Sprite;
+	var _popupCanvas:Sprite;
 	var _layers:Map<String, Sprite> = new Map<String, Sprite>();
 	var _entities:Array<GEntity> = new Array<GEntity>();
 	var _mask:Sprite;
 	
-	public var camera:GCamera;
-	
 	public function preInit()
 	{
-		trace("Scene: " + GTools.getClassName(this));
+		trace("Popup: " + GTools.getClassName(this));
 
 		_canvas = new Sprite();
 		GSceneManager.canvas.addChild(_canvas);
 		
-		_sceneCanvas = new Sprite();
-		_canvas.addChild(_sceneCanvas);
-		
-		_effectCanvas = new Sprite();
-		_canvas.addChild(_effectCanvas);
+		_popupCanvas = new Sprite();
+		_canvas.addChild(_popupCanvas);
 		
 		_mask = new Sprite();
 		_canvas.addChild(_mask);
 		
 		addLayer("default");
 
-		Glue.stage.focus = _sceneCanvas;
-		
-		camera = new GCamera();
+		Glue.stage.focus = _popupCanvas;
 		
 		// mask
 		_mask.graphics.beginFill(0xFF0000, 0.3);
@@ -54,23 +43,15 @@ class GScene
 		_mask.y = 0;
 		_mask.mouseEnabled = false;
 		_mask.doubleClickEnabled = false;
-		_canvas.mask = _mask;		
+		_canvas.mask = _mask;
 
-		preload();
-		GLoader.startDownload(init);
+		init();
 	}
 
 	public function gotoScene(screenClass:Dynamic)
 	{
 		GSceneManager.gotoScene(screenClass);
 	}
-
-	public function load(data:Any)
-	{
-		GLoader.load(data);
-	}
-
-	public function preload() { }
 
 	public function init() {	}
 
@@ -81,7 +62,7 @@ class GScene
 		if (!_layers.exists(layerName))
 		{
 			var layer:Sprite = new Sprite();
-			_sceneCanvas.addChild(layer);
+			_popupCanvas.addChild(layer);
 			_layers.set(layerName, layer);
 		}
 		else
@@ -122,25 +103,11 @@ class GScene
 		}
 	}
 	
-	@:allow(glue.ui.GSceneManager)
+	@:allow(glue.scene.GSceneManager)
 	function preUpdate()
 	{
-		if (!GLoader.isDownloading)
-		{
-			update();
-		}
+		update();
 
-		// camera
-		camera.update();
-		
-		// canvas
-		_sceneCanvas.x = -camera.position.x + Glue.width / 2;
-		_sceneCanvas.y = -camera.position.y + Glue.height / 2;
-		
-		// world coordinates
-		//mouseX = GMouse.position.x / GEngine.stage.scaleX - _sceneCanvas.x;
-		//mouseY = GMouse.position.y / GEngine.stage.scaleY - _sceneCanvas.y;
-		
 		// entities
 		var i:Int = 0;
 		
@@ -169,29 +136,11 @@ class GScene
 		}
 	}
 	
-	public function fadeIn(duration:Float = 0.3)
-	{
-		var fade:Sprite = new Sprite();
-		fade.graphics.beginFill(0);
-		fade.graphics.drawRect(0, 0, Glue.width, Glue.height);
-		fade.graphics.endFill();
-		
-		fade.x = 0;
-		fade.y = 0;
-		
-		_effectCanvas.addChild(fade);
-		
-		Actuate.tween(fade, duration, { alpha: 0 } ).ease(Quad.easeInOut).onComplete(function()
-		{
-			_effectCanvas.removeChild(fade);
-		});
-	}
-	
 	public function destroy()
 	{
-		while (_sceneCanvas.numChildren > 0)
+		while (_popupCanvas.numChildren > 0)
 		{
-			_sceneCanvas.removeChildAt(0);
+			_popupCanvas.removeChildAt(0);
 		}
 
 		GSceneManager.canvas.removeChild(_canvas);

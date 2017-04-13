@@ -1,4 +1,4 @@
-package glue.data;
+package glue.assets;
 
 import glue.display.GImage;
 import haxe.Json;
@@ -66,7 +66,7 @@ import openfl.net.URLRequest;
 		}
 	}
 	
-	@:allow(glue.ui.GScene, glue.Glue, glue.ui.GSceneManager.showLoaderScene)
+	@:allow(glue.scene.GScene, glue.Glue, glue.scene.GSceneManager.showLoaderScene)
 	static function startDownload(callback:Dynamic = null)
 	{
 		_callback = callback;

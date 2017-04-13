@@ -1,4 +1,4 @@
-package glue.utils;
+package glue.math;
 
 /**
  * ...

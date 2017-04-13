@@ -1,7 +1,7 @@
-package glue.ui;
+package glue.scene;
 
-import glue.data.GLoader;
-import glue.ui.GPopup;
+import glue.assets.GLoader;
+import glue.scene.GPopup;
 import openfl.display.Sprite;
 
 /**

@@ -1,4 +1,4 @@
-package glue.utils;
+package glue.math;
 
 @:forward 
 abstract GVector2D(__GVectorBase) from __GVectorBase to __GVectorBase

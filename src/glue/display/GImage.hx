@@ -1,6 +1,6 @@
 package glue.display;
 
-import glue.data.GLoader;
+import glue.assets.GLoader;
 import openfl.display.Bitmap;
 
 /**

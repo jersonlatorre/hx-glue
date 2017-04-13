@@ -1,6 +1,6 @@
 package glue.display;
 
-import glue.data.GLoader;
+import glue.assets.GLoader;
 import glue.utils.GTime;
 import glue.utils.GTools;
 import openfl.display.Bitmap;
