@@ -1,5 +1,6 @@
 package scenes;
 
+import glue.display.GImage;
 import entities.Player;
 import glue.ui.GScene;
 
@@ -22,6 +23,8 @@ class GameScene extends GScene
 
 	override public function init()
 	{
+		new GImage("game_background").addTo(this);
+		
 		_player = new Player().addTo(this);
 		fadeIn();
 	}
