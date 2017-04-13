@@ -34,7 +34,7 @@ import openfl.net.URLRequest;
 			case "image":
 			{
 				var loader:Loader = new Loader();
-				_currentFiles.push( { type:data.type, id: data.id, url: data.src, loader:loader } );
+				_currentFiles.push( { type:data.type, id: data.id, url: data.url, loader:loader } );
 
 				totalFiles += 1;
 			}
@@ -42,11 +42,11 @@ import openfl.net.URLRequest;
 			case "spritesheet", "button":
 			{
 				var loader1:Loader = new Loader();
-				_currentFiles.push( { type: "image", id: data.id, url: data.src, loader:loader1 } );
+				_currentFiles.push( { type: "image", id: data.id, url: data.url, loader:loader1 } );
 				
 				var loader2:URLLoader = new URLLoader();
-				var i:Int = Std.string(data.src).lastIndexOf('.');
-				var s:String = Std.string(data.src).substring(0, i);
+				var i:Int = Std.string(data.url).lastIndexOf('.');
+				var s:String = Std.string(data.url).substring(0, i);
 				_currentFiles.push({ type: "data", id: data.id + "_data", url: s + ".json", loader:loader2 });
 
 				totalFiles += 2;
@@ -55,7 +55,7 @@ import openfl.net.URLRequest;
 			case "data":
 			{
 				var loader:URLLoader = new URLLoader();
-				_currentFiles.push( { type:data.type, id: data.id, url: data.src, loader:loader } );
+				_currentFiles.push( { type:data.type, id: data.id, url: data.url, loader:loader } );
 				totalFiles += 1;
 			}
 
