@@ -65,9 +65,24 @@ class GScene
 		GSceneManager.gotoScene(screenClass);
 	}
 
-	public function load(data:Any)
+	public function loadImage(id:String, url:String)
 	{
-		GLoader.load(data);
+		GLoader.load({ type:'image', url: url, id: id });
+	}
+
+	public function loadSpritesheet(id:String, url:String)
+	{
+		GLoader.load({ type:'spritesheet', url: url, id: id });
+	}
+
+	public function loadButton(id:String, url:String)
+	{
+		GLoader.load({ type:'button', url: url, id: id });
+	}
+
+	public function loadJson(id:String, url:String)
+	{
+		GLoader.load({ type:'data', url: url, id: id });
 	}
 
 	public function preload() { }
@@ -167,6 +182,13 @@ class GScene
 				i++;
 			}
 		}
+	}
+
+	public function createBackground(color:UInt)
+	{
+		_canvas.graphics.beginFill(color);
+		_canvas.graphics.drawRect(0, 0, Glue.width, Glue.height);
+		_canvas.graphics.endFill();
 	}
 	
 	public function fadeIn(duration:Float = 0.3)

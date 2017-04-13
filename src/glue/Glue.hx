@@ -68,9 +68,24 @@ import openfl.events.Event;
 		}
 	}
 
-	static public function load(data:Dynamic)
+	static public function loadImage(id:String, url:String)
 	{
-		GLoader.load(data);
+		GLoader.load({ type:'image', url: url, id: id });
+	}
+
+	static public function loadSpritesheet(id:String, url:String)
+	{
+		GLoader.load({ type:'spritesheet', url: url, id: id });
+	}
+
+	static public function loadButton(id:String, url:String)
+	{
+		GLoader.load({ type:'button', url: url, id: id });
+	}
+
+	static public function loadJson(id:String, url:String)
+	{
+		GLoader.load({ type:'data', url: url, id: id });
 	}
 
 	static function onAssetsDownloaded() 
