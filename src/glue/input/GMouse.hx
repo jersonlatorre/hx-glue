@@ -3,6 +3,7 @@ package glue.input;
 import glue.Glue;
 import glue.math.GVector2D;
 import openfl.events.MouseEvent;
+import openfl.ui.Mouse;
 /**
  * ...
  * @author Jerson La Torre
@@ -11,7 +12,7 @@ import openfl.events.MouseEvent;
 @final class GMouse 
 {
 	// public
-	static public var position:GVector2D;
+	static public var position:GVector2D = new GVector2D(0, 0);
 	static public var isDown:Bool;
 	static public var isUp:Bool;
 	static public var isPressed:Bool;
@@ -25,8 +26,6 @@ import openfl.events.MouseEvent;
 	{
 		Glue.stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 		Glue.stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
-		
-		position = new GVector2D(0, 0);
 	}
 	
 	static function onMouseDown(e:MouseEvent)
@@ -46,6 +45,16 @@ import openfl.events.MouseEvent;
 	{
 		position.x = Glue.stage.mouseX;
 		position.y = Glue.stage.mouseY;
+	}
+
+	static public function hide()
+	{
+		Mouse.hide();
+	}
+
+	static public function show()
+	{
+		Mouse.show();
 	}
 	
 	static public function clear()
