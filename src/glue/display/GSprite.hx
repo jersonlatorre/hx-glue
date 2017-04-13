@@ -64,8 +64,8 @@ class GSprite extends GEntity
 		
 		width = _sprite.width;
 		height = _sprite.height;
-		setAnchor(_anchor.x, _anchor.y);
 		animation = name;
+		preUpdate();
 
 		return this;
 	}
