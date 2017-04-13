@@ -15,7 +15,6 @@ class Player extends GSprite
 {
 	static inline private var SPEED_X:Float = 250;
 	private var _speedX:Float;
-	public var isPaused:Bool = false;
 
 	override public function init()
 	{
@@ -29,8 +28,6 @@ class Player extends GSprite
 	
 	override public function update()
 	{
-		if (isPaused) return;
-		
 		if (GKeyboard.isLeft || (GMouse.isPressed && GMouse.position.x < 400))
 		{
 			_speedX = -SPEED_X;
@@ -62,11 +59,5 @@ class Player extends GSprite
 		{
 			position.x = 30;
 		}
-	}
-	
-	public function die() 
-	{
-		// isDead = true;
-		// setAnimation("die");
 	}
 }
