@@ -17,14 +17,8 @@ class Main extends Sprite
 
 		/**
 		 *  Starts the game engine.
-		 *  
-		 *  Syntax:
-		 *  
-		 *  Glue.start({
-		 *  	mainScene (required)	:	[ First Scene from where the engine will start. ],
-		 *  	isDebug (optional)		: [ It will show traces in debugging mode. ]
-		 *  });
 		 */
+		 
 		Glue.start({
 			mainScene: MenuScene,
 			isDebug: true
