@@ -1,7 +1,8 @@
 package scenes;
 
-import glue.display.GImage;
 import glue.scene.GScene;
+import entities.Agent;
+import entities.Target;
 
 /**
  * ...
@@ -11,29 +12,29 @@ import glue.scene.GScene;
 
 class GameScene extends GScene
 {
-	var _background:GImage;
+	var _agent = new Agent();
+	var _target = new Target();
 
-	override public function preload():Void
+	override public function preload()
 	{
 		/**
 		 *  Load scene assets here.
-		 *  Is it not necessary to load assets in this case because
-		 *  all the assets where loaded in the Main class.
 		 */
 	}
 
-	override public function init():Void
+	override public function init()
 	{
-		_background = new GImage("background").addTo(this);
+		createBackground(0xDDDDDD);
 
-		/**
-		 *  Shows a little fadeIn when the scene starts.
-		 */
+		_agent = new Agent().addTo(this);
+		_target = new Target().addTo(this);
+
+		_agent.setTarget(_target);
+
 		fadeIn();
 	}
 	
-	override public function update():Void
+	override public function update()
 	{
-		
 	}
 }
