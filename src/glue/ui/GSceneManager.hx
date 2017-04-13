@@ -1,6 +1,7 @@
 package glue.ui;
 
 import glue.Glue;
+import glue.data.GLoader;
 import openfl.display.Sprite;
 import glue.utils.GTools;
 
@@ -13,15 +14,15 @@ import glue.utils.GTools;
 {
 	static public var canvas:Sprite;
 	static public var currentScene:GScene;
-	static public var currentPopup:GScene;
+	static public var currentPopup:GPopup;
 	
-	static public function init():Void
+	static public function init()
 	{
 		GSceneManager.canvas = Glue.canvas;
 		currentScene = null;
 	}
 	
-	static public function gotoScene(screenClass:Dynamic):Void
+	static public function gotoScene(screenClass:Dynamic)
 	{
 		if (Type.getSuperClass(screenClass) != GScene)
 		{
@@ -36,15 +37,20 @@ import glue.utils.GTools;
 		currentScene = Type.createInstance(screenClass, []);
 		Glue.stage.stageFocusRect = false;
 
-		preInitScene();
-	}
-	
-	static function preInitScene()
-	{
 		currentScene.preInit();
 	}
 
-	static public function showPopup(popupClass:Dynamic):Void
+	static public function showLoaderScene(loaderClass:Dynamic, callback:Dynamic)
+	{
+		showPopup(loaderClass);
+		GLoader.startDownload(function()
+		{
+			removePopup();
+			callback();
+		});
+	}
+
+	static public function showPopup(popupClass:Dynamic)
 	{
 		if (Type.getSuperClass(popupClass) != GPopup)
 		{
@@ -57,10 +63,10 @@ import glue.utils.GTools;
 		}
 		
 		currentPopup = Type.createInstance(popupClass, []);
-		currentPopup.preUpdate();
+		currentPopup.preInit();
 	}
 	
-	static public function removePopup():Void
+	static public function removePopup()
 	{
 		if (currentPopup != null)
 		{
@@ -69,7 +75,7 @@ import glue.utils.GTools;
 		}
 	}
 	
-	static public function update():Void
+	static public function update()
 	{
 		if (currentScene != null)
 		{
