@@ -16,17 +16,15 @@ import motion.easing.Quad;
 class GScene 
 {
 	var _canvas:Sprite;
+	var _sceneCanvas:Sprite;
 	var _effectCanvas:Sprite;
 	var _layers:Map<String, Sprite> = new Map<String, Sprite>();
 	var _entities:Array<GEntity> = new Array<GEntity>();
 	var _mask:Sprite;
-
-	var _sceneCanvas:Sprite;
-	var _popupCanvas:Sprite;
 	
 	public var camera:GCamera;
 	
-	public function new()
+	public function preInit()
 	{
 		trace("Scene: " + GTools.getClassName(this));
 
@@ -35,9 +33,6 @@ class GScene
 		
 		_sceneCanvas = new Sprite();
 		_canvas.addChild(_sceneCanvas);
-
-		_popupCanvas = new Sprite();
-		_canvas.addChild(_popupCanvas);
 		
 		_effectCanvas = new Sprite();
 		_canvas.addChild(_effectCanvas);
@@ -60,10 +55,7 @@ class GScene
 		_mask.mouseEnabled = false;
 		_mask.doubleClickEnabled = false;
 		_canvas.mask = _mask;		
-	}
 
-	public function preInit()
-	{
 		preload();
 		GLoader.startDownload(init);
 	}
@@ -177,7 +169,7 @@ class GScene
 		}
 	}
 	
-	public function fadeIn(duration:Float = 0.35)
+	public function fadeIn(duration:Float = 0.3)
 	{
 		var fade:Sprite = new Sprite();
 		fade.graphics.beginFill(0);
@@ -200,11 +192,6 @@ class GScene
 		while (_sceneCanvas.numChildren > 0)
 		{
 			_sceneCanvas.removeChildAt(0);
-		}
-
-		while (_popupCanvas.numChildren > 0)
-		{
-			_popupCanvas.removeChildAt(0);
 		}
 
 		GSceneManager.canvas.removeChild(_canvas);
