@@ -15,6 +15,7 @@ import glue.ui.GPreloader;
 {
 	static var mainScene:Dynamic;
 	static var customPreloader:Dynamic;
+	static var isPreloading:Bool;
 
 	static public var stage:Stage;
 	static public var width:Int = 800;
@@ -33,6 +34,7 @@ import glue.ui.GPreloader;
 		
 		Glue.mainScene = data.mainScene;
 		Glue.isDebug = data.isDebug;
+		customPreloader = data.preloader;
 		
 		Glue.stage.addEventListener(Event.ENTER_FRAME, onUpdate);
 			
@@ -49,30 +51,26 @@ import glue.ui.GPreloader;
 		GKeyboard.init();
 		GSceneManager.init();
 
-		if (data.assets == null)
+		if (isPreloading)
 		{
-			GSceneManager.gotoScene(Glue.mainScene);
-			return;
-		}
-		
-		if (customPreloader != null)
-		{
-			GSceneManager.gotoScene(customPreloader);
+			if (customPreloader == null)
+			{
+				GSceneManager.showLoaderScene(GPreloader, onAssetsDownloaded);
+			}
+			else
+			{
+				GSceneManager.showLoaderScene(customPreloader, onAssetsDownloaded);
+			}
 		}
 		else
 		{
-			GSceneManager.gotoScene(GPreloader);
+			GSceneManager.gotoScene(Glue.mainScene);
 		}
-		
-		if (data.assets != null)
-		{
-			for (i in 0...data.assets.length)
-			{
-				GLoader.load(data.assets[i]);
-			}
+	}
 
-			GLoader.startDownload(onAssetsDownloaded);
-		}
+	static public function load(data:Dynamic)
+	{
+		GLoader.load(data);
 	}
 
 	static function onAssetsDownloaded() 
