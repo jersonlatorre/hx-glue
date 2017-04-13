@@ -1,7 +1,7 @@
 package glue.ui;
 
 import glue.data.GLoader;
-import glue.ui.GScene;
+import glue.ui.GPopup;
 import openfl.display.Sprite;
 
 /**
@@ -9,14 +9,12 @@ import openfl.display.Sprite;
  * @author Jerson La Torre
  */
 
-class GPreloader extends GScene
+class GPreloader extends GPopup
 {
 	private var _bar:Sprite;
 	
-	public function new() 
+	override public function init()
 	{
-		super();
-
 		_bar = new Sprite();
 		_canvas.addChild(_bar);
 	}
@@ -34,10 +32,5 @@ class GPreloader extends GScene
 		}
 
 		_bar.graphics.endFill();
-	}
-	
-	override public function destroy():Void 
-	{
-		super.destroy();
 	}
 }
