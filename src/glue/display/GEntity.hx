@@ -22,7 +22,7 @@ import openfl.display.Sprite;
 	public var width:Float = 0;
 	public var height:Float = 0;
 
-	@:allow(glue.ui.GScene.preUpdate)
+	@:allow(glue.ui.GScene.preUpdate, glue.ui.GPopup.preUpdate)
 	var isDestroyed:Bool = false;
 	
 	public var position:GVector2D;
@@ -108,21 +108,21 @@ import openfl.display.Sprite;
 		return this;
 	}
 
-	@:allow(glue.ui.GScene.addEntity, glue.data.GLoader.onDownloadFileComplete)
+	@:allow(glue.ui.GScene.addEntity, glue.ui.GPopup.addEntity, glue.data.GLoader.onDownloadFileComplete)
 	function addToLayer(layer:Sprite):Dynamic
 	{
 		layer.addChild(_canvas);
 		return this;
 	}
 	
-	@:allow(glue.ui.GScene.preUpdate, glue.ui.GScene.removeEntity)
+	@:allow(glue.ui.GScene.preUpdate, glue.ui.GPopup.preUpdate, glue.ui.GScene.removeEntity, glue.ui.GPopup.removeEntity)
 	function removeFromLayer(layer:Sprite):Dynamic
 	{
 		layer.removeChild(_canvas);
 		return this;
 	}
 	
-	@:allow(glue.ui.GScene.preUpdate, glue.ui.GScene.removeEntity)
+	@:allow(glue.ui.GScene.preUpdate, glue.ui.GPopup.preUpdate, glue.ui.GScene.removeEntity, glue.ui.GPopup.removeEntity)
 	function isChildOfLayer(layer:Sprite):Bool
 	{
 		return layer.contains(_canvas);
@@ -130,7 +130,7 @@ import openfl.display.Sprite;
 	
 	public function update():Void { }
 
-	@:allow(glue.ui.GScene.preUpdate)
+	@:allow(glue.ui.GScene.preUpdate, glue.ui.GPopup.preUpdate)
 	function preUpdate():Void 
 	{
 		_canvas.x = Std.int(position.x);
