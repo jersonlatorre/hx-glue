@@ -16,10 +16,10 @@ class GameScene extends GScene
 
 	override public function preload()
 	{
-		loadImage("game_background", "img/game_background.png");
-		loadSpritesheet("player_idle", "img/player_idle.png");
-		loadSpritesheet("player_walk", "img/player_walk.png");
-		loadSpritesheet("player_jump", "img/player_jump.png");
+		loadImage("game_background", "images/game_background.png");
+		loadSpritesheet("player_idle", "images/player_idle.png");
+		loadSpritesheet("player_walk", "images/player_walk.png");
+		loadSpritesheet("player_jump", "images/player_jump.png");
 	}
 
 	override public function init()

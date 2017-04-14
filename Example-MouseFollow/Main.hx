@@ -19,9 +19,9 @@ class Main extends Sprite
 		 *  You can preload all your assets before the game starts.
 		 */
 
-		 Glue.loadImage("background_game", "img/background_game.png");
-		 Glue.loadImage("floor", "img/floor.png");
-		 Glue.loadSpritesheet("character_idle", "img/character_idle.png");
+		 Glue.loadImage("background_game", "images/background_game.png");
+		 Glue.loadImage("floor", "images/floor.png");
+		 Glue.loadSpritesheet("character_idle", "images/character_idle.png");
 
 		/**
 		 *  Starts the game engine.

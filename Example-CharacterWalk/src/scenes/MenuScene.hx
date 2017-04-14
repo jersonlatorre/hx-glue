@@ -15,8 +15,8 @@ class MenuScene extends GScene
 {
 	override public function preload()
 	{
-		loadImage("menu_background", "img/menu_background.png");
-		loadButton("button_play", "img/button_play.png");
+		loadImage("menu_background", "images/menu_background.png");
+		loadButton("button_play", "images/button_play.png");
 	}
 
 	override public function init()
