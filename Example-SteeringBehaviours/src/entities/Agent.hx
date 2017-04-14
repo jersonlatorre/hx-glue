@@ -18,12 +18,12 @@ class Agent extends GEntity
 	var _desired:GVector2D = new GVector2D();
 	var _steer:GVector2D = new GVector2D();
 
-	static inline var MAX_SPEED:Float = 150;
-	static inline var MAX_FORCE:Float = 100;
+	static inline var MAX_SPEED:Float = 200;
+	static inline var MAX_FORCE:Float = 200;
 
 	override public function init()
 	{
-		createRectangleGraphic(30, 15, 0x0000FF);
+		createRectangleGraphic(50, 25, 0x0000FF);
 		setAnchor(0.5, 0.5);
 		setPosition(Glue.width / 2, Glue.height / 2);
 	}

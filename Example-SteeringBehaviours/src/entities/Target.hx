@@ -12,7 +12,7 @@ class Target extends GEntity
 {
 	override public function init()
 	{
-		createCircleGraphic(10, 0xFF0000);
+		createCircleGraphic(18, 0xFF0000);
 		setAnchor(0.5, 0.5);
 	}
 
