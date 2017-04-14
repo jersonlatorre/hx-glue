@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
 	<!-- metadata, make sure 'package' is at least 3 segments (ie. com.mycompany.myproject) -->
-	<meta title="Example_SteeringBehaviours-Input" package="com.plug.Example_SteeringBehaviours" version="1.0.0" company="Plug" />
+	<meta title="Example-SteeringBehaviours" package="com.plug.Example-SteeringBehaviours" version="1.0.0" company="Plug" />
 	<android target-sdk-version="19" />
 	
 	<!-- output -->
-	<app main="Main" file="Example_SteeringBehaviours" path="bin" />
+	<app main="Main" file="Example-SteeringBehaviours" path="bin" />
 	
-	<window background="#000000" width="800" height="500"/>
+	<window background="#000000" width="500" height="500"/>
 	<window vsync="true" hardware="true" fps="60"/>
+
+	<template path="assets/templates/index.html" rename="index.html" />
 	
 	<!-- classpath, haxe libs -->
 	<source path="src" />
@@ -17,7 +19,4 @@
 	<haxelib name="openfl" />
 	<haxelib name="actuate" />
 	<!--haxelib name="glue" /-->
-
-	<!-- assets -->
-	<assets path="assets/img" rename="img" />
 </project>
