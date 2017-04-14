@@ -19,5 +19,5 @@
 	<!--haxelib name="glue" /-->
 
 	<!-- assets -->
-	<!--<assets path="assets/img" rename="img" />-->
+	<assets path="assets/img" rename="img" />
 </project>
