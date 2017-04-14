@@ -19,6 +19,7 @@ class GameScene extends GScene
 		loadImage("game_background", "img/game_background.png");
 		loadSpritesheet("player_idle", "img/player_idle.png");
 		loadSpritesheet("player_walk", "img/player_walk.png");
+		loadSpritesheet("player_jump", "img/player_jump.png");
 	}
 
 	override public function init()
