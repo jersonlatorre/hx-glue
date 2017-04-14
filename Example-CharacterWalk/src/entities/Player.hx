@@ -53,7 +53,14 @@ class Player extends GSprite
 		
 		if (!GKeyboard.isRight && !GKeyboard.isLeft)
 		{
-			_velocity.x = 0;
+			_velocity.x *= 0.90;
+			
+			if (Math.abs(_velocity.x) < 9) _velocity.x = 0;
+
+			if (position.x <= width / 2 || position.x >= Glue.width - width / 2)
+			{
+				_velocity.x = 0;
+			}
 		}
 
 
@@ -90,9 +97,20 @@ class Player extends GSprite
 		 *  Limit bounds
 		 */
 		 
-		if (position.x >= 800 - 30) position.x = 800 - 30;
-		if (position.x <= 30) position.x = 30;
-		if (position.y >= FLOOR_Y) position.y = FLOOR_Y;
+		if (position.x >= Glue.width - width / 2)
+		{
+			position.x = Glue.width - width / 2;
+		}
+
+		if (position.x <= width / 2)
+		{
+			position.x = width / 2;
+		}
+
+		if (position.y >= FLOOR_Y)
+		{
+			position.y = FLOOR_Y;
+		}
 
 
 		/**
