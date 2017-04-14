@@ -14,13 +14,13 @@ import glue.math.GVector2D;
 
 class Player extends GSprite
 {
-	var SPEED_X:Float = 300;
-	var GRAVITY:GVector2D = new GVector2D(0, 2000);
-	var JUMP_IMPULSE:GVector2D = new GVector2D(0, -800);
 	var _velocity:GVector2D = new GVector2D(0, 0);
-	var _speedX:Float = 0;
 	var _isJumping:Bool = false;
-	
+
+	var GRAVITY:GVector2D = new GVector2D(0, 2500);
+	var JUMP_IMPULSE:GVector2D = new GVector2D(0, -900);
+	var WALK_SPEED:GVector2D = new GVector2D(300, 0);
+	var FLOOR_Y:Float = 460;
 
 	override public function init()
 	{
@@ -30,7 +30,7 @@ class Player extends GSprite
 		play("idle");
 
 		setAnchor(0.5, 1);
-		setPosition(Glue.width / 2, Glue.height - 60);
+		setPosition(Glue.width / 2, FLOOR_Y);
 	}
 	
 	override public function update()
@@ -39,24 +39,22 @@ class Player extends GSprite
 		 *  Walk
 		 */
 
-		if (GKeyboard.isLeft || (GMouse.isPressed && GMouse.position.x < 400))
+		if (GKeyboard.isLeft)
 		{
-			_speedX = -SPEED_X;
+			_velocity.x = -WALK_SPEED.x;
 			setScaleX(-1);
 		}
 		
-		if (GKeyboard.isRight || (GMouse.isPressed && GMouse.position.x >= 400))
+		if (GKeyboard.isRight)
 		{
-			_speedX = SPEED_X;
+			_velocity.x = WALK_SPEED.x;
 			setScaleX(1);
 		}
 		
-		if (!GKeyboard.isRight && !GKeyboard.isLeft && !GMouse.isPressed)
+		if (!GKeyboard.isRight && !GKeyboard.isLeft)
 		{
-			_speedX = 0;
+			_velocity.x = 0;
 		}
-
-		position.x += _speedX * GTime.deltaTime;
 
 
 		/**
@@ -66,17 +64,23 @@ class Player extends GSprite
 		if (GKeyboard.isUp && !_isJumping)
 		{
 			_isJumping = true;
-			_velocity = JUMP_IMPULSE;
+			_velocity.y = JUMP_IMPULSE.y;
 		}
 
 		if (_isJumping)
 		{
-			if (position.y >= Glue.height - 60)
+			if (position.y >= FLOOR_Y)
 			{
-				position.y = Glue.height - 60;
+				position.y = FLOOR_Y;
 				_isJumping = false;
 			}
 		}
+
+
+		/**
+		 *  velocity += acceleration
+		 *  position += velocity
+		 */
 
 		_velocity += GRAVITY * GTime.deltaTime;
 		position += _velocity * GTime.deltaTime;
@@ -86,20 +90,9 @@ class Player extends GSprite
 		 *  Limit bounds
 		 */
 		 
-		if (position.x >= 800 - 35)
-		{
-			position.x = 800 - 35;
-		}
-		
-		if (position.x <= 35)
-		{
-			position.x = 35;
-		}
-
-		if (position.y >= Glue.height - 60)
-		{
-			position.y = Glue.height - 60;
-		}
+		if (position.x >= 800 - 30) position.x = 800 - 30;
+		if (position.x <= 30) position.x = 30;
+		if (position.y >= FLOOR_Y) position.y = FLOOR_Y;
 
 
 		/**
@@ -112,7 +105,7 @@ class Player extends GSprite
 		}
 		else
 		{
-			if (_speedX != 0)
+			if (_velocity.x != 0)
 			{
 				play("walk");
 			}
