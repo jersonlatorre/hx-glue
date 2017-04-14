@@ -7,7 +7,7 @@
 	<!-- output -->
 	<app main="Main" file="Example-Character" path="bin" />
 	
-	<window background="#000000" width="800" height="500"/>
+	<window background="#000000" width="500" height="500"/>
 	<window vsync="true" hardware="true"/>
 
 	<template path="assets/templates/index.html" rename="index.html" />
@@ -21,5 +21,5 @@
 	<!--haxelib name="glue" /-->
 
 	<!-- assets -->
-	<!--<assets path="assets/images" rename="images" />-->
+	<assets path="assets/images" rename="images" />
 </project>
