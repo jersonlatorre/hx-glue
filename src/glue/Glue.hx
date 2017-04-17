@@ -88,6 +88,11 @@ import openfl.events.Event;
 		GLoader.load({ type:'data', url: url, id: id });
 	}
 
+	public function loadSound(id:String, url:String, group:String)
+	{
+		GLoader.load({ type:'sound', url: url, id: id, group:group });
+	}
+
 	static function onAssetsDownloaded() 
 	{
 		GSceneManager.gotoScene(Glue.mainScene);
