@@ -5,7 +5,7 @@ package glue.utils;
  * @author Jerson La Torre
  */
 
-@final class GTools
+@:final class GTools
 {
 	public static function floatToStringPrecision(n:Float, prec:Int)
 	{

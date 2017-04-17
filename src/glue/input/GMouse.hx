@@ -9,7 +9,7 @@ import openfl.ui.Mouse;
  * @author Jerson La Torre
  */	
  
-@final class GMouse 
+@:final class GMouse 
 {
 	// public
 	static public var position:GVector2D = new GVector2D(0, 0);

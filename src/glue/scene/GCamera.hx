@@ -8,7 +8,7 @@ import glue.math.GVector2D;
  * @author Jerson La Torre
  */
 
-@final class GCamera
+@:final class GCamera
 {
 
 	public var position:GVector2D;

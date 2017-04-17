@@ -11,7 +11,7 @@ import openfl.display.Sprite;
 import openfl.display.Stage;
 import openfl.events.Event;
 
-@final class Glue
+@:final class Glue
 {
 	static var mainScene:Dynamic;
 	static var customPreloader:Dynamic;

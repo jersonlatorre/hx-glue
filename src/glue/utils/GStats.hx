@@ -11,7 +11,7 @@ import openfl.text.TextFormat;
  * @author Kirill Poletaev
  */
  
-@final class GStats extends TextField
+@:final class GStats extends TextField
 {
 	private var times:Array<Float>;
 	private var memPeak:Float = 0;

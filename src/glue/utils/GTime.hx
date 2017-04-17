@@ -7,7 +7,7 @@ import haxe.Timer;
  * @author Jerson La Torre
  */
 
-@final class GTime 
+@:final class GTime 
 {
 	static public var deltaTime:Float;
 	static public var timelapse:Float;

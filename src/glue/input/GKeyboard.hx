@@ -9,7 +9,7 @@ import openfl.ui.Keyboard;
  * @author Jerson La Torre
  */
 
-@final class GKeyboard 
+@:final class GKeyboard 
 {
 	static public inline var LEFT:Int = 37;
 	static public inline var RIGHT:Int = 39;

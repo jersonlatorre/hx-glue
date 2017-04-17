@@ -5,7 +5,7 @@ package glue.math;
  * @author Jerson La Torre
  */
 
-@final class GMath 
+@:final class GMath 
 {
 	static public function sign(x:Float):Int
 	{

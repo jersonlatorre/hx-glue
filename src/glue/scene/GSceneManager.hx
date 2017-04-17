@@ -10,7 +10,7 @@ import glue.utils.GTools;
  * @author Jerson La Torre
  */
 
-@final class GSceneManager 
+@:final class GSceneManager 
 {
 	static public var canvas:Sprite;
 	static public var currentScene:GScene;

@@ -54,7 +54,7 @@ abstract GVector2D(__GVectorBase) from __GVectorBase to __GVectorBase
   }
 }
 
-@final class __GVectorBase
+@:final class __GVectorBase
 {
   public var x:Float;
   public var y:Float;
