@@ -1,8 +1,10 @@
 package glue.display;
 
 import glue.scene.GScene;
+import glue.scene.GSceneManager;
 import glue.math.GMath;
 import glue.math.GVector2D;
+import glue.assets.GSound;
 import openfl.display.Sprite;
 
 /**
@@ -145,6 +147,31 @@ class GEntity
 		this._skin.alpha = alpha;
 		this._alpha = alpha;
 		return this;
+	}
+
+	public function gotoScene(screenClass:Dynamic)
+	{
+		GSceneManager.gotoScene(screenClass);
+	}
+
+	public function playSound(id:String)
+	{
+		GSound.play(id);
+	}
+
+	public function loopSound(id:String)
+	{
+		GSound.loop(id);
+	}
+
+	public function stopSound(id:String)
+	{
+		GSound.stop(id);
+	}
+
+	public function stopAllSounds()
+	{
+		GSound.stopAll();
 	}
 
 	@:allow(glue.scene.GScene.addEntity, glue.scene.GPopup.addEntity, glue.data.GLoader.onDownloadFileComplete)
