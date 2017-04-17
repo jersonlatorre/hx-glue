@@ -21,7 +21,8 @@ class Main extends Sprite
 		 
 		Glue.start({
 			mainScene: MenuScene,
-			isDebug: true
+			isDebug: true,
+			showStats: true
 		});
 	}
 }
