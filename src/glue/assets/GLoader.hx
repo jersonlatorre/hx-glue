@@ -33,6 +33,8 @@ import openfl.media.SoundTransform;
 	
 	static public function load(data:Dynamic)
 	{
+		if (_loadedFiles.exists(data.id)) return;
+
 		switch (data.type)
 		{
 			case "image":
@@ -85,7 +87,7 @@ import openfl.media.SoundTransform;
 		}
 		else
 		{
-			trace("Initialize loading...");
+			if (Glue.isDebug) trace("Initialize loading...");
 			isDownloading = true;
 
 			for (file in _currentFiles)
@@ -113,7 +115,7 @@ import openfl.media.SoundTransform;
 	{
 		return function(e:Event)
 		{
-			trace("--- " + file.id);
+			if (Glue.isDebug) trace("--- " + file.id);
 
 			switch (file.type)
 			{
@@ -138,6 +140,7 @@ import openfl.media.SoundTransform;
 				}
 				case "sound":
 				{
+					_currentLoadedFiles.set(file.id, file.loader);
 					GSound.addSound(file.id, file.loader, file.group);
 				}
 			}
@@ -150,7 +153,7 @@ import openfl.media.SoundTransform;
 				totalFiles = 0;
 				isDownloading = false;
 				updateLoadedFiles();
-				trace("Loading complete.");
+				if (Glue.isDebug) trace("Loading complete.");
 				if (_callback != null) _callback();
 			}
 		}
