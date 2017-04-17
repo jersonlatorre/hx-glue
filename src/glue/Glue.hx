@@ -7,6 +7,7 @@ import glue.input.GKeyboard;
 import glue.input.GMouse;
 import glue.scene.GSceneManager;
 import glue.utils.GTime;
+import glue.utils.GStats;
 import openfl.display.Sprite;
 import openfl.display.Stage;
 import openfl.events.Event;
@@ -45,6 +46,12 @@ import openfl.events.Event;
 
 		canvas = new Sprite();
 		Glue.stage.addChild(canvas);
+
+		if (data.showStats)
+		{
+			var stats = new GStats();
+			Glue.stage.addChild(stats);
+		}
 		
 		GTime.init();
 		GMouse.init();
