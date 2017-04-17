@@ -3,7 +3,6 @@ package entities;
 import glue.input.GKeyboard;
 import glue.Glue;
 import glue.display.GSprite;
-import glue.input.GMouse;
 import glue.utils.GTime;
 import glue.math.GVector2D;
 
@@ -70,20 +69,12 @@ class Player extends GSprite
 
 		if (GKeyboard.isUp && !_isJumping)
 		{
+			playSound("jump");
 			_isJumping = true;
 			_velocity.y = JUMP_IMPULSE.y;
 		}
 
-		if (_isJumping)
-		{
-			if (position.y >= FLOOR_Y)
-			{
-				position.y = FLOOR_Y;
-				_isJumping = false;
-			}
-		}
-
-
+		
 		/**
 		 *  velocity += acceleration
 		 *  position += velocity
@@ -91,6 +82,20 @@ class Player extends GSprite
 
 		_velocity += GRAVITY * GTime.deltaTime;
 		position += _velocity * GTime.deltaTime;
+
+
+		/**
+		 *  Stop jumping
+		 */
+
+		if (_isJumping)
+		{
+			if (position.y > FLOOR_Y)
+			{
+				position.y = FLOOR_Y;
+				_isJumping = false;
+			}
+		}
 		
 
 		/**
@@ -107,7 +112,7 @@ class Player extends GSprite
 			position.x = width / 2;
 		}
 
-		if (position.y >= FLOOR_Y)
+		if (position.y > FLOOR_Y)
 		{
 			position.y = FLOOR_Y;
 		}
