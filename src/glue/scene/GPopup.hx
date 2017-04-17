@@ -5,6 +5,8 @@ import glue.display.GEntity;
 import glue.utils.GTools;
 import glue.assets.GLoader;
 import glue.assets.GSound;
+import glue.input.GKeyboard;
+import glue.input.GMouse;
 
 /**
  * ...
@@ -18,10 +20,14 @@ class GPopup
 	var _layers:Map<String, Sprite> = new Map<String, Sprite>();
 	var _entities:Array<GEntity> = new Array<GEntity>();
 	var _mask:Sprite;
+
+	public var isMouseDown(get, null):Bool;
+	public var isMouseUp(get, null):Bool;
+	public var isMousePressed(get, null):Bool;
 	
 	public function preInit()
 	{
-		trace("Popup: " + GTools.getClassName(this));
+		haxe.Log.trace('[ Popup: ${ GTools.getClassName(this) } ]' , null);
 
 		_canvas = new Sprite();
 		GSceneManager.canvas.addChild(_canvas);
@@ -72,6 +78,41 @@ class GPopup
 	public function stopAllSounds()
 	{
 		GSound.stopAll();
+	}
+
+	public function isKeyDown(actionName:String)
+	{
+		return GKeyboard.isDown(actionName);
+	}
+
+	public function isKeyUp(actionName:String)
+	{
+		return GKeyboard.isUp(actionName);
+	}
+
+	public function justPressed(actionName:String)
+	{
+		return GKeyboard.justPressed(actionName);
+	}
+
+	function get_isMouseDown()
+	{
+		return GMouse.isDown;
+	}
+
+	function get_isMouseUp()
+	{
+		return GMouse.isUp;
+	}
+
+	function get_isMousePressed()
+	{
+		return GMouse.isPressed;
+	}
+
+	public function bindAction(actionName:String, keys:Array<Int>)
+	{
+		GKeyboard.bind(actionName, keys);
 	}
 
 	public function init() {	}

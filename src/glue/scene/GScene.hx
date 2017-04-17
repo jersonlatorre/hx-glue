@@ -5,6 +5,8 @@ import glue.assets.GSound;
 import glue.utils.GTools;
 import glue.display.GEntity;
 import glue.scene.GCamera;
+import glue.input.GKeyboard;
+import glue.input.GMouse;
 import openfl.display.Sprite;
 import motion.Actuate;
 import motion.easing.Quad;
@@ -22,12 +24,16 @@ class GScene
 	var _layers:Map<String, Sprite> = new Map<String, Sprite>();
 	var _entities:Array<GEntity> = new Array<GEntity>();
 	var _mask:Sprite;
+
+	public var isMouseDown(get, null):Bool;
+	public var isMouseUp(get, null):Bool;
+	public var isMousePressed(get, null):Bool;
 	
 	public var camera:GCamera;
 	
 	public function preInit()
 	{
-		trace("Scene: " + GTools.getClassName(this));
+		if (Glue.isDebug) haxe.Log.trace('[ Scene: ${ GTools.getClassName(this) } ]', null);
 
 		_canvas = new Sprite();
 		GSceneManager.canvas.addChild(_canvas);
@@ -84,6 +90,41 @@ class GScene
 	public function stopAllSounds()
 	{
 		GSound.stopAll();
+	}
+
+	public function isKeyDown(actionName:String)
+	{
+		return GKeyboard.isDown(actionName);
+	}
+
+	public function isKeyUp(actionName:String)
+	{
+		return GKeyboard.isUp(actionName);
+	}
+
+	public function justPressed(actionName:String)
+	{
+		return GKeyboard.justPressed(actionName);
+	}
+
+	function get_isMouseDown()
+	{
+		return GMouse.isDown;
+	}
+
+	function get_isMouseUp()
+	{
+		return GMouse.isUp;
+	}
+
+	function get_isMousePressed()
+	{
+		return GMouse.isPressed;
+	}
+
+	public function bindAction(actionName:String, keys:Array<Int>)
+	{
+		GKeyboard.bind(actionName, keys);
 	}
 
 	public function loadImage(id:String, url:String)
