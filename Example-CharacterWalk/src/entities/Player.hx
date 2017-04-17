@@ -1,9 +1,9 @@
 package entities;
 
-import glue.input.GKeyboard;
+import glue.utils.GTime;
+import glue.input.GKey;
 import glue.Glue;
 import glue.display.GSprite;
-import glue.utils.GTime;
 import glue.math.GVector2D;
 
 /**
@@ -30,6 +30,10 @@ class Player extends GSprite
 
 		setAnchor(0.5, 1);
 		setPosition(Glue.width / 2, FLOOR_Y);
+
+		bindAction("jump", [GKey.UP, GKey.W]);
+		bindAction("right", [GKey.RIGHT, GKey.D]);
+		bindAction("left", [GKey.LEFT, GKey.A]);
 	}
 	
 	override public function update()
@@ -38,23 +42,30 @@ class Player extends GSprite
 		 *  Walk
 		 */
 
-		if (GKeyboard.isLeft)
+		if (justPressed("jump"))
 		{
 			_velocity.x = -WALK_SPEED.x;
 			setScaleX(-1);
 		}
 		
-		if (GKeyboard.isRight)
+		if (isKeyDown("right"))
 		{
 			_velocity.x = WALK_SPEED.x;
 			setScaleX(1);
 		}
-		
-		if (!GKeyboard.isRight && !GKeyboard.isLeft)
+
+		if (isKeyDown("left"))
 		{
+			_velocity.x = -WALK_SPEED.x;
+			setScaleX(-1);
+		}
+		
+		if (!isKeyDown("right") && !isKeyDown("left"))
+		{
+			// _velocity.x = 0;
 			_velocity.x *= 0.90;
 			
-			if (Math.abs(_velocity.x) < 9) _velocity.x = 0;
+			if (Math.abs(_velocity.x) < 10) _velocity.x = 0;
 
 			if (position.x <= width / 2 || position.x >= Glue.width - width / 2)
 			{
@@ -67,7 +78,7 @@ class Player extends GSprite
 		 *  Jump
 		 */
 
-		if (GKeyboard.isUp && !_isJumping)
+		if (isKeyDown("jump") && !_isJumping)
 		{
 			playSound("jump");
 			_isJumping = true;
@@ -76,8 +87,7 @@ class Player extends GSprite
 
 		
 		/**
-		 *  velocity += acceleration
-		 *  position += velocity
+		 *  Physics
 		 */
 
 		_velocity += GRAVITY * GTime.deltaTime;
