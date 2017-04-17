@@ -56,4 +56,20 @@ typedef SoundData =
 			if (sound.channel != null) sound.channel.stop();
 		}
 	}
+
+	static public function muteAll()
+	{
+		for (sound in _sounds)
+		{
+			if (sound.channel != null) sound.channel.soundTransform = new SoundTransform(0);
+		}
+	}
+
+	static public function unmuteAll()
+	{
+		for (sound in _sounds)
+		{
+			if (sound.channel != null) sound.channel.soundTransform = new SoundTransform(1);
+		}
+	}
 }
