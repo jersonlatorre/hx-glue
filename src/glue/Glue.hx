@@ -111,6 +111,7 @@ import openfl.events.Event;
 		GMouse.update();
 		GSceneManager.update();
 		GMouse.clear();
+		GKeyboard.update();
 	}
 	
 	static public function setScale(x:Float, y:Float)
