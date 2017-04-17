@@ -32,7 +32,6 @@ import openfl.ui.Keyboard;
 		if (!_actions.exists(actionName))
 		{
 			throw 'The action \'$actionName\' has not been binded.';
-			return false;
 		}
 
 		for (key in _actions.get(actionName))
@@ -52,7 +51,6 @@ import openfl.ui.Keyboard;
 		if (!_actions.exists(actionName))
 		{
 			throw 'The action \'$actionName\' has not been binded.';
-			return false;
 		}
 
 		for (key in _actions.get(actionName))
@@ -72,7 +70,6 @@ import openfl.ui.Keyboard;
 		if (!_actions.exists(actionName))
 		{
 			throw 'The action \'$actionName\' has not been binded.';
-			return null;
 		}
 
 		for (key in _actions.get(actionName))
