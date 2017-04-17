@@ -1,6 +1,5 @@
 package scenes;
 
-import glue.input.GMouse;
 import glue.display.GImage;
 import entities.Player;
 import glue.scene.GScene;
@@ -43,7 +42,7 @@ class GameScene extends GScene
 	
 	override public function update()
 	{
-		if (GMouse.isDown)
+		if (isMouseDown)
 		{
 			gotoScene(MenuScene);
 			stopAllSounds();
