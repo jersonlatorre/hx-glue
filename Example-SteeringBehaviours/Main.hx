@@ -28,6 +28,7 @@ class Main extends Sprite
 		 
 		Glue.start({
 			mainScene: GameScene,
+			showStats: true
 		});
 	}
 }

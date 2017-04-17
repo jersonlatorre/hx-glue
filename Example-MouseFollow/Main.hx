@@ -35,7 +35,8 @@ class Main extends Sprite
 		 */
 		Glue.start({
 			mainScene: GameScene,
-			isDebug: true
+			isDebug: true,
+			showStats: true
 		});
 	}
 }
