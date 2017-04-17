@@ -87,7 +87,7 @@ import openfl.media.SoundTransform;
 		}
 		else
 		{
-			if (Glue.isDebug) trace("Initialize loading...");
+			// if (Glue.isDebug) haxe.Log.trace(" ┌── Init loading", null);
 			isDownloading = true;
 
 			for (file in _currentFiles)
@@ -115,7 +115,7 @@ import openfl.media.SoundTransform;
 	{
 		return function(e:Event)
 		{
-			if (Glue.isDebug) trace("--- " + file.id);
+			if (Glue.isDebug) haxe.Log.trace('├─ ${ file.id } ✔', null);
 
 			switch (file.type)
 			{
@@ -153,7 +153,7 @@ import openfl.media.SoundTransform;
 				totalFiles = 0;
 				isDownloading = false;
 				updateLoadedFiles();
-				if (Glue.isDebug) trace("Loading complete.");
+				if (Glue.isDebug) haxe.Log.trace("└── Loading complete.", null);
 				if (_callback != null) _callback();
 			}
 		}
@@ -181,7 +181,7 @@ import openfl.media.SoundTransform;
 	{
 		return function(e:IOErrorEvent)
 		{
-			throw "Error Downloading '" + file.id + "'";
+			throw 'Error Downloading ${ file.id }';
 		}
 	}
 
@@ -194,7 +194,7 @@ import openfl.media.SoundTransform;
 	{
 		if (!_loadedFiles.exists(id))
 		{
-			throw "Image '" + id + "' not loaded.";
+			throw 'Image $id not loaded.';
 		}
 		else
 		{
@@ -209,7 +209,7 @@ import openfl.media.SoundTransform;
 	{
 		if (!_loadedFiles.exists(id))
 		{
-			throw "JSON file '" + id + "' not loaded.";
+			throw 'JSON file $id not loaded.';
 		}
 		else
 		{
@@ -221,7 +221,7 @@ import openfl.media.SoundTransform;
 			}
 			catch (e:Any)
 			{
-				throw "JSON file '" + id + "' is not a valid JSON data.";
+				throw 'JSON file $id is not a valid JSON data.';
 			}
 		}
 	}
