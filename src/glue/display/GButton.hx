@@ -19,20 +19,25 @@ class GButton extends GEntity
 	var _hitBmd:BitmapData;
 	var _mask:Sprite;
 	var _frames:Array<Dynamic> = new Array<Dynamic>();
-	var _callback:Dynamic;
+	var _callbackClick:Dynamic = null;
+	var _callbackMouseOver:Dynamic = null;
+	var _callbackMouseDown:Dynamic = null;
+	var _callbackMouseOut:Dynamic = null;
+	var _callbackMouseEnter:Dynamic = null;
 	var _isDown:Bool;
+	var _isEnter:Bool;
 
-	public function new(spriteId:String = null)
+	public function new(id:String)
 	{
 		super();
 
-		var data:Dynamic = GLoader.getJson(spriteId + "_data");
+		var data:Dynamic = GLoader.getJson(id + "_data");
 		for (i in 0...data.frames.length) _frames.push(data.frames[i]);
 
 		width = _frames[0].sourceSize.w * _scaleX;
 		height = _frames[0].sourceSize.h * _scaleY;
 		
-		_image = GLoader.getImage(spriteId);
+		_image = GLoader.getImage(id);
 		_image.smoothing = true;
 		_mask = new Sprite();
 		_mask.graphics.beginFill(0);
@@ -69,6 +74,14 @@ class GButton extends GEntity
 		{
 			if (_hitBmd.getPixel32(Std.int(e.localX), Std.int(e.localY)) != 0)
 			{
+				if (_callbackMouseOver != null) _callbackMouseOver();
+
+				if (!_isEnter)
+				{
+					_isEnter = true;
+					if (_callbackMouseEnter != null) _callbackMouseEnter();
+				}
+
 				if (!e.buttonDown) setOver();
 				_skin.buttonMode = true;
 			}
@@ -76,6 +89,13 @@ class GButton extends GEntity
 			{
 				setNormal();
 				_skin.buttonMode = false;
+
+				if (_isEnter)
+				{
+					if (_callbackMouseOut != null) _callbackMouseOut();
+				}
+
+				_isEnter = false;
 			}
 		});
 
@@ -84,12 +104,20 @@ class GButton extends GEntity
 				setNormal();
 				_isDown = false;
 				_skin.buttonMode = false;
+
+				if (_isEnter)
+				{
+					if (_callbackMouseOut != null) _callbackMouseOut();
+				}
+				
+				_isEnter = false;
 		});
 
 		_skin.addEventListener(MouseEvent.MOUSE_DOWN, function(e:MouseEvent)
 		{
 			if (_hitBmd.getPixel32(Std.int(e.localX), Std.int(e.localY)) != 0)
 			{
+				if (_callbackMouseDown != null) _callbackMouseDown();
 				_isDown = true;
 				setDown();
 			}
@@ -105,7 +133,7 @@ class GButton extends GEntity
 			{
 				setOver();
 				_skin.buttonMode = false;
-				if (_callback != null) _callback();
+				if (_callbackClick != null) _callbackClick();
 			}
 			else
 			{
@@ -118,7 +146,31 @@ class GButton extends GEntity
 	
 	public function onClick(callback:Dynamic):GButton
 	{
-		_callback = callback;
+		_callbackClick = callback;
+		return this;
+	}
+
+	public function onMouseOver(callback:Dynamic):GButton
+	{
+		_callbackMouseOver = callback;
+		return this;
+	}
+
+	public function onMouseDown(callback:Dynamic):GButton
+	{
+		_callbackMouseDown = callback;
+		return this;
+	}
+
+	public function onMouseOut(callback:Dynamic):GButton
+	{
+		_callbackMouseOut = callback;
+		return this;
+	}
+
+	public function onMouseEnter(callback:Dynamic):GButton
+	{
+		_callbackMouseEnter = callback;
 		return this;
 	}
 
