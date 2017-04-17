@@ -4,6 +4,7 @@ import openfl.display.Sprite;
 import glue.display.GEntity;
 import glue.utils.GTools;
 import glue.assets.GLoader;
+import glue.assets.GSound;
 
 /**
  * ...
@@ -51,6 +52,26 @@ class GPopup
 	public function gotoScene(screenClass:Dynamic)
 	{
 		GSceneManager.gotoScene(screenClass);
+	}
+
+	public function playSound(id:String)
+	{
+		GSound.play(id);
+	}
+
+	public function loopSound(id:String)
+	{
+		GSound.loop(id);
+	}
+
+	public function stopSound(id:String)
+	{
+		GSound.stop(id);
+	}
+
+	public function stopAllSounds()
+	{
+		GSound.stopAll();
 	}
 
 	public function init() {	}
