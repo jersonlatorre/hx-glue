@@ -55,17 +55,17 @@ class GSprite extends GEntity
 		
 		if (_animations[name] == null)
 		{
-			throw GTools.getClassName(this) + " -> A sprite ID must be provided!";
+			throw '${ GTools.getClassName(this) } -> a sprite ID must be provided!';
 		}
 		
 		_sprite = new __GSpriteBase(_animations[name].id, _animations[name].fps);
 		_sprite.addToLayer(_skin);
+		_sprite.adjustPosition();
 		if (_onEndAnimation != null) _sprite.onEndAnimation(_onEndAnimation);
 		
 		width = _sprite.width;
 		height = _sprite.height;
 		animation = name;
-		preUpdate();
 
 		return this;
 	}
@@ -122,6 +122,13 @@ class GSprite extends GEntity
 	{
 		_onEndAnimation = callback;
 		return this;
+	}
+
+	@:allow(glue.display.GSprite.play)
+	function adjustPosition()
+	{
+		_image.x = -Std.int(_frames[0].frame.x);
+		_image.y = -Std.int(_frames[0].frame.y);
 	}
 	
 	override public function preUpdate()
