@@ -1,6 +1,7 @@
 package glue.scene;
 
 import glue.assets.GLoader;
+import glue.assets.GSound;
 import glue.utils.GTools;
 import glue.display.GEntity;
 import glue.scene.GCamera;
@@ -65,6 +66,26 @@ class GScene
 		GSceneManager.gotoScene(screenClass);
 	}
 
+	public function playSound(id:String)
+	{
+		GSound.play(id);
+	}
+
+	public function loopSound(id:String)
+	{
+		GSound.loop(id);
+	}
+
+	public function stopSound(id:String)
+	{
+		GSound.stop(id);
+	}
+
+	public function stopAllSounds()
+	{
+		GSound.stopAll();
+	}
+
 	public function loadImage(id:String, url:String)
 	{
 		GLoader.load({ type:'image', url: url, id: id });
@@ -78,6 +99,11 @@ class GScene
 	public function loadButton(id:String, url:String)
 	{
 		GLoader.load({ type:'button', url: url, id: id });
+	}
+
+	public function loadSound(id:String, url:String, group:String = "default")
+	{
+		GLoader.load({ type:'sound', url: url, id: id, group:group });
 	}
 
 	public function loadJson(id:String, url:String)
