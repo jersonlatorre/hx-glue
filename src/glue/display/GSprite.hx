@@ -88,7 +88,7 @@ class GSprite extends GEntity
 	}
 }
 
-@final class __GSpriteBase extends GEntity
+@:final class __GSpriteBase extends GEntity
 {
 	var _image:Bitmap;
 	var _mask:Sprite;
