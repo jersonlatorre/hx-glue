@@ -5,107 +5,57 @@ import openfl.events.Event;
 import openfl.system.System;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
+import openfl.display.Sprite;
 
-/**
- * FPS class extension to display memory usage.
- * @author Kirill Poletaev
- */
- 
-@:final class GStats extends TextField
+@:final class GStats extends Sprite
 {
+	private var text:TextField;
+	private var background:Sprite;
 	private var times:Array<Float>;
-	private var memPeak:Float = 0;
+	private var memoryPeak:Float = 0;
 
-	public function new(inX:Float = 0.0, inY:Float = 0.0, inCol:Int = 0x000000) 
+	public function new(x:Int = 0, y:Int = 0, color:Int = 0xFFFFFF)
 	{
 		super();
 		
-		x = inX;
-		y = inY;
-		selectable = false;
+		this.x = x;
+		this.y = y;
+
+		text = new TextField();
+		text.width = 155;
+		text.height = 63;
+		text.x = 10;
+		text.y = 8;
+		text.selectable = false;
+		text.defaultTextFormat = new TextFormat("Verdana", 11, color);
+
+		background = new Sprite();
+		background.graphics.beginFill(0x000000, 0.7);
+		background.graphics.drawRect(0, 0, 155, 63);
+		background.graphics.endFill();
+
+		addChild(background);
+		addChild(text);
 		
-		defaultTextFormat = new TextFormat("Arial", 12, inCol);
-		
-		text = "FPS: ";
-		
+		text.text = "FPS: ";
 		times = [];
+		
 		addEventListener(Event.ENTER_FRAME, onEnter);
-		width = 150;
-		height = 70;
 	}
 	
-	private function onEnter(_)
+	private function onEnter(e:Event)
 	{	
 		var now = Timer.stamp();
 		times.push(now);
 		
-		while (times[0] < now - 1)
-			times.shift();
+		while (times[0] < now - 1) times.shift();
 			
-		var mem:Float = Math.round(System.totalMemory / 1024 / 1024 * 100)/100;
-		if (mem > memPeak) memPeak = mem;
+		var memory:Float = Math.round(System.totalMemory / 1024 / 1024 * 100) / 100;
+		if (memory > memoryPeak) memoryPeak = memory;
 		
 		if (visible)
 		{	
-			text = "FPS: " + times.length + "\nMEM: " + mem + " MB\nMEM peak: " + memPeak + " MB";	
+			text.text = "FPS: " + times.length + "\nMEM: " + memory + " MB\nMEM peak: " + memoryPeak + " MB";	
 		}
 	}
-	
 }
-
-//import haxe.Timer;
-//import openfl.display.FPS;
-//import openfl.display.Sprite;
-//import openfl.events.Event;
-//import openfl.system.System;
-//import openfl.text.TextField;
-//import openfl.text.TextFormat;
-//
-///**
- //* FPS class extension to display memory usage.
- //* @author Kirill Poletaev
- //*/
-//
-//@final class GStats extends Sprite
-//{
-	//var times:Array<Float>;
-	//var textfield:TextField;
-//
-	//public function new(x:Float = 10.0, y:Float = 10.0, color:Int = 0x000000) 
-	//{
-		//super();
-		//
-		//textfield = new TextField();
-		//
-		//this.x = x;
-		//this.y = y;
-		//textfield.selectable = false;
-		//
-		//var format = new TextFormat("Arial", 12, color);
-		//textfield.defaultTextFormat = format;
-		//textfield.setTextFormat(format);
-		//
-		//addChild(textfield);
-		//textfield.text = "FPS: ";
-		//times = [];
-		//addEventListener(Event.ENTER_FRAME, onEnter);
-		//textfield.width = 70;
-		//textfield.height = 70;
-	//}
-	//
-	//function onEnter(e:Event)
-	//{	
-		//var now = Timer.stamp();
-		//times.push(now);
-		//
-		//while (times[0] < now - 1)
-		//{
-			//times.shift();
-		//}
-			//
-		//if (visible)
-		//{	
-			//textfield.text = "FPS: " + times.length;	
-		//}
-	//}
-//}
