@@ -22,7 +22,8 @@ class GameScene extends GScene
 		loadSpritesheet("player_idle", "images/player_idle.png");
 		loadSpritesheet("player_walk", "images/player_walk.png");
 		loadSpritesheet("player_jump", "images/player_jump.png");
-		#if (html5 || cpp)
+		
+		#if (cpp)
 		loadSound("bgm_game", "sounds/bgm_game.ogg");
 		loadSound("jump", "sounds/jump.ogg");
 		#else
