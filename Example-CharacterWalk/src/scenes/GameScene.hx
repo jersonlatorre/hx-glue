@@ -1,5 +1,7 @@
 package scenes;
 
+import glue.assets.GSound;
+import glue.input.GInput;
 import glue.display.GImage;
 import entities.Player;
 import glue.scene.GScene;
@@ -31,7 +33,7 @@ class GameScene extends GScene
 
 	override public function init()
 	{
-		loopSound("bgm_game");
+		GSound.loop("bgm_game");
 
 		new GImage("game_background").addTo(this);
 		
@@ -42,10 +44,10 @@ class GameScene extends GScene
 	
 	override public function update()
 	{
-		if (isMouseDown)
+		if (GInput.isMouseDown)
 		{
 			gotoScene(MenuScene);
-			stopAllSounds();
+			GSound.stopAll();
 		}
 	}
 }

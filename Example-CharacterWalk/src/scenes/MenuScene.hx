@@ -1,5 +1,6 @@
 package scenes;
 
+import glue.assets.GSound;
 import glue.Glue;
 import glue.scene.GScene;
 import glue.display.GImage;
@@ -36,7 +37,7 @@ class MenuScene extends GScene
 
 	override public function init()
 	{
-		// loopSound("bgm_menu");
+		GSound.loop("bgm_menu");
 
 		new GImage("menu_background").addTo(this);
 
@@ -46,15 +47,15 @@ class MenuScene extends GScene
 			.setPosition(Glue.width / 2, Glue.height / 2)
 			.onMouseEnter(function()
 			{
-				playSound("button_over");
+				GSound.play("button_over");
 			})
 			.onMouseDown(function()
 			{
-				playSound("button_down");
+				GSound.play("button_down");
 			})
 			.onClick(function()
 			{
-				stopSound("bgm_menu");
+				GSound.stop("bgm_menu");
 				gotoScene(GameScene);
 			});
 

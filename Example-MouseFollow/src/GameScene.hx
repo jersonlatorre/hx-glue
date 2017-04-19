@@ -1,9 +1,9 @@
 package;
 
-import glue.input.GMouse;
 import glue.math.GVector2D;
 import glue.utils.GTime;
 import glue.Glue;
+import glue.input.GInput;
 import glue.display.GSprite;
 import glue.display.GImage;
 import glue.scene.GScene;
@@ -84,7 +84,7 @@ class GameScene extends GScene
 		/**
 		 *  Move the player following the mouse.
 		 */
-		 _player.position.x = _player.position.x + FOLLOW_DRAG * GTime.deltaTime * (GMouse.position - _player.position).x;
+		 _player.position.x = _player.position.x + FOLLOW_DRAG * GTime.deltaTime * (GInput.mousePosition - _player.position).x;
 		
 		/**
 		 *  Jump!
