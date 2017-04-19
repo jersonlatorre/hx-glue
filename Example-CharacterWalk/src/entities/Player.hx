@@ -44,13 +44,13 @@ class Player extends GSprite
 		 *  Walk
 		 */
 
-		if (GInput.isKeyDown("right"))
+		if (GInput.isKeyPressed("right"))
 		{
 			_velocity.x = WALK_SPEED.x;
 			setScaleX(1);
 		}
 
-		if (GInput.isKeyDown("left"))
+		if (GInput.isKeyPressed("left"))
 		{
 			_velocity.x = -WALK_SPEED.x;
 			setScaleX(-1);
@@ -74,7 +74,7 @@ class Player extends GSprite
 		 *  Jump
 		 */
 
-		if (GInput.isKeyDown("jump") && !_isJumping)
+		if (GInput.isKeyPressed("jump") && !_isJumping)
 		{
 			GSound.play("jump");
 			_isJumping = true;
@@ -90,41 +90,25 @@ class Player extends GSprite
 
 
 		/**
-		 *  Stop jumping
+		 *  Ground detection
 		 */
-
-		if (_isJumping)
-		{
-			if (position.y > FLOOR_Y)
-			{
-				position.y = FLOOR_Y;
-				_isJumping = false;
-			}
-		}
-		
-
-		/**
-		 *  Limit bounds
-		 */
-		 
-		if (position.x >= Glue.width - width / 2)
-		{
-			position.x = Glue.width - width / 2;
-		}
-
-		if (position.x <= width / 2)
-		{
-			position.x = width / 2;
-		}
 
 		if (position.y > FLOOR_Y)
 		{
 			position.y = FLOOR_Y;
+			_isJumping = false;
 		}
-
+		
 
 		/**
-		 *  Play the correct animation
+		 *  Bound limits
+		 */
+		 
+		if (position.x >= Glue.width - width / 2) position.x = Glue.width - width / 2;
+		if (position.x <= width / 2) position.x = width / 2;
+
+		/**
+		 *  Select the correct animation
 		 */
 		 
 		if (_isJumping)
