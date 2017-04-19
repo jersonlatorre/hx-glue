@@ -115,7 +115,7 @@ import openfl.media.SoundTransform;
 	{
 		return function(e:Event)
 		{
-			if (Glue.isDebug) haxe.Log.trace('├─ ${ file.id } ✔', null);
+			if (Glue.isDebug) haxe.Log.trace('-- ${ file.id } ✔', null);
 
 			switch (file.type)
 			{
@@ -128,10 +128,10 @@ import openfl.media.SoundTransform;
 					 * Cache images to preventing lag time showing images. 
 					 */
 
-					#if html5
-					var cache = new Bitmap(file.loader.content.bitmapData);
-					Glue.cacheCanvas.addChild(cache);
-					#end
+					// #if html5
+					// var cache = new Bitmap(file.loader.content.bitmapData);
+					// Glue.cacheCanvas.addChild(cache);
+					// #end
 				}
 				case "spritesheet", "button", "data":
 				{
@@ -153,7 +153,7 @@ import openfl.media.SoundTransform;
 				totalFiles = 0;
 				isDownloading = false;
 				updateLoadedFiles();
-				if (Glue.isDebug) haxe.Log.trace("└── Loading complete.", null);
+				// if (Glue.isDebug) haxe.Log.trace("└── Loading complete.", null);
 				if (_callback != null) _callback();
 			}
 		}
