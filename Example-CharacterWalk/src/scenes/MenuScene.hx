@@ -24,7 +24,7 @@ class MenuScene extends GScene
 		loadImage("menu_background", "images/menu_background.png");
 		loadButton("button_play", "images/button_play.png");
 
-		#if (html5 || cpp)
+		#if (cpp)
 		loadSound("button_over", "sounds/button_over.ogg", "fx");
 		loadSound("button_down", "sounds/button_down.ogg", "fx");
 		loadSound("bgm_menu", "sounds/bgm_menu.ogg", "music");
