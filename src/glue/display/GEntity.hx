@@ -5,8 +5,6 @@ import glue.scene.GSceneManager;
 import glue.math.GMath;
 import glue.math.GVector2D;
 import glue.assets.GSound;
-import glue.input.GKeyboard;
-import glue.input.GMouse;
 import openfl.display.Sprite;
 
 /**
@@ -27,10 +25,6 @@ class GEntity
 
 	public var width:Float = 0;
 	public var height:Float = 0;
-
-	public var isMouseDown(get, null):Bool;
-	public var isMouseUp(get, null):Bool;
-	public var isMousePressed(get, null):Bool;
 
 	@:allow(glue.scene.GScene.preUpdate, glue.scene.GPopup.preUpdate)
 	var isDestroyed:Bool = false;
@@ -159,61 +153,6 @@ class GEntity
 	public function gotoScene(screenClass:Dynamic)
 	{
 		GSceneManager.gotoScene(screenClass);
-	}
-
-	public function playSound(id:String)
-	{
-		GSound.play(id);
-	}
-
-	public function loopSound(id:String)
-	{
-		GSound.loop(id);
-	}
-
-	public function stopSound(id:String)
-	{
-		GSound.stop(id);
-	}
-
-	public function stopAllSounds()
-	{
-		GSound.stopAll();
-	}
-
-	public function isKeyDown(actionName:String)
-	{
-		return GKeyboard.isDown(actionName);
-	}
-
-	public function isKeyUp(actionName:String)
-	{
-		return GKeyboard.isUp(actionName);
-	}
-
-	public function justPressed(actionName:String)
-	{
-		return GKeyboard.justPressed(actionName);
-	}
-
-	function get_isMouseDown()
-	{
-		return GMouse.isDown;
-	}
-
-	function get_isMouseUp()
-	{
-		return GMouse.isUp;
-	}
-
-	function get_isMousePressed()
-	{
-		return GMouse.isPressed;
-	}
-
-	public function bindAction(actionName:String, keys:Array<Int>)
-	{
-		GKeyboard.bind(actionName, keys);
 	}
 
 	@:allow(glue.scene.GScene.addEntity, glue.scene.GPopup.addEntity, glue.data.GLoader.onDownloadFileComplete)

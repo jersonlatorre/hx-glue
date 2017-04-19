@@ -1,12 +1,11 @@
 package glue.scene;
 
 import openfl.display.Sprite;
-import glue.display.GEntity;
-import glue.utils.GTools;
 import glue.assets.GLoader;
 import glue.assets.GSound;
-import glue.input.GKeyboard;
-import glue.input.GMouse;
+import glue.display.GEntity;
+import glue.math.GVector2D;
+import glue.utils.GTools;
 
 /**
  * ...
@@ -20,10 +19,6 @@ class GPopup
 	var _layers:Map<String, Sprite> = new Map<String, Sprite>();
 	var _entities:Array<GEntity> = new Array<GEntity>();
 	var _mask:Sprite;
-
-	public var isMouseDown(get, null):Bool;
-	public var isMouseUp(get, null):Bool;
-	public var isMousePressed(get, null):Bool;
 	
 	public function preInit()
 	{
@@ -58,61 +53,6 @@ class GPopup
 	public function gotoScene(screenClass:Dynamic)
 	{
 		GSceneManager.gotoScene(screenClass);
-	}
-
-	public function playSound(id:String)
-	{
-		GSound.play(id);
-	}
-
-	public function loopSound(id:String)
-	{
-		GSound.loop(id);
-	}
-
-	public function stopSound(id:String)
-	{
-		GSound.stop(id);
-	}
-
-	public function stopAllSounds()
-	{
-		GSound.stopAll();
-	}
-
-	public function isKeyDown(actionName:String)
-	{
-		return GKeyboard.isDown(actionName);
-	}
-
-	public function isKeyUp(actionName:String)
-	{
-		return GKeyboard.isUp(actionName);
-	}
-
-	public function justPressed(actionName:String)
-	{
-		return GKeyboard.justPressed(actionName);
-	}
-
-	function get_isMouseDown()
-	{
-		return GMouse.isDown;
-	}
-
-	function get_isMouseUp()
-	{
-		return GMouse.isUp;
-	}
-
-	function get_isMousePressed()
-	{
-		return GMouse.isPressed;
-	}
-
-	public function bindAction(actionName:String, keys:Array<Int>)
-	{
-		GKeyboard.bind(actionName, keys);
 	}
 
 	public function init() {	}
