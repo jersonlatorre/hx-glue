@@ -1,13 +1,12 @@
 package glue;
 
-import openfl.Lib;
 import glue.assets.GLoader;
 import glue.scene.GPreloader;
-import glue.input.GKeyboard;
-import glue.input.GMouse;
 import glue.scene.GSceneManager;
 import glue.utils.GTime;
 import glue.utils.GStats;
+import glue.input.GInput;
+import openfl.Lib;
 import openfl.display.Sprite;
 import openfl.display.Stage;
 import openfl.events.Event;
@@ -54,8 +53,7 @@ import openfl.events.Event;
 		}
 		
 		GTime.init();
-		GMouse.init();
-		GKeyboard.init();
+		GInput.init();
 		GSceneManager.init();
 
 		if (isPreloading)
@@ -108,10 +106,9 @@ import openfl.events.Event;
 	static function onUpdate(e:Event)
 	{
 		GTime.update();	
-		GMouse.update();
+		GInput.update();
 		GSceneManager.update();
-		GMouse.clear();
-		GKeyboard.update();
+		GInput.clear();
 	}
 	
 	static public function setScale(x:Float, y:Float)

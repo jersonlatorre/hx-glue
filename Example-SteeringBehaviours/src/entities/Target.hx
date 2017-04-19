@@ -1,6 +1,6 @@
 package entities;
 
-import glue.input.GMouse;
+import glue.input.GInput;
 import glue.display.GEntity;
 
 /**
@@ -18,6 +18,6 @@ class Target extends GEntity
 
 	override public function update()
 	{
-		position = GMouse.position;
+		position = GInput.mousePosition;
 	}
 }
