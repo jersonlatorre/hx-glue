@@ -30,14 +30,13 @@ import openfl.display.Sprite;
 		text.defaultTextFormat = new TextFormat("Verdana", 11, color);
 
 		background = new Sprite();
-		background.graphics.beginFill(0x000000, 0.7);
+		background.graphics.beginFill(0x000000, 0.6);
 		background.graphics.drawRect(0, 0, 155, 63);
 		background.graphics.endFill();
 
 		addChild(background);
 		addChild(text);
 		
-		text.text = "FPS: ";
 		times = [];
 		
 		addEventListener(Event.ENTER_FRAME, onEnter);
@@ -55,7 +54,7 @@ import openfl.display.Sprite;
 		
 		if (visible)
 		{	
-			text.text = "FPS: " + times.length + "\nMEM: " + memory + " MB\nMEM peak: " + memoryPeak + " MB";	
+			text.htmlText = '<b><font color="#FFFF00">FPS: </font></b>${ times.length }\n<b><font color="#FFFF00">MEM: </font></b>${ memory } MB\n<b><font color="#FFFF00">MEM peak: </font></b>${ memoryPeak } MB';
 		}
 	}
 }
