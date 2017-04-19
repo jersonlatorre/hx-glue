@@ -33,13 +33,12 @@ class GameScene extends GScene
 
 	override public function init()
 	{
-		GSound.loop("bgm_game");
-
 		new GImage("game_background").addTo(this);
 		
 		_player = new Player().addTo(this);
 
 		fadeIn();
+		GSound.loop("bgm_game");		
 	}
 	
 	override public function update()
