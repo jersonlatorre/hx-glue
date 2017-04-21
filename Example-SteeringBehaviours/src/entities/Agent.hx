@@ -13,8 +13,6 @@ import glue.math.GVector2D;
 class Agent extends GEntity
 {
 	var _target:Target;
-
-	var _velocity:GVector2D = new GVector2D();
 	var _desired:GVector2D = new GVector2D();
 	var _steer:GVector2D = new GVector2D();
 
@@ -23,7 +21,7 @@ class Agent extends GEntity
 
 	override public function init()
 	{
-		createRectangleGraphic(50, 25, 0x0000FF);
+		createRectangleShape(50, 25, 0x0000FF);
 		setAnchor(0.5, 0.5);
 		setPosition(Glue.width / 2, Glue.height / 2);
 	}
@@ -31,13 +29,12 @@ class Agent extends GEntity
 	override public function update()
 	{
 		_desired = (_target.position - position).scaledTo(MAX_SPEED);
-		_steer = (_desired - _velocity).truncate(MAX_FORCE);
+		_steer = (_desired - velocity).truncate(MAX_FORCE);
 
-		_velocity += _steer * GTime.deltaTime;
-		_velocity.truncate(MAX_SPEED);
-		position += _velocity * GTime.deltaTime;
+		velocity += _steer * GTime.deltaTime;
+		velocity.truncate(MAX_SPEED);
 
-		setRotation(_velocity.angle());
+		setRotation(velocity.angle());
 	}
 
 	public function setTarget(target:Target)
