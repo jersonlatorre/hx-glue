@@ -22,4 +22,5 @@
 
 	<!-- assets -->
 	<assets path="assets/images" rename="images" />
+	<assets path="assets/fonts" rename="fonts" />
 </project>
