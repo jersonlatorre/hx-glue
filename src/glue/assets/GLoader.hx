@@ -40,32 +40,32 @@ import openfl.media.SoundTransform;
 			case "image":
 			{
 				var loader:Loader = new Loader();
-				_currentFiles.push({ type:data.type, id: data.id, url: data.url, loader:loader });
+				_currentFiles[_currentFiles.length] = { type:data.type, id: data.id, url: data.url, loader:loader };
 
 				totalFiles += 1;
 			}
 			case "spritesheet", "button":
 			{
 				var loader1:Loader = new Loader();
-				_currentFiles.push({ type: "image", id: data.id, url: data.url, loader:loader1 });
+				_currentFiles[_currentFiles.length] = { type: "image", id: data.id, url: data.url, loader:loader1 };
 				
 				var loader2:URLLoader = new URLLoader();
 				var i:Int = Std.string(data.url).lastIndexOf('.');
 				var s:String = Std.string(data.url).substring(0, i);
-				_currentFiles.push({ type: "data", id: data.id + "_data", url: s + ".json", loader:loader2 });
+				_currentFiles[_currentFiles.length] = { type: "data", id: data.id + "_data", url: s + ".json", loader:loader2 };
 
 				totalFiles += 2;
 			}
 			case "data":
 			{
 				var loader:URLLoader = new URLLoader();
-				_currentFiles.push({ type:data.type, id: data.id, url: data.url, loader:loader });
+				_currentFiles[_currentFiles.length] = { type:data.type, id: data.id, url: data.url, loader:loader };
 				totalFiles += 1;
 			}
 			case "sound":
 			{
 				var loader:Sound = new Sound();
-				_currentFiles.push({ type:data.type, id: data.id, url: data.url, group: data.group, loader:loader });
+				_currentFiles[_currentFiles.length] = { type:data.type, id: data.id, url: data.url, group: data.group, loader:loader };
 				totalFiles += 1;
 			}
 			default:
@@ -169,7 +169,7 @@ import openfl.media.SoundTransform;
 
 		for (file in _currentFiles)
 		{
-			_files.push(file);
+			_files[_files.length] = file;
 		}
 
 		_currentFiles = new Array<Dynamic>();
@@ -198,9 +198,9 @@ import openfl.media.SoundTransform;
 		}
 		else
 		{
-			var bitmap:Bitmap = new Bitmap(_loadedFiles.get(id).bitmapData);
-			bitmap.cacheAsBitmap = true;
-			bitmap.smoothing = true;
+			var bitmap:Bitmap = new Bitmap(_loadedFiles.get(id).bitmapData.clone());
+			// bitmap.cacheAsBitmap = true;
+			// bitmap.smoothing = true;
 			return bitmap;
 		}
 	}
@@ -221,7 +221,28 @@ import openfl.media.SoundTransform;
 			}
 			catch (e:Any)
 			{
-				throw 'JSON file $id is not a valid JSON data.';
+				throw 'JSON file $id is not valid.';
+			}
+		}
+	}
+
+	static public function getXml(id:String):Xml
+	{
+		if (!_loadedFiles.exists(id))
+		{
+			throw 'XML file $id not loaded.';
+		}
+		else
+		{
+			var data:String = preventUtf8(_loadedFiles.get(id));
+
+			try
+			{
+				return Xml.parse(data);
+			}
+			catch (e:Any)
+			{
+				throw 'XML file $id not valid.';
 			}
 		}
 	}
