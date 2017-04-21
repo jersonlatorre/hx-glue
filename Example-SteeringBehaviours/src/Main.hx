@@ -23,6 +23,7 @@ class Main extends Sprite
 		 *  Glue.start({
 		 *  	mainScene (required)	:	[ First Scene from where the engine will start. ],
 		 *  	isDebug (optional)		: [ It will show traces in debugging mode. ]
+		 *  	showStats (optional)	: [ It will show FPS and memory stats. ]
 		 *  });
 		 */
 		 
