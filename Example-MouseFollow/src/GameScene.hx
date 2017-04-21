@@ -1,12 +1,14 @@
 package;
 
-import glue.math.GVector2D;
-import glue.utils.GTime;
-import glue.Glue;
-import glue.input.GInput;
-import glue.display.GSprite;
+import glue.display.GBitmapTextAlign;
+import glue.display.GBitmapText;
 import glue.display.GImage;
+import glue.display.GSprite;
+import glue.input.GInput;
+import glue.Glue;
+import glue.math.GVector2D;
 import glue.scene.GScene;
+import glue.utils.GTime;
 
 /**
  * ...
@@ -16,15 +18,13 @@ import glue.scene.GScene;
 
 class GameScene extends GScene
 {
-	var _velocity:GVector2D = GVector2D.create(0, 0);
-	var _gravity:GVector2D = GVector2D.create(0, 800);
-	var _jumpImpulse:GVector2D = GVector2D.create(0, -800);
+	var GRAVITY:GVector2D = GVector2D.create(0, 800);
+	var JUMP_IMPULSE:GVector2D = GVector2D.create(0, -800);
+	var FLOOR_Y:Float;
 
 	var _background:GImage;
 	var _floor:GImage;
 	var _player:GSprite;
-
-	static inline var FOLLOW_DRAG:Float = 2;
 
 	override public function preload()
 	{
@@ -40,26 +40,43 @@ class GameScene extends GScene
 		/**
 		 *  Create an image and add it to the world.
 		 */
-		_background = new GImage("background_game");
-		_background.addTo(this);
+		 var _background = new GImage();
+		_background.createFromAsset("background_game");
+		add(_background);
 
 
 		/**
 		 *  Create an image and change it's position.
 		 */
-		_floor = new GImage("floor");
+		_floor = new GImage();
+		_floor.createFromAsset("floor");
 		_floor.setPosition(0, Glue.height - _floor.height);
-		addEntity(_floor); // Another way to add an entity to the world.
+		FLOOR_Y = Glue.height - _floor.height;
+		add(_floor);
 
 
 		/**
-		 *  You can chain all the GSprite methods in one line, like this:
+		 *  Create a sprite and change some properties.
 		 */
-		_player = new GSprite("character_idle")
-		.play().setScale(0.85, 0.85)
-		.setAnchor(0.5, 1)
-		.setPosition(200, 200)
-		.addTo(this);
+		_player = new GSprite();
+		_player.addAnimation("idle", "character_idle");
+		_player.play("idle");
+		_player.setAnchor(0.5, 1);
+		_player.setPosition(250, 250);
+		_player.acceleration = GRAVITY;
+		add(_player);
+
+
+		/**
+		 *  Creates a bitmap text.
+		 */
+		var bitmapText = GBitmapText.fromAngelCode("font_bitmap", "font_data");
+		// var bitmapText = GBitmapText.fromMonospace("font_monospace", "!     :() ,?.ABCDEFGHIJKLMNOPQRSTUVWXYZ", 16, 16)
+		bitmapText.text = "HELLO,\nSEXY GLUE!";
+		bitmapText.alignment = GBitmapTextAlign.CENTER;
+		bitmapText.setAnchor(0.5, 0.5);
+		bitmapText.setPosition(Glue.width / 2, 130);
+		add(bitmapText);
 
 
 		/**
@@ -71,28 +88,27 @@ class GameScene extends GScene
 	override public function update()
 	{
 		/**
-		 *  Doing the physics:
-		 *  
-		 *  velocity += acceleration
-		 *  position += velocity
-		 *  
-		 *  GTime provides the deltaTime property.
-		 */
-		_velocity += _gravity * GTime.deltaTime;
-		_player.position += _velocity * GTime.deltaTime;
-
-		/**
 		 *  Move the player following the mouse.
 		 */
-		 _player.position.x = _player.position.x + FOLLOW_DRAG * GTime.deltaTime * (GInput.mousePosition - _player.position).x;
+		 _player.position.x += 0.04 * (GInput.mousePosition - _player.position).x;
 		
+
 		/**
 		 *  Jump!
 		 */
-		if (_player.position.y >= Glue.height - _floor.height)
+		if (_player.position.y > FLOOR_Y)
 		{
-			_player.position.y = Glue.height - _floor.height;
-			_velocity = _jumpImpulse;
+			_player.position.y = FLOOR_Y;
+			_player.velocity = JUMP_IMPULSE;
+		}
+
+
+		/**
+		 *  Reset the game.
+		 */
+		if (GInput.isMouseDown)
+		{
+			gotoScene(GameScene);
 		}
 	}
 }

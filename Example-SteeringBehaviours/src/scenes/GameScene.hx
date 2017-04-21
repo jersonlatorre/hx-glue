@@ -26,8 +26,11 @@ class GameScene extends GScene
 	{
 		createBackground(0xDDDDDD);
 
-		_agent = new Agent().addTo(this);
-		_target = new Target().addTo(this);
+		_agent = new Agent();
+		_target = new Target();
+
+		add(_agent);
+		add(_target);
 
 		_agent.setTarget(_target);
 
