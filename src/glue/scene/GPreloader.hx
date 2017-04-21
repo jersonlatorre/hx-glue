@@ -28,7 +28,7 @@ class GPreloader extends GPopup
 		
 		if (GLoader.totalFiles != 0)
 		{
-			_bar.graphics.drawRect(0, height / 2 - 3, width * GLoader.downloadedFiles / GLoader.totalFiles, 6);
+			_bar.graphics.drawRect(0, height * 0.5 - 3, width * GLoader.downloadedFiles / GLoader.totalFiles, 6);
 		}
 
 		_bar.graphics.endFill();
