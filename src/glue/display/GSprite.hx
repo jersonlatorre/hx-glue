@@ -20,31 +20,17 @@ class GSprite extends GEntity
 	var _animations:Map<String, Dynamic> = new Map<String, Dynamic>();
 	var _sprite:__GSpriteBase;
 	
-	public function new(spriteID:String = null, fps = 30)
+	public function new()
 	{
 		super();
-
-		if (spriteID != null)
-		{
-			_animations["default"] = { id: spriteID, fps: fps };
-		}
 	}
 
-	public function addAnimation(value1:String, ?value2:String, ?fps:Int = 30):Dynamic 
+	public function addAnimation(animationId:String, assetId:String, ?fps:Int = 30, ?loop:Bool = true) 
 	{
-		if (value2 == null)
-		{
-			_animations["default"] = { id: value1, fps: fps };
-		}
-		else
-		{
-			_animations[value1] = { id: value2, fps: fps };
-		}
-		
-		return this;
+		_animations[animationId] = { id: assetId, fps: fps, loop: loop };
 	}
 
-	public function play(?name:String = "default"):Dynamic
+	public function play(name:String)
 	{
 		if (animation == name) return null;
 		
@@ -58,7 +44,7 @@ class GSprite extends GEntity
 			throw '${ GTools.getClassName(this) } -> a sprite ID must be provided!';
 		}
 		
-		_sprite = new __GSpriteBase(_animations[name].id, _animations[name].fps);
+		_sprite = new __GSpriteBase(_animations[name].id, _animations[name].fps, _animations[name].loop);
 		_sprite.addToLayer(_skin);
 		_sprite.adjustPosition();
 		if (_onEndAnimation != null) _sprite.onEndAnimation(_onEndAnimation);
@@ -67,13 +53,12 @@ class GSprite extends GEntity
 		height = _sprite.height;
 		animation = name;
 
-		return this;
+		return null;
 	}
 
-	public function onEndAnimation(callback:Dynamic):Dynamic
+	public function onEndAnimation(callback:Dynamic)
 	{
 		_onEndAnimation = callback;
-		return this;
 	}
 	
 	override public function preUpdate() 
@@ -84,6 +69,8 @@ class GSprite extends GEntity
 	
 	override public function destroy() 
 	{
+		_sprite.removeFromLayer(_skin);
+		_sprite.destroy();
 		super.destroy();
 	}
 }
@@ -93,16 +80,22 @@ class GSprite extends GEntity
 	var _image:Bitmap;
 	var _mask:Sprite;
 	var _frames:Array<Dynamic> = new Array<Dynamic>();
+	var _framesLength:Int;
 	var _currentFrameIndex:Float = 0;
 	var _fps:Int;
+	var _loop:Bool;
+	var _isPaused:Bool = false;
 	var _onEndAnimation:Dynamic = null;
 	
-	public function new(spriteId:String, fps:Int = 30) 
+	public function new(spriteId:String, fps:Int = 30, loop:Bool = true) 
 	{
 		super();
+
 		_fps = fps;
+		_loop = loop;
 
 		_frames = GLoader.getJson(spriteId + "_data").frames;
+		_framesLength = _frames.length;
 		
 		width = _frames[0].sourceSize.w * _scaleX;
 		height = _frames[0].sourceSize.h * _scaleY;
@@ -121,7 +114,6 @@ class GSprite extends GEntity
 	public function onEndAnimation(callback:Dynamic)
 	{
 		_onEndAnimation = callback;
-		return this;
 	}
 
 	@:allow(glue.display.GSprite.play)
@@ -133,16 +125,29 @@ class GSprite extends GEntity
 	
 	override public function preUpdate()
 	{
+		if (_isPaused) return;
+
 		_currentFrameIndex += _fps * GTime.deltaTime;
 		
-		if (_onEndAnimation != null && _currentFrameIndex >= _frames.length)
+		if(_currentFrameIndex >= _framesLength)
 		{
-			_onEndAnimation();
+			if (!_loop) _isPaused = true;
+			if (_onEndAnimation != null) _onEndAnimation();
 		}
 		
-		var rounded:Int = Math.floor(_currentFrameIndex) % _frames.length;
-		
+		var rounded:Int = Std.int((_currentFrameIndex) % _framesLength);
 		_image.x = -Std.int(_frames[rounded].frame.x);
 		_image.y = -Std.int(_frames[rounded].frame.y);
-	}	
+	}
+
+	override public function destroy()
+	{
+		_skin.removeChild(_image);
+		_skin.removeChild(_mask);
+		super.destroy();
+		_image.bitmapData.dispose();
+		_image.bitmapData.disposeImage();
+		_image = null;
+		_mask = null;
+	}
 }

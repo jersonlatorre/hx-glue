@@ -4,8 +4,10 @@ import glue.scene.GScene;
 import glue.scene.GSceneManager;
 import glue.math.GMath;
 import glue.math.GVector2D;
+import glue.utils.GTime;
 import glue.assets.GSound;
 import openfl.display.Sprite;
+import openfl.display.Shape;
 
 /**
  * ...
@@ -18,10 +20,11 @@ class GEntity
 	var _canvas:Sprite;
 	var _skin:Sprite;
 	var _anchor:GVector2D;
-	var _scaleX:Float = 1;
-	var _scaleY:Float = 1;
-	var _rotation:Float = 0;
-	var _alpha:Float = 1;
+
+	var _scaleX:Float;
+	var _scaleY:Float;
+	var _rotation:Float;
+	var _alpha:Float;
 
 	public var width:Float = 0;
 	public var height:Float = 0;
@@ -30,77 +33,77 @@ class GEntity
 	var isDestroyed:Bool = false;
 	
 	public var position:GVector2D;
+	public var velocity:GVector2D;
+	public var acceleration:GVector2D;
 	
 	public function new():Void
 	{
-		_canvas = new Sprite();
 		_skin = new Sprite();
+		_canvas = new Sprite();
 		_canvas.addChild(_skin);
-		position = new GVector2D(0, 0);
 		_anchor = new GVector2D(0, 0);
+
+		position = new GVector2D(0, 0);
+		velocity = new GVector2D(0, 0);
+		acceleration = new GVector2D(0, 0);
+
+		_scaleX = _scaleY = _alpha = 1;
+		_rotation = 0;
 
 		init();
 	}
 
 	public function init() { }
 
-	public function createRectangleGraphic(width:Float, height:Float, color:UInt = 0x000000):Dynamic
+	public function createRectangleShape(width:Float, height:Float, color:UInt = 0x000000)
 	{
 		this.width = width;
 		this.height = height;
 
-
-		var graphic = new Sprite();
+		var graphic = new Shape();
 		graphic.graphics.beginFill(color);
 		graphic.graphics.drawRect(0, 0, width, height);
 		graphic.graphics.endFill();
+
 		_skin.addChild(graphic);
-		return this;
 	}
 
-	public function createCircleGraphic(radius:Float, color:UInt = 0x000000):Dynamic
+	public function createCircleShape(radius:Float, color:UInt = 0x000000)
 	{
 		this.width = this.height = 2 * radius;
 
-		var graphic = new Sprite();
+		var graphic = new Shape();
 		graphic.graphics.beginFill(color);
 		graphic.graphics.drawCircle(radius, radius, radius);
 		graphic.graphics.endFill();
+
 		_skin.addChild(graphic);
-		return this;
 	}
 
 	function removeGraphics()
 	{
 		_skin.graphics.clear();
 	}
-
-	public function addTo(scene:GScene, ?layer:String):Dynamic
-	{
-		scene.addEntity(this, layer);
-		return this;
-	}
 	
-	public function setPosition(x:Float, y:Float):Dynamic
+	public function setPosition(x:Float, y:Float)
 	{
 		position.x = x;
 		position.y = y;
-		return this;
+		_canvas.x = Std.int(position.x);
+		_canvas.y = Std.int(position.y);
 	}
 	
-	public function setPositionX(x:Float):Dynamic
+	public function setPositionX(x:Float)
 	{
 		position.x = x;
-		return this;
 	}
 	
-	public function setPositionY(y:Float):Dynamic
+	public function setPositionY(y:Float)
 	{
 		position.y = y;
-		return this;
 	}
 	
-	public function setScale(scaleX:Float, scaleY:Float):Dynamic
+	public function setScale(scaleX:Float, scaleY:Float)
 	{
 		_scaleX = scaleX;
 		_scaleY = scaleY;
@@ -108,46 +111,60 @@ class GEntity
 		_canvas.scaleY = scaleY;
 		_canvas.width = Std.int(_canvas.width) * GMath.sign(scaleX);
 		_canvas.height = Std.int(_canvas.height) * GMath.sign(scaleY);
-		return this;
 	}
 	
-	public function setScaleX(scaleX:Float):Dynamic
+	public function setScaleX(value:Float)
 	{
-		_scaleX = scaleX;
-		_canvas.scaleX = scaleX;
-		_canvas.width = Std.int(_canvas.width) * GMath.sign(scaleX);
-		return this;
-	}
-	
-	public function setScaleY(scaleY:Float):Dynamic
-	{
-		_scaleY = scaleY;
-		_canvas.scaleY = scaleY;
-		_canvas.height = Std.int(_canvas.height) * GMath.sign(scaleY);
-		return this;
+		_scaleX = value;
+		_canvas.scaleX = value;
+		_canvas.width = Std.int(_canvas.width) * GMath.sign(value);
 	}
 
-	public function setRotation(angle:Float):Dynamic
+	public function getScaleX():Float
 	{
-		_rotation = angle;
-		_canvas.rotation = (180 / 3.141519) * _rotation;
-		return this;
+		return _scaleX;
 	}
 	
-	public function setAnchor(x:Float, y:Float):Dynamic
+	public function setScaleY(value:Float)
+	{
+		_scaleY = value;
+		_canvas.scaleY = value;
+		_canvas.height = Std.int(_canvas.height) * GMath.sign(value);
+	}
+
+	public function getScaleY():Float
+	{
+		return _scaleY;
+	}
+
+	public function setRotation(value:Float)
+	{
+		_rotation = value;
+		_canvas.rotation = (57.29578) * value;
+	}
+
+	public function getRotation():Float
+	{
+		return _rotation;
+	}
+	
+	public function setAnchor(x:Float, y:Float)
 	{
 		_anchor.x = x;
 		_anchor.y = y;
 		_skin.x = -width * _anchor.x;
 		_skin.y = -height * _anchor.y;
-		return this;
 	}
 	
-	public function setAlpha(alpha:Float):Dynamic
+	public function setAlpha(value:Float)
 	{
-		this._skin.alpha = alpha;
-		this._alpha = alpha;
-		return this;
+		_alpha = value;
+		_skin.alpha = value;
+	}
+
+	public function getAlpha():Float
+	{
+		return _alpha;
 	}
 
 	public function gotoScene(screenClass:Dynamic)
@@ -155,21 +172,21 @@ class GEntity
 		GSceneManager.gotoScene(screenClass);
 	}
 
-	@:allow(glue.scene.GScene.addEntity, glue.scene.GPopup.addEntity, glue.data.GLoader.onDownloadFileComplete)
+	@:allow(glue.scene.GScene.add, glue.scene.GPopup.add, glue.data.GLoader.onDownloadFileComplete, glue.utils.GStats)
 	function addToLayer(layer:Sprite):Dynamic
 	{
 		layer.addChild(_canvas);
 		return this;
 	}
 	
-	@:allow(glue.scene.GScene.preUpdate, glue.scene.GPopup.preUpdate, glue.scene.GScene.removeEntity, glue.scene.GPopup.removeEntity)
+	@:allow(glue.scene.GScene.preUpdate, glue.scene.GPopup.preUpdate, glue.scene.GScene.remove, glue.scene.GPopup.remove)
 	function removeFromLayer(layer:Sprite):Dynamic
 	{
 		layer.removeChild(_canvas);
 		return this;
 	}
 	
-	@:allow(glue.scene.GScene.preUpdate, glue.scene.GPopup.preUpdate, glue.scene.GScene.removeEntity, glue.scene.GPopup.removeEntity)
+	@:allow(glue.scene.GScene.preUpdate, glue.scene.GPopup.preUpdate, glue.scene.GScene.remove, glue.scene.GPopup.remove)
 	function isChildOfLayer(layer:Sprite):Bool
 	{
 		return layer.contains(_canvas);
@@ -177,16 +194,23 @@ class GEntity
 	
 	public function update() { }
 
-	@:allow(glue.scene.GScene.preUpdate, glue.scene.GPopup.preUpdate)
+	@:allow(glue.scene.GScene.preUpdate, glue.scene.GPopup.preUpdate, glue.utils.GStats)
 	function preUpdate():Void 
 	{
 		_canvas.x = Std.int(position.x);
 		_canvas.y = Std.int(position.y);
+		
+		velocity += acceleration * GTime.deltaTime;
+		position += velocity * GTime.deltaTime;
+		
 		update();
 	}
 	
 	public function destroy()
 	{
+		_canvas.removeChild(_skin);
+		_canvas = null;
+		_skin = null;
 		isDestroyed = true;
 	}
 }
