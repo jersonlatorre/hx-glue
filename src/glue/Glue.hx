@@ -88,7 +88,7 @@ import openfl.events.Event;
 		GLoader.load({ type:'button', url: url, id: id });
 	}
 
-	static public function loadJson(id:String, url:String)
+	static public function loadData(id:String, url:String)
 	{
 		GLoader.load({ type:'data', url: url, id: id });
 	}
