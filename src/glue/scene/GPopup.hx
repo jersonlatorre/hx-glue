@@ -73,7 +73,7 @@ class GPopup
 		}
 	}
 	
-	public function addEntity(entity:GEntity, layerName:String = "default")
+	public function add(entity:GEntity, layerName:String = "default")
 	{
 		if (_layers.exists(layerName))
 		{
@@ -86,7 +86,7 @@ class GPopup
 		}
 	}
 	
-	public function removeEntity(entity:GEntity) 
+	public function remove(entity:GEntity) 
 	{
 		var index = _entities.indexOf(entity);
 		
