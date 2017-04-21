@@ -5,7 +5,7 @@ import openfl.geom.Rectangle;
 import openfl.display.BitmapData;
 import glue.assets.GLoader;
 import openfl.display.Bitmap;
-import openfl.display.Sprite;
+import openfl.display.Shape;
 import openfl.events.MouseEvent;
 
 /**
@@ -17,7 +17,7 @@ class GButton extends GEntity
 {
 	var _image:Bitmap;
 	var _hitBmd:BitmapData;
-	var _mask:Sprite;
+	var _mask:Shape;
 	var _frames:Array<Dynamic> = new Array<Dynamic>();
 	var _callbackClick:Dynamic = null;
 	var _callbackMouseOver:Dynamic = null;
@@ -39,7 +39,7 @@ class GButton extends GEntity
 		
 		_image = GLoader.getImage(id);
 		_image.smoothing = true;
-		_mask = new Sprite();
+		_mask = new Shape();
 		_mask.graphics.beginFill(0);
 		_mask.graphics.drawRect(0, 0, width, height);
 		_mask.graphics.endFill();
@@ -57,7 +57,7 @@ class GButton extends GEntity
 		}
 		else
 		{
-			var _hit:Sprite = new Sprite();
+			var _hit:Shape = new Shape();
 			_hit.graphics.beginFill(0xFF0000);
 			_hit.graphics.drawRect(0, 0, _frames[0].sourceSize.w, _frames[0].sourceSize.h);
 			_hit.graphics.endFill();
@@ -70,78 +70,83 @@ class GButton extends GEntity
 
 		setNormal();
 
-		_skin.addEventListener(MouseEvent.MOUSE_MOVE, function(e:MouseEvent)
+		_skin.addEventListener(MouseEvent.MOUSE_MOVE, _onMouseMove);
+		_skin.addEventListener(MouseEvent.MOUSE_OUT, _onMouseOut);
+		_skin.addEventListener(MouseEvent.MOUSE_DOWN, _onMouseDown);
+		_skin.addEventListener(MouseEvent.MOUSE_UP, _onMouseUp);
+	}
+
+	function _onMouseMove(e:MouseEvent)
+	{
+		if (_hitBmd.getPixel32(Std.int(e.localX), Std.int(e.localY)) != 0)
 		{
-			if (_hitBmd.getPixel32(Std.int(e.localX), Std.int(e.localY)) != 0)
+			if (_callbackMouseOver != null) _callbackMouseOver();
+
+			if (!_isEnter)
 			{
-				if (_callbackMouseOver != null) _callbackMouseOver();
-
-				if (!_isEnter)
-				{
-					_isEnter = true;
-					if (_callbackMouseEnter != null) _callbackMouseEnter();
-				}
-
-				if (!e.buttonDown) setOver();
-				_skin.buttonMode = true;
+				_isEnter = true;
+				if (_callbackMouseEnter != null) _callbackMouseEnter();
 			}
-			else
-			{
-				setNormal();
-				_skin.buttonMode = false;
 
-				if (_isEnter)
-				{
-					if (_callbackMouseOut != null) _callbackMouseOut();
-				}
-
-				_isEnter = false;
-			}
-		});
-
-		_skin.addEventListener(MouseEvent.MOUSE_OUT, function(e:MouseEvent)
+			if (!e.buttonDown) setOver();
+			_skin.buttonMode = true;
+		}
+		else
 		{
-				setNormal();
-				_isDown = false;
-				_skin.buttonMode = false;
+			setNormal();
+			_skin.buttonMode = false;
 
-				if (_isEnter)
-				{
-					if (_callbackMouseOut != null) _callbackMouseOut();
-				}
-				
-				_isEnter = false;
-		});
+			if (_isEnter)
+			{
+				if (_callbackMouseOut != null) _callbackMouseOut();
+			}
 
-		_skin.addEventListener(MouseEvent.MOUSE_DOWN, function(e:MouseEvent)
+			_isEnter = false;
+		}
+	}
+
+	function _onMouseOut(e:MouseEvent)
+	{
+		setNormal();
+		_isDown = false;
+		_skin.buttonMode = false;
+
+		if (_isEnter)
 		{
-			if (_hitBmd.getPixel32(Std.int(e.localX), Std.int(e.localY)) != 0)
-			{
-				if (_callbackMouseDown != null) _callbackMouseDown();
-				_isDown = true;
-				setDown();
-			}
-			else
-			{
-				e.preventDefault();
-			}
-		});
+			if (_callbackMouseOut != null) _callbackMouseOut();
+		}
+		
+		_isEnter = false;
+	}
 
-		_skin.addEventListener(MouseEvent.MOUSE_UP, function(e:MouseEvent)
+	function _onMouseDown(e:MouseEvent)
+	{
+		if (_hitBmd.getPixel32(Std.int(e.localX), Std.int(e.localY)) != 0)
 		{
-			if (_hitBmd.getPixel32(Std.int(e.localX), Std.int(e.localY)) != 0 && _isDown)
-			{
-				setOver();
-				_skin.buttonMode = false;
-				if (_callbackClick != null) _callbackClick();
-			}
-			else
-			{
-				e.preventDefault();
-			}
+			if (_callbackMouseDown != null) _callbackMouseDown();
+			_isDown = true;
+			setDown();
+		}
+		else
+		{
+			e.preventDefault();
+		}
+	}
 
-			_isDown = false;
-		});
+	function _onMouseUp(e:MouseEvent)
+	{
+		if (_hitBmd.getPixel32(Std.int(e.localX), Std.int(e.localY)) != 0 && _isDown)
+		{
+			setOver();
+			_skin.buttonMode = false;
+			if (_callbackClick != null) _callbackClick();
+		}
+		else
+		{
+			e.preventDefault();
+		}
+
+		_isDown = false;
 	}
 	
 	public function onClick(callback:Dynamic):GButton
@@ -190,5 +195,15 @@ class GButton extends GEntity
 	{
 		_image.x = -_frames[2].frame.x;
 		_image.y = -_frames[2].frame.y;
+	}
+
+	override public function destroy()
+	{
+		_skin.removeEventListener(MouseEvent.MOUSE_MOVE, _onMouseMove);
+		_skin.removeEventListener(MouseEvent.MOUSE_OUT, _onMouseOut);
+		_skin.removeEventListener(MouseEvent.MOUSE_DOWN, _onMouseDown);
+		_skin.removeEventListener(MouseEvent.MOUSE_UP, _onMouseUp);
+		
+		super.destroy();
 	}
 }
