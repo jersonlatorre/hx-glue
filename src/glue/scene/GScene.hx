@@ -87,7 +87,7 @@ class GScene
 		GLoader.load({ type:'sound', url: url, id: id, group:group });
 	}
 
-	public function loadJson(id:String, url:String)
+	public function loadData(id:String, url:String)
 	{
 		GLoader.load({ type:'data', url: url, id: id });
 	}
@@ -112,7 +112,7 @@ class GScene
 		}
 	}
 	
-	public function addEntity(entity:GEntity, layerName:String = "default")
+	public function add(entity:GEntity, layerName:String = "default")
 	{
 		if (_layers.exists(layerName))
 		{
@@ -125,7 +125,7 @@ class GScene
 		}
 	}
 	
-	public function removeEntity(entity:GEntity) 
+	public function remove(entity:GEntity) 
 	{
 		var index = _entities.indexOf(entity);
 		
