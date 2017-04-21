@@ -20,67 +20,59 @@ import glue.math.GVector2D;
 	static inline var STATE_FOLLOW_Y:Int = 4;
 	static inline var STATE_NONE:Int = 2;
 	
-	var _leftLimit:Float = Math.NEGATIVE_INFINITY;
-	var _rightLimit:Float = Math.POSITIVE_INFINITY;
-	var _topLimit:Float = Math.NEGATIVE_INFINITY;
-	var _bottomLimit:Float = Math.POSITIVE_INFINITY;
+	var _leftLimit:Int = -2147483647;
+	var _rightLimit:Int = 2147483647;
+	var _topLimit:Int = -2147483647;
+	var _bottomLimit:Int = 2147483647;
 	var _mode:Int = STATE_NONE;
 	var _delayFactor:Float = 0.1;
 	
 	public function new() 
 	{
-		position = GVector2D.create(Glue.width / 2, Glue.height / 2);
+		position = GVector2D.create(Glue.width * 0.5, Glue.height * 0.5);
 	}
 	
-	public function follow(target:GEntity, delayFactor:Float = 0.1):GCamera
+	public function follow(target:GEntity, delayFactor:Float = 0.1)
 	{
 		_target = target;
 		_delayFactor = delayFactor;
 		_mode = STATE_FOLLOW;
-		return this;
 	}
 	
-	public function setPosition(x:Float, y:Float):GCamera
+	public function setPosition(x:Float, y:Float)
 	{
 		position.x = x;
 		position.y = y;
-		return this;
 	}
 	
-	public function setPositionX(x:Float):GCamera
+	public function setPositionX(x:Float)
 	{
 		position.x = x;
-		return this;
 	}
 	
-	public function setPositionY(y:Float):GCamera
+	public function setPositionY(y:Float)
 	{
 		position.y = y;
-		return this;
 	}
 	
-	public function setLeftLimit(limit:Float):GCamera
+	public function setLeftLimit(limit:Int)
 	{
 		_leftLimit = limit;
-		return this;
 	}
 	
-	public function setRightLimit(limit:Float):GCamera
+	public function setRightLimit(limit:Int)
 	{
 		_rightLimit = limit;
-		return this;
 	}
 	
-	public function setTopLimit(limit:Float):GCamera
+	public function setTopLimit(limit:Int)
 	{
 		_topLimit = limit;
-		return this;
 	}
 	
-	public function setBottomLimit(limit:Float):GCamera
+	public function setBottomLimit(limit:Int)
 	{
 		_bottomLimit = limit;
-		return this;
 	}
 	
 	public function update()
@@ -109,24 +101,24 @@ import glue.math.GVector2D;
 			}
 		}
 
-		if (position.x > _rightLimit - Glue.width / 2)
+		if (position.x > _rightLimit - Glue.width >> 1)
 		{
-			position.x = _rightLimit - Glue.width / 2;
+			position.x = _rightLimit - Glue.width >> 1;
 		}
 		
-		if (position.x < _leftLimit + Glue.width / 2)
+		if (position.x < _leftLimit + Glue.width >> 1)
 		{
-			position.x = _leftLimit + Glue.width / 2;
+			position.x = _leftLimit + Glue.width >> 1;
 		}
 		
-		if (position.y > _bottomLimit - Glue.height / 2)
+		if (position.y > _bottomLimit - Glue.height >> 1)
 		{
-			position.y = _bottomLimit - Glue.height / 2;
+			position.y = _bottomLimit - Glue.height >> 1;
 		}
 		
-		if ( position.y < _topLimit + Glue.height / 2)
+		if ( position.y < _topLimit + Glue.height >> 1)
 		{
-			position.y = _topLimit + Glue.height / 2;
+			position.y = _topLimit + Glue.height >> 1;
 		}
 	}
 	
