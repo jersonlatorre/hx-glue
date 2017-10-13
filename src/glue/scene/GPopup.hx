@@ -1,10 +1,7 @@
 package glue.scene;
 
 import openfl.display.Sprite;
-import glue.assets.GLoader;
-import glue.assets.GSound;
 import glue.display.GEntity;
-import glue.math.GVector2D;
 import glue.utils.GTools;
 
 /**
@@ -22,7 +19,7 @@ class GPopup
 	
 	public function preInit()
 	{
-		haxe.Log.trace('[ Popup: ${ GTools.getClassName(this) } ]' , null);
+		if (Glue.isDebug) haxe.Log.trace('[ Popup: ${ GTools.getClassName(this) } ]' , null);
 
 		_canvas = new Sprite();
 		GSceneManager.canvas.addChild(_canvas);
