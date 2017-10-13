@@ -1,13 +1,8 @@
 package glue.assets;
 
-import openfl.Assets;
-import openfl.events.Event;
-import openfl.events.IOErrorEvent;
 import openfl.media.Sound;
 import openfl.media.SoundChannel;
 import openfl.media.SoundTransform;
-import openfl.net.URLLoader;
-import openfl.net.URLRequest;
 
 /**
  * ...
