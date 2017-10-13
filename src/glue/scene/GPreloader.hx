@@ -24,11 +24,12 @@ class GPreloader extends GPopup
 		var width:Float = Glue.width;
 		var height:Float = Glue.height;
 
-		_bar.graphics.beginFill(0xFF0000);
+		_bar.graphics.clear();
+		_bar.graphics.beginFill(0x55AA77, 1);
 		
 		if (GLoader.totalFiles != 0)
 		{
-			_bar.graphics.drawRect(0, height * 0.5 - 3, width * GLoader.downloadedFiles / GLoader.totalFiles, 6);
+			_bar.graphics.drawRect(0, height * 0.5 - 3, width * GLoader.downloadedFiles / GLoader.totalFiles, 2);
 		}
 
 		_bar.graphics.endFill();
