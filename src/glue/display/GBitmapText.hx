@@ -3,18 +3,13 @@ package glue.display;
 import haxe.Utf8;
 import haxe.xml.Fast;
 import glue.assets.GLoader;
-import glue.scene.GScene;
 import openfl.geom.ColorTransform;
 import openfl.geom.Rectangle;
 import openfl.geom.Matrix;
 import openfl.geom.Point;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
-import openfl.display.Graphics;
-import openfl.display.Sprite;
 import openfl.display.PixelSnapping;
-import openfl.display.Tilemap;
-import openfl.events.Event;
 
 /**
  * Class for rendering text with provided bitmap font and some additional options.
@@ -234,7 +229,7 @@ class GBitmapText extends GEntity
 
 	static public function fromAngelCode(idBitmap:String, idData:String):GBitmapText
 	{
-		var fontImage:BitmapData = GLoader.getImage(idBitmap).bitmapData;
+		var fontImage:BitmapData = GLoader.getImage(idBitmap);
 		var fontXml:Xml = GLoader.getXml(idData);
 		var font:GBitmapFont = GBitmapFont.fromAngelCode(fontImage, fontXml);
 		var angelCodeText = new GBitmapText(font);
@@ -243,7 +238,7 @@ class GBitmapText extends GEntity
 
 	static public function fromMonospace(idBitmap:String, chars:String, charWidth:Int, charHeight:Int):GBitmapText
 	{
-		var fontImage:BitmapData = GLoader.getImage(idBitmap).bitmapData;
+		var fontImage:BitmapData = GLoader.getImage(idBitmap);
 		var font:GBitmapFont = GBitmapFont.fromMonospace(idBitmap, fontImage, chars, new Point(charWidth, charHeight));
 		var monospaceText = new GBitmapText(font);
 		return monospaceText;
