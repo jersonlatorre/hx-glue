@@ -5,6 +5,7 @@ import openfl.geom.Rectangle;
 import openfl.display.BitmapData;
 import glue.assets.GLoader;
 import openfl.display.Bitmap;
+import openfl.display.Sprite;
 import openfl.display.Shape;
 import openfl.events.MouseEvent;
 
@@ -15,10 +16,9 @@ import openfl.events.MouseEvent;
 
 class GButton extends GEntity
 {
-	var _image:Bitmap;
+	var _frames:Array<Dynamic>;
 	var _hitBmd:BitmapData;
-	var _mask:Shape;
-	var _frames:Array<Dynamic> = new Array<Dynamic>();
+	var _image:Bitmap;
 	var _callbackClick:Dynamic = null;
 	var _callbackMouseOver:Dynamic = null;
 	var _callbackMouseDown:Dynamic = null;
@@ -27,53 +27,88 @@ class GButton extends GEntity
 	var _isDown:Bool;
 	var _isEnter:Bool;
 
-	public function new(id:String)
+	public function new()
 	{
 		super();
+	}
 
-		var data:Dynamic = GLoader.getJson(id + "_data");
-		for (i in 0...data.frames.length) _frames.push(data.frames[i]);
+	private function setFrames(frames:Array<Dynamic>)
+	{
+		_frames = frames;
+	}
 
-		width = _frames[0].sourceSize.w * _scaleX;
-		height = _frames[0].sourceSize.h * _scaleY;
-		
-		_image = new Bitmap(GLoader.getImage(id));
-		_image.smoothing = true;
-		_mask = new Shape();
-		_mask.graphics.beginFill(0);
-		_mask.graphics.drawRect(0, 0, width, height);
-		_mask.graphics.endFill();
-		_image.mask = _mask;
+	private function sethitBmd(hitBmd:BitmapData)
+	{
+		_hitBmd = hitBmd;
+	}
 
-		if (_frames.length > 4)
-		{
-			throw "Button class must have only 3 or 4 frames.";
-		}
+	private function setImage(image:Bitmap)
+	{
+		_image = image;
+	}
 
-		if (_frames[3] != null)
-		{
-			_hitBmd = new BitmapData(_frames[3].frame.w, _frames[3].frame.h, true, 0x00000000);
-			_hitBmd.copyPixels(_image.bitmapData, new Rectangle(_frames[3].frame.x, _frames[3].frame.y, _frames[3].frame.w, _frames[3].frame.h) , new Point(0, 0), null, null, true);
-		}
-		else
-		{
-			var _hit:Shape = new Shape();
-			_hit.graphics.beginFill(0xFF0000);
-			_hit.graphics.drawRect(0, 0, _frames[0].sourceSize.w, _frames[0].sourceSize.h);
-			_hit.graphics.endFill();
-			_hitBmd = new BitmapData(_frames[0].sourceSize.w, _frames[0].sourceSize.h, true, 0x00000000);
-			_hitBmd.draw(_hit);
-		}
-		
-		_skin.addChild(_image);
-		_skin.addChild(_mask);
-
-		setNormal();
-
-		_skin.addEventListener(MouseEvent.MOUSE_MOVE, _onMouseMove);
+	private function createListeners():Void
+	{
+		_skin.getChildAt(0).addEventListener(MouseEvent.MOUSE_MOVE, _onMouseMove);
 		_skin.addEventListener(MouseEvent.MOUSE_OUT, _onMouseOut);
 		_skin.addEventListener(MouseEvent.MOUSE_DOWN, _onMouseDown);
 		_skin.addEventListener(MouseEvent.MOUSE_UP, _onMouseUp);
+	}
+
+	static public function fromSpriteSheet(id:String):GButton
+	{
+		var button = new GButton();
+		var data:Dynamic = GLoader.getJson(id + "__json");
+		var frames:Array<Dynamic> = new Array<Dynamic>();
+		for (i in 0...data.frames.length) frames.push(data.frames[i]);
+		button.setFrames(frames);
+		
+		if (frames.length > 4)
+		{
+			throw "Button sprite sheets must have only 3 or 4 frames.";
+		}
+
+		button.width = frames[0].sourceSize.w * button.scale.x;
+		button.height = frames[0].sourceSize.h * button.scale.y;
+
+		var skin:Sprite = new Sprite();
+		var hitBmd:BitmapData;
+		var mask:Shape;
+		var image:Bitmap = new Bitmap(GLoader.getImage(id + "__image"));
+
+		image.smoothing = true;
+		mask = new Shape();
+		mask.graphics.beginFill(0);
+		mask.graphics.drawRect(0, 0, button.width, button.height);
+		mask.graphics.endFill();
+		image.mask = mask;
+
+		if (frames[3] != null)
+		{
+			hitBmd = new BitmapData(frames[3].frame.w, frames[3].frame.h, true, 0x00000000);
+			hitBmd.copyPixels(image.bitmapData, new Rectangle(frames[3].frame.x, frames[3].frame.y, frames[3].frame.w, frames[3].frame.h) , new Point(0, 0), null, null, true);
+		}
+		else
+		{
+			var hit:Shape = new Shape();
+			hit.graphics.beginFill(0xFF0000);
+			hit.graphics.drawRect(0, 0, frames[0].sourceSize.w, frames[0].sourceSize.h);
+			hit.graphics.endFill();
+			hitBmd = new BitmapData(frames[0].sourceSize.w, frames[0].sourceSize.h, true, 0x00000000);
+			hitBmd.draw(hit);
+		}
+
+		skin.addChild(image);
+		skin.addChild(mask);
+
+		button.setImage(image);
+		button.sethitBmd(hitBmd);
+		button.setSkin(skin);
+		button.createListeners();
+
+		button.setNormal();
+
+		return button;
 	}
 
 	function _onMouseMove(e:MouseEvent)
