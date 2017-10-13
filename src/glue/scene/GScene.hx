@@ -1,14 +1,13 @@
 package glue.scene;
 
 import glue.assets.GLoader;
-import glue.assets.GSound;
 import glue.display.GEntity;
-import glue.math.GVector2D;
 import glue.scene.GCamera;
 import glue.utils.GTools;
 import motion.Actuate;
 import motion.easing.Quad;
 import openfl.display.Sprite;
+import openfl.display.Shape;
 
 /**
  * ...
@@ -56,7 +55,7 @@ class GScene
 		_mask.y = 0;
 		_mask.mouseEnabled = false;
 		_mask.doubleClickEnabled = false;
-		_canvas.mask = _mask;		
+		_canvas.mask = _mask;
 
 		preload();
 		GLoader.startDownload(init);
@@ -67,30 +66,7 @@ class GScene
 		GSceneManager.gotoScene(screenClass);
 	}
 
-	public function loadImage(id:String, url:String)
-	{
-		GLoader.load({ type:'image', url: url, id: id });
-	}
-
-	public function loadSpritesheet(id:String, url:String)
-	{
-		GLoader.load({ type:'spritesheet', url: url, id: id });
-	}
-
-	public function loadButton(id:String, url:String)
-	{
-		GLoader.load({ type:'button', url: url, id: id });
-	}
-
-	public function loadSound(id:String, url:String, group:String = "default")
-	{
-		GLoader.load({ type:'sound', url: url, id: id, group:group });
-	}
-
-	public function loadData(id:String, url:String)
-	{
-		GLoader.load({ type:'data', url: url, id: id });
-	}
+	public var load = Glue.load;
 
 	public function preload() { }
 
@@ -190,17 +166,10 @@ class GScene
 			}
 		}
 	}
-
-	public function createBackground(color:UInt)
-	{
-		_canvas.graphics.beginFill(color);
-		_canvas.graphics.drawRect(0, 0, Glue.width, Glue.height);
-		_canvas.graphics.endFill();
-	}
 	
 	public function fadeIn(duration:Float = 0.3)
 	{
-		var fade:Sprite = new Sprite();
+		var fade:Shape = new Shape();
 		fade.graphics.beginFill(0);
 		fade.graphics.drawRect(0, 0, Glue.width, Glue.height);
 		fade.graphics.endFill();
@@ -213,6 +182,26 @@ class GScene
 		Actuate.tween(fade, duration, { alpha: 0 } ).ease(Quad.easeInOut).onComplete(function()
 		{
 			_effectCanvas.removeChild(fade);
+		});
+	}
+
+	public function fadeOut(duration:Float = 0.3, callback:Dynamic)
+	{
+		var fade:Shape = new Shape();
+		fade.graphics.beginFill(0);
+		fade.graphics.drawRect(0, 0, Glue.width, Glue.height);
+		fade.graphics.endFill();
+
+		fade.alpha = 0;
+		fade.x = 0;
+		fade.y = 0;
+		
+		_effectCanvas.addChild(fade);
+		
+		Actuate.tween(fade, duration, { alpha: 1 } ).ease(Quad.easeInOut).onComplete(function()
+		{
+			_effectCanvas.removeChild(fade);
+			callback();
 		});
 	}
 	
