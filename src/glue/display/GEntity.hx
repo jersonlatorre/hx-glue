@@ -1,13 +1,10 @@
 package glue.display;
 
-import glue.scene.GScene;
 import glue.scene.GSceneManager;
-import glue.math.GMath;
 import glue.math.GVector2D;
 import glue.utils.GTime;
-import glue.assets.GSound;
 import openfl.display.Sprite;
-import openfl.display.Shape;
+import openfl.geom.Rectangle;
 
 /**
  * ...
@@ -19,15 +16,10 @@ class GEntity
 {
 	var _canvas:Sprite;
 	var _skin:Sprite;
-	var _anchor:GVector2D;
-
-	var _scaleX:Float;
-	var _scaleY:Float;
-	var _rotation:Float;
-	var _alpha:Float;
-
-	public var width:Float = 0;
-	public var height:Float = 0;
+	var _debug:Sprite;
+	var _parent:Sprite;
+	var _layers:Map<String, Sprite> = new Map<String, Sprite>();
+	var _entities:Array<GEntity> = new Array<GEntity>();
 
 	@:allow(glue.scene.GScene.preUpdate, glue.scene.GPopup.preUpdate)
 	var isDestroyed:Bool = false;
@@ -35,146 +27,93 @@ class GEntity
 	public var position:GVector2D;
 	public var velocity:GVector2D;
 	public var acceleration:GVector2D;
+	public var scale:GVector2D;
+	public var rotation:Float;
+	public var width:Float = 0;
+	public var height:Float = 0;
+	public var alpha:Float;
+	public var anchor:GVector2D;
+	public var bounds:Rectangle = new Rectangle();
 	
 	public function new():Void
 	{
 		_skin = new Sprite();
+		_debug = new Sprite();
 		_canvas = new Sprite();
 		_canvas.addChild(_skin);
-		_anchor = new GVector2D(0, 0);
+		_canvas.addChild(_debug);
 
 		position = new GVector2D(0, 0);
 		velocity = new GVector2D(0, 0);
 		acceleration = new GVector2D(0, 0);
 
-		_scaleX = _scaleY = _alpha = 1;
-		_rotation = 0;
+		anchor = new GVector2D(0, 0);
+		scale = new GVector2D(1, 1);
+		alpha = 1;
+		rotation = 0;
+
+		addLayer("default");
 
 		init();
 	}
 
 	public function init() { }
 
-	public function createRectangleShape(width:Float, height:Float, color:UInt = 0x000000)
-	{
-		this.width = width;
-		this.height = height;
-
-		var graphic = new Shape();
-		graphic.graphics.beginFill(color);
-		graphic.graphics.drawRect(0, 0, width, height);
-		graphic.graphics.endFill();
-
-		_skin.addChild(graphic);
-	}
-
-	public function createCircleShape(radius:Float, color:UInt = 0x000000)
-	{
-		this.width = this.height = 2 * radius;
-
-		var graphic = new Shape();
-		graphic.graphics.beginFill(color);
-		graphic.graphics.drawCircle(radius, radius, radius);
-		graphic.graphics.endFill();
-
-		_skin.addChild(graphic);
-	}
-
-	function removeGraphics()
-	{
-		_skin.graphics.clear();
-	}
-	
-	public function setPosition(x:Float, y:Float)
-	{
-		position.x = x;
-		position.y = y;
-		_canvas.x = Std.int(position.x);
-		_canvas.y = Std.int(position.y);
-	}
-	
-	public function setPositionX(x:Float)
-	{
-		position.x = x;
-	}
-	
-	public function setPositionY(y:Float)
-	{
-		position.y = y;
-	}
-	
-	public function setScale(scaleX:Float, scaleY:Float)
-	{
-		_scaleX = scaleX;
-		_scaleY = scaleY;
-		_canvas.scaleX = scaleX;
-		_canvas.scaleY = scaleY;
-		_canvas.width = Std.int(_canvas.width) * GMath.sign(scaleX);
-		_canvas.height = Std.int(_canvas.height) * GMath.sign(scaleY);
-	}
-	
-	public function setScaleX(value:Float)
-	{
-		_scaleX = value;
-		_canvas.scaleX = value;
-		_canvas.width = Std.int(_canvas.width) * GMath.sign(value);
-	}
-
-	public function getScaleX():Float
-	{
-		return _scaleX;
-	}
-	
-	public function setScaleY(value:Float)
-	{
-		_scaleY = value;
-		_canvas.scaleY = value;
-		_canvas.height = Std.int(_canvas.height) * GMath.sign(value);
-	}
-
-	public function getScaleY():Float
-	{
-		return _scaleY;
-	}
-
-	public function setRotation(value:Float)
-	{
-		_rotation = value;
-		_canvas.rotation = (57.29578) * value;
-	}
-
-	public function getRotation():Float
-	{
-		return _rotation;
-	}
-	
-	public function setAnchor(x:Float, y:Float)
-	{
-		_anchor.x = x;
-		_anchor.y = y;
-		_skin.x = -width * _anchor.x;
-		_skin.y = -height * _anchor.y;
-	}
-	
-	public function setAlpha(value:Float)
-	{
-		_alpha = value;
-		_skin.alpha = value;
-	}
-
-	public function getAlpha():Float
-	{
-		return _alpha;
-	}
-
 	public function gotoScene(screenClass:Dynamic)
 	{
 		GSceneManager.gotoScene(screenClass);
 	}
 
+	public function addLayer(layerName:String)
+	{
+		if (!_layers.exists(layerName))
+		{
+			var layer:Sprite = new Sprite();
+			_canvas.addChild(layer);
+			_layers.set(layerName, layer);
+		}
+		else
+		{
+			throw "Already exists a layer whit the name: " + layerName;
+		}
+	}
+
+	public function add(entity:GEntity, layerName:String = "default")
+	{
+		if (_layers.exists(layerName))
+		{
+			_entities.push(entity);
+			entity.addToLayer(_layers.get(layerName));
+		}
+		else
+		{
+			throw "There is no any layer with the name: " + layerName;
+		}
+	}
+
+	public function remove(entity:GEntity) 
+	{
+		var index = _entities.indexOf(entity);
+		
+		if (index >= 0)
+		{
+			for (layerName in _layers.keys())
+			{
+				if (entity.isChildOfLayer(_layers.get(layerName)))
+				{
+					entity.removeFromLayer(_layers.get(layerName));
+					break;
+				}
+			}
+			
+			_entities.splice(index, 1);
+		}
+	}
+
 	@:allow(glue.scene.GScene.add, glue.scene.GPopup.add, glue.data.GLoader.onDownloadFileComplete, glue.utils.GStats)
 	function addToLayer(layer:Sprite):Dynamic
 	{
+		_parent = layer;
 		layer.addChild(_canvas);
 		return this;
 	}
@@ -197,19 +136,79 @@ class GEntity
 	@:allow(glue.scene.GScene.preUpdate, glue.scene.GPopup.preUpdate, glue.utils.GStats)
 	function preUpdate():Void 
 	{
+		if (_canvas == null) return; 
 		_canvas.x = Std.int(position.x);
 		_canvas.y = Std.int(position.y);
+		_canvas.scaleX = scale.x;
+		_canvas.scaleY = scale.y;
+		_canvas.rotation = (57.29578) * rotation;
+		_canvas.alpha = alpha;
 		
+		_skin.x = -width * anchor.x;
+		_skin.y = -height * anchor.y;
+
 		velocity += acceleration * GTime.deltaTime;
 		position += velocity * GTime.deltaTime;
+
+		if (Glue.showBounds)
+		{
+			_debug.graphics.clear();
+			_debug.graphics.lineStyle(1, 0xFF0000);
+			_debug.graphics.drawRect(-width * anchor.x, -height * anchor.y, width, height);
+			
+			_debug.graphics.beginFill(1, 0xFF0000);
+			_debug.graphics.drawCircle(0, 0, 5);
+			_debug.graphics.endFill();
+
+			_debug.graphics.lineStyle(1, 0x00FF00);
+			_debug.graphics.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
+		}
+
+		var i:Int = 0;
+		
+		while (i < _entities.length)
+		{
+			var entity = _entities[i];
+			
+			if (entity.isDestroyed)
+			{
+				for (layerName in _layers.keys())
+				{
+					if (entity.isChildOfLayer(_layers.get(layerName)))
+					{
+						entity.removeFromLayer(_layers.get(layerName));
+						break;
+					}
+				}
+				
+				_entities.splice(i, 1);
+			}
+			else
+			{
+				entity.preUpdate();
+				i++;
+			}
+		}
 		
 		update();
+	}
+
+	public function collideWith(entity:GEntity):Bool
+	{
+		return !(entity.position.x + entity.bounds.x > position.x + bounds.x + bounds.width 
+			  || entity.position.x + entity.bounds.x + entity.bounds.width < position.x + bounds.x 
+			  || entity.position.y + entity.bounds.y > position.y + bounds.y + bounds.width
+			  || entity.position.y + entity.bounds.y + entity.bounds.width < position.y + bounds.y);
 	}
 	
 	public function destroy()
 	{
-		_canvas.removeChild(_skin);
-		_canvas = null;
+		if (_canvas != null)
+		{
+			_canvas.removeChild(_skin);
+			_canvas = null;
+		}
+		
 		_skin = null;
 		isDestroyed = true;
 	}
