@@ -18,10 +18,11 @@ import openfl.events.Event;
 	static var isPreloading:Bool;
 
 	static public var stage:Stage;
-	static public var width:Int = 800;
-	static public var height:Int = 600;
+	static public var width:Int;
+	static public var height:Int;
 	static public var canvas:Sprite;
 	static public var isDebug:Bool = false;
+	static public var showBounds:Bool = false;
 
 	@:allow(glue.assets.GLoader)
 	static var cacheCanvas:Sprite;
@@ -34,17 +35,12 @@ import openfl.events.Event;
 		
 		Glue.mainScene = data.mainScene;
 		Glue.isDebug = data.isDebug;
+		Glue.showBounds = data.showBounds;
 		customPreloader = data.preloader;
 		
-		Glue.stage.addEventListener(Event.ENTER_FRAME, onUpdate);
-			
-		cacheCanvas = new Sprite();
-		cacheCanvas.x = Math.NEGATIVE_INFINITY;
-		cacheCanvas.alpha = 0.0001;
-		Glue.stage.addChild(cacheCanvas);
-
 		canvas = new Sprite();
 		Glue.stage.addChild(canvas);
+		Glue.stage.addEventListener(Event.ENTER_FRAME, onUpdate);
 
 		if (data.showStats)
 		{
@@ -56,8 +52,8 @@ import openfl.events.Event;
 		GInput.init();
 		GSceneManager.init();
 
-		if (isPreloading)
-		{
+		// if (isPreloading)
+		// {
 			if (customPreloader == null)
 			{
 				GSceneManager.showLoaderScene(GPreloader, onAssetsDownloaded);
@@ -66,36 +62,11 @@ import openfl.events.Event;
 			{
 				GSceneManager.showLoaderScene(customPreloader, onAssetsDownloaded);
 			}
-		}
-		else
-		{
-			GSceneManager.gotoScene(Glue.mainScene);
-		}
-	}
-
-	static public function loadImage(id:String, url:String)
-	{
-		GLoader.load({ type:'image', url: url, id: id });
-	}
-
-	static public function loadSpritesheet(id:String, url:String)
-	{
-		GLoader.load({ type:'spritesheet', url: url, id: id });
-	}
-
-	static public function loadButton(id:String, url:String)
-	{
-		GLoader.load({ type:'button', url: url, id: id });
-	}
-
-	static public function loadData(id:String, url:String)
-	{
-		GLoader.load({ type:'data', url: url, id: id });
-	}
-
-	public function loadSound(id:String, url:String, group:String)
-	{
-		GLoader.load({ type:'sound', url: url, id: id, group:group });
+		// }
+		// else
+		// {
+		// 	GSceneManager.gotoScene(Glue.mainScene);
+		// }
 	}
 
 	static function onAssetsDownloaded() 
@@ -115,5 +86,31 @@ import openfl.events.Event;
 	{
 		canvas.scaleX = x;
 		canvas.scaleY = y;
+	}
+	
+	static public var load =
+	{
+		spritesheet:
+		{
+			fromAdobeAnimate: function(assetId:String, url:String, fps:Int = 30)
+			{
+				GLoader.load({ type:"adobe_animate_spritesheet", id: assetId, url: url, fps: fps });
+			}
+		},
+		
+		image: function(assetId:String, url:String)
+		{
+			GLoader.load({ type: "image", id: assetId, url: url });
+		},
+		
+		json: function(assetId:String, url:String)
+		{
+			GLoader.load({ type: "json", id: assetId, url: url });
+		},
+		
+		sound: function(assetId:String, url:String, group:String = null)
+		{
+			GLoader.load({ type: "sound", id: assetId, url: url, group: group});
+		}
 	}
 }
