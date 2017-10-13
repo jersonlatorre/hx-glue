@@ -65,6 +65,13 @@ abstract GVector2D(__GVectorBase) from __GVectorBase to __GVectorBase
     this.y = y;
   }
 
+  public function set(x:Float, y:Float):GVector2D
+  {
+    this.x = x;
+    this.y = y;
+    return this;
+  }
+
   public function clone():GVector2D
   {
     return GVector2D.create(x, y);
