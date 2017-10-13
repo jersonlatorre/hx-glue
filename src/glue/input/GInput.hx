@@ -4,7 +4,6 @@ import glue.Glue;
 import glue.math.GVector2D;
 import openfl.events.KeyboardEvent;
 import openfl.events.MouseEvent;
-import openfl.ui.Keyboard;
 import openfl.ui.Mouse;
 
 /**
