@@ -1,10 +1,10 @@
 package glue.display;
 
 /**
- * Entity group for automatic management of collections
+ * Group for automatic management of collections
  * Simplifies common patterns like collision detection and cleanup
  */
-class GEntityGroup<T:GEntity>
+class GGroup<T:GEntity>
 {
 	final entities:Array<T> = [];
 	final scene:glue.scene.GViewBase;
@@ -92,7 +92,7 @@ class GEntityGroup<T:GEntity>
 		return null;
 	}
 
-	public function collidesWithGroup<U:GEntity>(other:GEntityGroup<U>, callback:T->U->Void):Void
+	public function collidesWithGroup<U:GEntity>(other:GGroup<U>, callback:T->U->Void):Void
 	{
 		for (entity in entities)
 		{

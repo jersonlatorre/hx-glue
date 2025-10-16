@@ -6,6 +6,8 @@ import glue.scene.GScene;
 import glue.scene.GSceneManager;
 import glue.math.GVector2D;
 import glue.utils.GTime;
+import glue.input.GInput;
+import glue.input.InputActions;
 import openfl.display.Sprite;
 import openfl.geom.Rectangle;
 
@@ -150,6 +152,36 @@ class GEntity
 	{
 		alpha = a;
 		return this;
+	}
+
+	public inline function isPressed(action:String):Bool
+	{
+		return GInput.isKeyPressed(action);
+	}
+
+	public inline function isDown(action:String):Bool
+	{
+		return GInput.isKeyDown(action);
+	}
+
+	public inline function isUp(action:String):Bool
+	{
+		return GInput.isKeyUp(action);
+	}
+
+	public inline function getDirection(left:String = "left", right:String = "right", up:String = "up", down:String = "down"):GVector2D
+	{
+		return InputActions.getDirection(left, right, up, down);
+	}
+
+	public inline function getHorizontal(left:String = "left", right:String = "right"):Float
+	{
+		return InputActions.getHorizontal(left, right);
+	}
+
+	public inline function getVertical(up:String = "up", down:String = "down"):Float
+	{
+		return InputActions.getVertical(up, down);
 	}
 
 		@:allow(glue.scene.GScene.add, glue.scene.GPopup.add, glue.scene.GViewBase, glue.assets.GLoader, glue.utils.GStats)

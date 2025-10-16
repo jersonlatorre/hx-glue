@@ -2,6 +2,7 @@ package;
 
 import glue.Glue;
 import demo.scenes.DemoScene;
+import platformer.scenes.PlatformerScene;
 import openfl.display.Sprite;
 
 class Main extends Sprite
@@ -10,6 +11,7 @@ class Main extends Sprite
 	{
 		super();
 
-		Glue.run(DemoScene, { showStats: true });
+		// Glue.run(DemoScene, { showStats: true });
+		Glue.run(PlatformerScene, { showStats: true });
 	}
 }
