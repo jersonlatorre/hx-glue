@@ -1,12 +1,12 @@
 package glue.math;
 
 @:forward 
-abstract GVector2D(__GVectorBase) from __GVectorBase to __GVectorBase
-{
-  public function new(x:Float = 0, y:Float = 0)
+  abstract GVector2D(__GVectorBase) from __GVectorBase to __GVectorBase
   {
-    return new __GVectorBase(x, y);
-  }
+    public function new(x:Float = 0, y:Float = 0)
+    {
+      this = new __GVectorBase(x, y);
+    }
 
   static public function create(x:Float = 0, y:Float = 0)
   {
@@ -170,7 +170,7 @@ abstract GVector2D(__GVectorBase) from __GVectorBase to __GVectorBase
 
   public function dot(a:GVector2D):Float
   {
-    return (a.x * x + a.y + y);
+    return (a.x * x + a.y * y);
   }
 
   public function cross(a:GVector2D):Float

@@ -23,7 +23,8 @@ import openfl.display.Sprite;
 	
 	static public function gotoScene(screenClass:Dynamic)
 	{
-		if (Type.getSuperClass(screenClass) != GScene)
+		var sceneClass:Class<Dynamic> = cast screenClass;
+		if (!inheritsFrom(sceneClass, GScene))
 		{
 			throw "Screen class needs to be GScreen";
 		}
@@ -51,7 +52,8 @@ import openfl.display.Sprite;
 
 	static public function showPopup(popupClass:Dynamic)
 	{
-		if (Type.getSuperClass(popupClass) != GPopup)
+		var popupClassRef:Class<Dynamic> = cast popupClass;
+		if (!inheritsFrom(popupClassRef, GPopup))
 		{
 			throw "Popup Class needs to be GPopup";
 		}
@@ -85,5 +87,19 @@ import openfl.display.Sprite;
 		{
 			currentPopup.preUpdate();
 		}
+	}
+
+	static function inheritsFrom(clazz:Class<Dynamic>, parent:Class<Dynamic>):Bool
+	{
+		var current:Class<Dynamic> = clazz;
+		while (current != null)
+		{
+			if (current == parent)
+			{
+				return true;
+			}
+			current = Type.getSuperClass(current);
+		}
+		return false;
 	}
 }

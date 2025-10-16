@@ -20,7 +20,7 @@ typedef SoundData =
 {
 	static var _sounds:Map<String, SoundData> = new Map<String, SoundData>();
 	
-	@:allow(glue.assets.GLoader.onDownloadFileComplete)
+	@:allow(glue.assets.GLoader.handleFileComplete)
 	static function addSound(id:String, sound:Sound, group:String)
 	{
 		var soundInfo = { sound: sound, channel: null, group: group };

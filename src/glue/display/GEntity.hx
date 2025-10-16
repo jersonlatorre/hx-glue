@@ -23,6 +23,7 @@ class GEntity
 
 	@:allow(glue.scene.GScene.preUpdate, glue.scene.GPopup.preUpdate)
 	var isDestroyed:Bool = false;
+	public var destroyed(get, never):Bool;
 	
 	public var position:GVector2D;
 	public var velocity:GVector2D;
@@ -133,6 +134,11 @@ class GEntity
 	
 	public function update() { }
 
+	function get_destroyed():Bool
+	{
+		return isDestroyed;
+	}
+
 	@:allow(glue.scene.GScene.preUpdate, glue.scene.GPopup.preUpdate, glue.utils.GStats)
 	function preUpdate():Void 
 	{
@@ -197,8 +203,8 @@ class GEntity
 	{
 		return !(entity.position.x + entity.bounds.x > position.x + bounds.x + bounds.width 
 			  || entity.position.x + entity.bounds.x + entity.bounds.width < position.x + bounds.x 
-			  || entity.position.y + entity.bounds.y > position.y + bounds.y + bounds.width
-			  || entity.position.y + entity.bounds.y + entity.bounds.width < position.y + bounds.y);
+			  || entity.position.y + entity.bounds.y > position.y + bounds.y + bounds.height
+			  || entity.position.y + entity.bounds.y + entity.bounds.height < position.y + bounds.y);
 	}
 	
 	public function destroy()

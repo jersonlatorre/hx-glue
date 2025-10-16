@@ -34,8 +34,8 @@ class GButton extends GEntity
 		var data:Dynamic = GLoader.getJson(id + "_data");
 		for (i in 0...data.frames.length) _frames.push(data.frames[i]);
 
-		width = _frames[0].sourceSize.w * _scaleX;
-		height = _frames[0].sourceSize.h * _scaleY;
+		width = _frames[0].sourceSize.w * scale.x;
+		height = _frames[0].sourceSize.h * scale.y;
 		
 		_image = new Bitmap(GLoader.getImage(id));
 		_image.smoothing = true;

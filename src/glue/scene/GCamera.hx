@@ -77,6 +77,9 @@ import glue.math.GVector2D;
 	
 	public function update()
 	{
+		var halfWidth = Glue.width >> 1;
+		var halfHeight = Glue.height >> 1;
+
 		switch(_mode)
 		{
 			case STATE_FOLLOW:
@@ -101,24 +104,24 @@ import glue.math.GVector2D;
 			}
 		}
 
-		if (position.x > _rightLimit - Glue.width >> 1)
+		if (position.x > _rightLimit - halfWidth)
 		{
-			position.x = _rightLimit - Glue.width >> 1;
+			position.x = _rightLimit - halfWidth;
 		}
 		
-		if (position.x < _leftLimit + Glue.width >> 1)
+		if (position.x < _leftLimit + halfWidth)
 		{
-			position.x = _leftLimit + Glue.width >> 1;
+			position.x = _leftLimit + halfWidth;
 		}
 		
-		if (position.y > _bottomLimit - Glue.height >> 1)
+		if (position.y > _bottomLimit - halfHeight)
 		{
-			position.y = _bottomLimit - Glue.height >> 1;
+			position.y = _bottomLimit - halfHeight;
 		}
 		
-		if ( position.y < _topLimit + Glue.height >> 1)
+		if ( position.y < _topLimit + halfHeight)
 		{
-			position.y = _topLimit + Glue.height >> 1;
+			position.y = _topLimit + halfHeight;
 		}
 	}
 	

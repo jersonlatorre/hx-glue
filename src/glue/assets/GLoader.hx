@@ -6,6 +6,8 @@ import openfl.display.Loader;
 import openfl.geom.Rectangle;
 import openfl.geom.Point;
 import openfl.events.Event;
+import openfl.events.EventDispatcher;
+import openfl.events.EventType;
 import openfl.events.IOErrorEvent;
 import openfl.net.URLLoader;
 import openfl.net.URLRequest;
@@ -23,16 +25,29 @@ typedef Asset =
 	content: Dynamic
 }
 
+typedef PendingFile =
+{
+	var type:DataType;
+	var id:String;
+	var url:String;
+	var loader:Dynamic;
+	@:optional var group:String;
+	@:optional var fps:Int;
+    @:optional var completeHandler:Event->Void;
+    @:optional var errorHandler:Event->Void;
+}
+
 enum DataType {	IMAGE; JSON; XML; SOUND; }
 
 @:final class GLoader
 {
 	static inline var SUFFIX_IMAGE:String = "__image";
 	static inline var SUFFIX_JSON:String = "__json";
+	static final IO_ERROR_EVENT:EventType<Event> = cast IOErrorEvent.IO_ERROR;
 
 	static var _callback:Dynamic;
 	static var _assets:Map<String, Asset> = new Map<String, Asset>();
-	static var _toLoadFiles:Array<Dynamic> = new Array<Dynamic>();
+	static var _toLoadFiles:Array<PendingFile> = new Array<PendingFile>();
 	static var _totalLoadedFiles:Map<String, Dynamic> = new Map<String, Dynamic>();
 	static var _currentLoadedFiles:Map<String, Dynamic> = new Map<String, Dynamic>();
 
@@ -52,7 +67,7 @@ enum DataType {	IMAGE; JSON; XML; SOUND; }
 			case "image":
 			{
 				var loader:Loader = new Loader();
-				_toLoadFiles.push({ type: DataType.IMAGE, id: data.id, url: data.url, loader:loader });
+				_toLoadFiles.push({ type: DataType.IMAGE, id: data.id, url: data.url, loader: loader });
 				
 				_assets.set(data.id, { type: "image", data: null, content: null });
 				
@@ -62,7 +77,7 @@ enum DataType {	IMAGE; JSON; XML; SOUND; }
 			case "adobe_animate_spritesheet":
 			{
 				var loader1:Loader = new Loader();
-				_toLoadFiles.push({ type: DataType.IMAGE, id: data.id + SUFFIX_IMAGE, url: data.url, fps:data.fps, loader: loader1 });
+				_toLoadFiles.push({ type: DataType.IMAGE, id: data.id + SUFFIX_IMAGE, url: data.url, fps: data.fps, loader: loader1 });
 				
 				var loader2:URLLoader = new URLLoader();
 				var url:String = Std.string(data.url).substring(0, Std.string(data.url).lastIndexOf('.'));
@@ -79,7 +94,7 @@ enum DataType {	IMAGE; JSON; XML; SOUND; }
 			{
 				if (data.group == null) data.group = "default";
 				var loader:Sound = new Sound();
-				_toLoadFiles.push({ type: DataType.SOUND, id: data.id, url: data.url, group: data.group, loader:loader });
+				_toLoadFiles.push({ type: DataType.SOUND, id: data.id, url: data.url, group: data.group, loader: loader });
 				_assets.set(data.id, { type: "sound", data: null, content: null });
 				totalFiles += 1;
 			}
@@ -112,18 +127,26 @@ enum DataType {	IMAGE; JSON; XML; SOUND; }
 
 			for (file in _toLoadFiles)
 			{
-				switch (file.type)
+				var pending = file;
+				var completeHandler:Event->Void = function(e:Event) { handleFileComplete(pending, e); };
+				var errorHandler:Event->Void = function(e:Event) { handleFileError(pending, cast e); };
+				pending.completeHandler = completeHandler;
+				pending.errorHandler = errorHandler;
+
+				switch (pending.type)
 				{
 					case DataType.IMAGE:
 					{
-						file.loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onDownloadFileComplete(file));
-						file.loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onError(file));
+						var info = pending.loader.contentLoaderInfo;
+						info.addEventListener(Event.COMPLETE, completeHandler);
+						info.addEventListener(IO_ERROR_EVENT, errorHandler);
 					}
 					
 					case DataType.SOUND, DataType.JSON:
 					{
-						file.loader.addEventListener(Event.COMPLETE, onDownloadFileComplete(file));
-						file.loader.addEventListener(IOErrorEvent.IO_ERROR, onError(file));
+						var dispatcher:EventDispatcher = cast pending.loader;
+						dispatcher.addEventListener(Event.COMPLETE, completeHandler);
+						dispatcher.addEventListener(IO_ERROR_EVENT, errorHandler);
 					}
 					
 					case DataType.XML:
@@ -132,49 +155,55 @@ enum DataType {	IMAGE; JSON; XML; SOUND; }
 					}
 				}
 				
-				file.loader.load(new URLRequest(file.url));
+				pending.loader.load(new URLRequest(pending.url));
 			}
 		}
 	}
 
-	static function onDownloadFileComplete(file:Dynamic)
+	static function handleFileComplete(file:PendingFile, _:Event)
 	{
-		return function(e:Event)
-		{
-			if (Glue.isDebug) haxe.Log.trace('-- ${ file.id } ✔', null);
+		if (Glue.isDebug) haxe.Log.trace('-- ${ file.id } ✔', null);
 
-			switch (file.type)
+		switch (file.type)
+		{
+			case DataType.IMAGE:
 			{
-				case DataType.IMAGE:
-				{
-					_currentLoadedFiles.set(file.id, file.loader.content);
-					file.loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, onDownloadFileComplete(file));
-				}
-				
-				case DataType.JSON, DataType.XML:
-				{
-					_currentLoadedFiles.set(file.id, preventUtf8(file.loader.data));
-					file.loader.removeEventListener(Event.COMPLETE, onDownloadFileComplete(file));
-				}
-				
-				case DataType.SOUND:
-				{
-					GSound.addSound(file.id, file.loader, file.group);
-					_currentLoadedFiles.set(file.id, file.loader);
-					file.loader.removeEventListener(Event.COMPLETE, onDownloadFileComplete(file));
-				}
+				_currentLoadedFiles.set(file.id, file.loader.content);
+				var info = file.loader.contentLoaderInfo;
+				info.removeEventListener(Event.COMPLETE, file.completeHandler);
+				info.removeEventListener(IO_ERROR_EVENT, file.errorHandler);
 			}
 			
-			downloadedFiles++;
-			
-			if (downloadedFiles == totalFiles)
+			case DataType.JSON, DataType.XML:
 			{
-				downloadedFiles = 0;
-				totalFiles = 0;
-				isDownloading = false;
-				updateLoadedFiles();
-				if (_callback != null) _callback();
+				_currentLoadedFiles.set(file.id, preventUtf8(file.loader.data));
+				var dispatcher:EventDispatcher = cast file.loader;
+				dispatcher.removeEventListener(Event.COMPLETE, file.completeHandler);
+				dispatcher.removeEventListener(IO_ERROR_EVENT, file.errorHandler);
 			}
+			
+			case DataType.SOUND:
+			{
+				GSound.addSound(file.id, file.loader, file.group);
+				_currentLoadedFiles.set(file.id, file.loader);
+				var dispatcher:EventDispatcher = cast file.loader;
+				dispatcher.removeEventListener(Event.COMPLETE, file.completeHandler);
+				dispatcher.removeEventListener(IO_ERROR_EVENT, file.errorHandler);
+			}
+		}
+
+		file.completeHandler = null;
+		file.errorHandler = null;
+		
+		downloadedFiles++;
+		
+		if (downloadedFiles == totalFiles)
+		{
+			downloadedFiles = 0;
+			totalFiles = 0;
+			isDownloading = false;
+			updateLoadedFiles();
+			if (_callback != null) _callback();
 		}
 	}
 
@@ -186,17 +215,34 @@ enum DataType {	IMAGE; JSON; XML; SOUND; }
 			_totalLoadedFiles.set(key, _currentLoadedFiles.get(key));
 		}
 
-		_toLoadFiles = new Array<Dynamic>();
+		_toLoadFiles = new Array<PendingFile>();
 
 		_currentLoadedFiles = new Map<String, Dynamic>();
 	}
 	
-	static function onError(file:Dynamic)
+static function handleFileError(file:PendingFile, error:IOErrorEvent)
 	{
-		return function(e:IOErrorEvent)
+		switch (file.type)
 		{
-			throw '\'${ file.url }\' not found.';
+			case DataType.IMAGE:
+			{
+				var info = file.loader.contentLoaderInfo;
+				info.removeEventListener(Event.COMPLETE, file.completeHandler);
+				info.removeEventListener(IO_ERROR_EVENT, file.errorHandler);
+			}
+
+			case DataType.SOUND, DataType.JSON, DataType.XML:
+			{
+				var dispatcher:EventDispatcher = cast file.loader;
+				dispatcher.removeEventListener(Event.COMPLETE, file.completeHandler);
+				dispatcher.removeEventListener(IO_ERROR_EVENT, file.errorHandler);
+			}
 		}
+
+		file.completeHandler = null;
+		file.errorHandler = null;
+
+		throw '\'${ file.url }\' not found.';
 	}
 
 	static function onLoadComplete()

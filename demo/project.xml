@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	<meta title="GlueDemo" package="com.hxglue.demo" version="1.0.0" company="Jerson La Torre" />
+	<app main="Main" file="GlueDemo" path="bin" />
+
+	<source path="Source" />
+	<source path="../src" />
+
+	<assets path="Assets" rename="assets" include="**" />
+
+	<window width="800" height="600" fps="60" orientation="landscape" />
+
+	<haxelib name="openfl" />
+	<haxelib name="actuate" />
+</project>
