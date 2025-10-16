@@ -8,37 +8,31 @@ import glue.assets.GLoader;
  */
 @:final class Assets
 {
-	// Shorthand image loading
 	public static inline function image(id:String, url:String):Void
 	{
 		GLoader.load({ type: "image", id: id, url: url });
 	}
 
-	// Shorthand JSON loading
 	public static inline function json(id:String, url:String):Void
 	{
 		GLoader.load({ type: "json", id: id, url: url });
 	}
 
-	// Shorthand sound loading
 	public static inline function sound(id:String, url:String, ?group:String):Void
 	{
 		GLoader.load({ type: "sound", id: id, url: url, group: group });
 	}
 
-	// Shorthand spritesheet loading
 	public static inline function spritesheet(id:String, url:String, fps:Int = 30):Void
 	{
 		GLoader.load({ type: "adobe_animate_spritesheet", id: id, url: url, fps: fps });
 	}
 
-	// Batch loading with fluent API
 	public static function batch():AssetBatch
 	{
 		return new AssetBatch();
 	}
 
-	// Quick getters
 	public static inline function getImage(id:String)
 	{
 		return GLoader.getImage(id);
@@ -91,7 +85,6 @@ class AssetBatch
 		return this;
 	}
 
-	// Convenient method for loading from a base path
 	public function fromPath(basePath:String):AssetPathBatch
 	{
 		return new AssetPathBatch(basePath);

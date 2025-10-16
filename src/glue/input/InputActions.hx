@@ -8,7 +8,6 @@ import glue.input.GInput;
  */
 @:final class InputActions
 {
-	// Bind multiple actions at once
 	public static function bind(actions:Map<String, Array<Int>>):Void
 	{
 		for (actionName => keys in actions)
@@ -17,13 +16,11 @@ import glue.input.GInput;
 		}
 	}
 
-	// Fluent API for binding
 	public static function create():InputActionBuilder
 	{
 		return new InputActionBuilder();
 	}
 
-	// Common presets
 	public static function bindWASD():Void
 	{
 		GInput.bindKeys("up", [87]); // W
@@ -48,7 +45,6 @@ import glue.input.GInput;
 		GInput.bindKeys("right", [68, 39]); // D, RIGHT
 	}
 
-	// Get directional input as vector
 	public static function getDirection(left:String = "left", right:String = "right", up:String = "up", down:String = "down"):glue.math.GVector2D
 	{
 		var x:Float = 0;
@@ -62,7 +58,6 @@ import glue.input.GInput;
 		return new glue.math.GVector2D(x, y);
 	}
 
-	// Get horizontal axis (-1, 0, 1)
 	public static function getHorizontal(left:String = "left", right:String = "right"):Float
 	{
 		var value:Float = 0;
@@ -71,7 +66,6 @@ import glue.input.GInput;
 		return value;
 	}
 
-	// Get vertical axis (-1, 0, 1)
 	public static function getVertical(up:String = "up", down:String = "down"):Float
 	{
 		var value:Float = 0;

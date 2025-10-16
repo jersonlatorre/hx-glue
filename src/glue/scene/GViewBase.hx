@@ -82,7 +82,6 @@ class GViewBase
 		return entity;
 	}
 
-	// Utility to find entity by predicate
 	public function find(predicate:GEntity->Bool):Null<GEntity>
 	{
 		for (entity in entities)
@@ -95,13 +94,11 @@ class GViewBase
 		return null;
 	}
 
-	// Utility to filter entities
 	public function filter(predicate:GEntity->Bool):Array<GEntity>
 	{
 		return entities.filter(predicate);
 	}
 
-	// Utility to iterate all entities
 	public function forEach(callback:GEntity->Void):Void
 	{
 		for (entity in entities)

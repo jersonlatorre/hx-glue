@@ -21,7 +21,6 @@ class GButton extends GEntity
 	var _mask:Shape;
 	var _frames:Array<Dynamic> = new Array<Dynamic>();
 
-	// Type-safe signals for button events
 	public final onClick:GSignal0 = new GSignal0();
 	public final onMouseOver:GSignal0 = new GSignal0();
 	public final onMouseDown:GSignal0 = new GSignal0();
@@ -193,7 +192,6 @@ class GButton extends GEntity
 		_skin.removeEventListener(MouseEvent.MOUSE_DOWN, _onMouseDown);
 		_skin.removeEventListener(MouseEvent.MOUSE_UP, _onMouseUp);
 
-		// Clear all signal listeners
 		onClick.clear();
 		onMouseOver.clear();
 		onMouseDown.clear();

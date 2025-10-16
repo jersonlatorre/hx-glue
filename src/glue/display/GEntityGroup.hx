@@ -18,7 +18,6 @@ class GEntityGroup<T:GEntity>
 		this.layerName = layerName;
 	}
 
-	// Add entity to group
 	public function add(entity:T):T
 	{
 		entities.push(entity);
@@ -26,7 +25,6 @@ class GEntityGroup<T:GEntity>
 		return entity;
 	}
 
-	// Remove entity from group
 	public function remove(entity:T):T
 	{
 		var index = entities.indexOf(entity);
@@ -38,14 +36,12 @@ class GEntityGroup<T:GEntity>
 		return entity;
 	}
 
-	// Remove and destroy entity
 	public function destroy(entity:T):Void
 	{
 		remove(entity);
 		entity.destroy();
 	}
 
-	// Automatically cleanup destroyed entities
 	public function cleanup():Void
 	{
 		var i = entities.length - 1;
@@ -59,7 +55,6 @@ class GEntityGroup<T:GEntity>
 		}
 	}
 
-	// Iterate all entities
 	public function forEach(callback:T->Void):Void
 	{
 		for (entity in entities)
@@ -68,13 +63,11 @@ class GEntityGroup<T:GEntity>
 		}
 	}
 
-	// Filter entities by condition
 	public function filter(predicate:T->Bool):Array<T>
 	{
 		return entities.filter(predicate);
 	}
 
-	// Find first matching entity
 	public function find(predicate:T->Bool):Null<T>
 	{
 		for (entity in entities)
@@ -87,7 +80,6 @@ class GEntityGroup<T:GEntity>
 		return null;
 	}
 
-	// Check collision with another entity
 	public function collidesWith(other:GEntity):Null<T>
 	{
 		for (entity in entities)
@@ -100,7 +92,6 @@ class GEntityGroup<T:GEntity>
 		return null;
 	}
 
-	// Check collision between groups
 	public function collidesWithGroup<U:GEntity>(other:GEntityGroup<U>, callback:T->U->Void):Void
 	{
 		for (entity in entities)
@@ -115,7 +106,6 @@ class GEntityGroup<T:GEntity>
 		}
 	}
 
-	// Clear all entities
 	public function clear():Void
 	{
 		while (entities.length > 0)
@@ -126,7 +116,6 @@ class GEntityGroup<T:GEntity>
 		}
 	}
 
-	// Array access
 	public function get(index:Int):T
 	{
 		return entities[index];
@@ -137,7 +126,6 @@ class GEntityGroup<T:GEntity>
 		return entities.length;
 	}
 
-	// Iterator support
 	public function iterator():Iterator<T>
 	{
 		return entities.iterator();

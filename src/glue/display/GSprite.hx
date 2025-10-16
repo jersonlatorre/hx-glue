@@ -28,7 +28,6 @@ class GSprite extends GEntity
 {
 	public var animation:String = "";
 
-	// Type-safe signal for animation completion
 	public final onEndAnimation:GSignal0 = new GSignal0();
 
 	var _animations:Map<String, AnimationConfig> = new Map<String, AnimationConfig>();
@@ -137,7 +136,6 @@ class GSprite extends GEntity
 		_tile = null;
 		_state = null;
 
-		// Clear signal listeners
 		onEndAnimation.clear();
 
 		super.destroy();

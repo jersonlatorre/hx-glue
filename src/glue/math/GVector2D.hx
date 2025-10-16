@@ -12,25 +12,21 @@ abstract GVector2D(__GVectorBase) from __GVectorBase to __GVectorBase
     this = new __GVectorBase(x, y);
   }
 
-  // Static factory for clarity
   static public inline function create(x:Float = 0, y:Float = 0)
   {
     return new GVector2D(x, y);
   }
 
-  // Implicit conversion from array [x, y]
   @:from static public inline function fromArray(arr:Array<Float>):GVector2D
   {
     return new GVector2D(arr[0], arr[1]);
   }
 
-  // Implicit conversion from anonymous structure
   @:from static public inline function fromStruct(obj:{x:Float, y:Float}):GVector2D
   {
     return new GVector2D(obj.x, obj.y);
   }
 
-  // Shorthand for common vectors
   static public var zero(get, never):GVector2D;
   static public var one(get, never):GVector2D;
   static public var up(get, never):GVector2D;

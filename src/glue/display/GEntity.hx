@@ -116,7 +116,6 @@ class GEntity
 		return entity;
 	}
 
-	// Fluent API for chaining
 	public function at(x:Float, y:Float):GEntity
 	{
 		position.set(x, y);
