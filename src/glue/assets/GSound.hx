@@ -28,43 +28,80 @@ typedef SoundData =
 		_sounds.set(id, soundInfo);
 	}
 
-	static public  function play(id:String, times:Int = 1)
+	static public function play(id:String, times:Int = 1)
 	{
-		if (times == 0) times = 999999999;
-		_sounds.get(id).channel = _sounds.get(id).sound.play(0, times);
+		var data = _sounds.get(id);
+		if (data == null) throw 'Sound \'${ id }\' is not registered.';
+
+		var loops = 0;
+		if (times <= 0)
+		{
+			loops = 0x7FFFFFFF;
+		}
+		else
+		{
+			loops = Std.int(Math.max(0, times - 1));
+		}
+
+		data.channel = data.sound.play(0, loops);
+		_sounds.set(id, data);
 	}
 
 	static public function loop(id:String)
 	{
-		_sounds.get(id).channel = _sounds.get(id).sound.play(0, 0x7FFFFFFF);
+		var data = _sounds.get(id);
+		if (data == null) throw 'Sound \'${ id }\' is not registered.';
+
+		data.channel = data.sound.play(0, 0x7FFFFFFF);
+		_sounds.set(id, data);
 	}
 	
 	static public function stop(id:String)
 	{
-		if (_sounds.get(id).channel != null) _sounds.get(id).channel.stop();
+		var data = _sounds.get(id);
+		if (data != null && data.channel != null)
+		{
+			data.channel.stop();
+			data.channel = null;
+			_sounds.set(id, data);
+		}
 	}
 
 	static public function stopAll()
 	{
-		for (sound in _sounds)
+		for (id in _sounds.keys())
 		{
-			if (sound.channel != null) sound.channel.stop();
+			var data = _sounds.get(id);
+			if (data != null && data.channel != null)
+			{
+				data.channel.stop();
+				data.channel = null;
+				_sounds.set(id, data);
+			}
 		}
 	}
 
 	static public function muteAll()
 	{
-		for (sound in _sounds)
+		for (id in _sounds.keys())
 		{
-			if (sound.channel != null) sound.channel.soundTransform = new SoundTransform(0);
+			var data = _sounds.get(id);
+			if (data != null && data.channel != null)
+			{
+				data.channel.soundTransform = new SoundTransform(0);
+			}
 		}
 	}
 
 	static public function unmuteAll()
 	{
-		for (sound in _sounds)
+		for (id in _sounds.keys())
 		{
-			if (sound.channel != null) sound.channel.soundTransform = new SoundTransform(1);
+			var data = _sounds.get(id);
+			if (data != null && data.channel != null)
+			{
+				data.channel.soundTransform = new SoundTransform(1);
+			}
 		}
 	}
 }

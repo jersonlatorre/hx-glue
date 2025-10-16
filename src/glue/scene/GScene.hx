@@ -38,32 +38,27 @@ class GScene
 		_effectCanvas = new Sprite();
 		_canvas.addChild(_effectCanvas);
 		
-		_mask = new Sprite();
-		_canvas.addChild(_mask);
-		
 		addLayer("default");
 
 		Glue.stage.focus = _sceneCanvas;
 		
 		camera = new GCamera();
 		
-		// mask
-		_mask.graphics.beginFill(0xFF0000, 0.3);
-		_mask.graphics.drawRect(0, 0, Glue.width, Glue.height);
-		_mask.graphics.endFill();
-		_mask.x = 0;
-		_mask.y = 0;
-		_mask.mouseEnabled = false;
-		_mask.doubleClickEnabled = false;
-		_canvas.mask = _mask;
+		if (usesMask())
+		{
+			_mask = new Sprite();
+			_canvas.addChild(_mask);
+			updateMask();
+			_canvas.mask = _mask;
+		}
 
 		preload();
 		GLoader.startDownload(init);
 	}
 
-	public function gotoScene(screenClass:Dynamic)
+	public function gotoScene(sceneClass:Class<GScene>)
 	{
-		GSceneManager.gotoScene(screenClass);
+		GSceneManager.gotoScene(sceneClass);
 	}
 
 	public var load = Glue.load;
@@ -204,9 +199,20 @@ class GScene
 			callback();
 		});
 	}
-	
+
 	public function destroy()
 	{
+		if (_canvas != null)
+		{
+			_canvas.mask = null;
+		}
+
+		if (_mask != null && _mask.parent == _canvas)
+		{
+			_canvas.removeChild(_mask);
+			_mask = null;
+		}
+
 		while (_sceneCanvas.numChildren > 0)
 		{
 			_sceneCanvas.removeChildAt(0);
@@ -220,5 +226,29 @@ class GScene
 			_entities[0] = null;
 			_entities.splice(0, 1);
 		}
+	}
+
+	public function onResize():Void
+	{
+		updateMask();
+	}
+
+	function usesMask():Bool
+	{
+		return true;
+	}
+
+	function updateMask():Void
+	{
+		if (_mask == null) return;
+
+		_mask.graphics.clear();
+		_mask.graphics.beginFill(0xFF0000, 0.3);
+		_mask.graphics.drawRect(0, 0, Glue.width, Glue.height);
+		_mask.graphics.endFill();
+		_mask.x = 0;
+		_mask.y = 0;
+		_mask.mouseEnabled = false;
+		_mask.doubleClickEnabled = false;
 	}
 }

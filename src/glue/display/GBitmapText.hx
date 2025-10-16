@@ -1,7 +1,7 @@
 package glue.display;
 
 import haxe.Utf8;
-import haxe.xml.Fast;
+import haxe.xml.Access;
 import glue.assets.GLoader;
 import openfl.geom.ColorTransform;
 import openfl.geom.Rectangle;
@@ -1648,8 +1648,8 @@ class GBitmapFont
 	 */
 	public static function fromAngelCode(Source:BitmapData, Data:Xml):GBitmapFont
 	{
-		var fast:Fast = new Fast(Data.firstElement());
-		var fontName:String = Std.string(fast.node.info.att.face);
+		var xml:Access = new Access(Data.firstElement());
+		var fontName:String = Std.string(xml.node.info.att.face);
 		
 		var font:GBitmapFont = GBitmapFont.get(fontName);
 		
@@ -1659,11 +1659,11 @@ class GBitmapFont
 		}
 		
 		font = new GBitmapFont(fontName, Source);
-		font.lineHeight = Std.parseInt(fast.node.common.att.lineHeight);
-		font.size = Std.parseInt(fast.node.info.att.size);
-		font.fontName = Std.string(fast.node.info.att.face);
-		font.bold = (Std.parseInt(fast.node.info.att.bold) != 0);
-		font.italic = (Std.parseInt(fast.node.info.att.italic) != 0);
+		font.lineHeight = Std.parseInt(xml.node.common.att.lineHeight);
+		font.size = Std.parseInt(xml.node.info.att.size);
+		font.fontName = Std.string(xml.node.info.att.face);
+		font.bold = (Std.parseInt(xml.node.info.att.bold) != 0);
+		font.italic = (Std.parseInt(xml.node.info.att.italic) != 0);
 		
 		var frame:Rectangle;
 		var glyph:String;
@@ -1672,7 +1672,7 @@ class GBitmapFont
 		var xOffset:Int, yOffset:Int, xAdvance:Int;
 		var frameHeight:Int;
 		
-		var chars = fast.node.chars;
+		var chars = xml.node.chars;
 		
 		for (char in chars.nodes.char)
 		{

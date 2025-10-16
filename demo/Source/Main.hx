@@ -11,7 +11,7 @@ class Main extends Sprite
 		super();
 
 		var config = {
-			mainScene: DemoScene,
+			mainScene: cast DemoScene,
 			preloader: null,
 			isDebug: true,
 			showBounds: false,

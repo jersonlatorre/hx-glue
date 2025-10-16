@@ -78,7 +78,7 @@ class GButton extends GEntity
 
 	function _onMouseMove(e:MouseEvent)
 	{
-		if (_hitBmd.getPixel32(Std.int(e.localX), Std.int(e.localY)) != 0)
+		if (isWithinHitArea(e.localX, e.localY))
 		{
 			if (_callbackMouseOver != null) _callbackMouseOver();
 
@@ -121,7 +121,7 @@ class GButton extends GEntity
 
 	function _onMouseDown(e:MouseEvent)
 	{
-		if (_hitBmd.getPixel32(Std.int(e.localX), Std.int(e.localY)) != 0)
+		if (isWithinHitArea(e.localX, e.localY))
 		{
 			if (_callbackMouseDown != null) _callbackMouseDown();
 			_isDown = true;
@@ -135,7 +135,7 @@ class GButton extends GEntity
 
 	function _onMouseUp(e:MouseEvent)
 	{
-		if (_hitBmd.getPixel32(Std.int(e.localX), Std.int(e.localY)) != 0 && _isDown)
+		if (isWithinHitArea(e.localX, e.localY) && _isDown)
 		{
 			setOver();
 			_skin.buttonMode = false;
@@ -195,6 +195,21 @@ class GButton extends GEntity
 	{
 		_image.x = -_frames[2].frame.x;
 		_image.y = -_frames[2].frame.y;
+	}
+
+	inline function isWithinHitArea(x:Float, y:Float):Bool
+	{
+		if (_hitBmd == null) return false;
+
+		var px = Std.int(x);
+		var py = Std.int(y);
+
+		if (px < 0 || py < 0 || px >= _hitBmd.width || py >= _hitBmd.height)
+		{
+			return false;
+		}
+
+		return _hitBmd.getPixel32(px, py) != 0;
 	}
 
 	override public function destroy()

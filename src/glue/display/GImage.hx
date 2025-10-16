@@ -17,9 +17,9 @@ class GImage extends GEntity
 	public function new(assetId:String)
 	{
 		super();
-		var image:Bitmap = new Bitmap(GLoader.getImage(assetId));
-		image.pixelSnapping = PixelSnapping.ALWAYS;
-		_skin.addChild(image);
+		_image = new Bitmap(GLoader.getImage(assetId));
+		_image.pixelSnapping = PixelSnapping.ALWAYS;
+		_skin.addChild(_image);
 		width = _skin.width;
 		height = _skin.height;
 		bounds.setTo(_skin.x, _skin.y, width, height);
@@ -27,7 +27,7 @@ class GImage extends GEntity
 
 	override public function destroy() 
 	{
-		if (_skin != null) _skin.removeChild(_image);
+		if (_skin != null && _image != null && _image.parent == _skin) _skin.removeChild(_image);
 		super.destroy();
 		_image = null;
 	}

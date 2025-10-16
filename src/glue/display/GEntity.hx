@@ -1,5 +1,6 @@
 package glue.display;
 
+import glue.scene.GScene;
 import glue.scene.GSceneManager;
 import glue.math.GVector2D;
 import glue.utils.GTime;
@@ -60,9 +61,9 @@ class GEntity
 
 	public function init() { }
 
-	public function gotoScene(screenClass:Dynamic)
+	public function gotoScene(sceneClass:Class<GScene>)
 	{
-		GSceneManager.gotoScene(screenClass);
+		GSceneManager.gotoScene(sceneClass);
 	}
 
 	public function addLayer(layerName:String)
@@ -111,8 +112,8 @@ class GEntity
 		}
 	}
 
-	@:allow(glue.scene.GScene.add, glue.scene.GPopup.add, glue.data.GLoader.onDownloadFileComplete, glue.utils.GStats)
-	function addToLayer(layer:Sprite):Dynamic
+		@:allow(glue.scene.GScene.add, glue.scene.GPopup.add, glue.assets.GLoader, glue.utils.GStats)
+		function addToLayer(layer:Sprite):Dynamic
 	{
 		_parent = layer;
 		layer.addChild(_canvas);

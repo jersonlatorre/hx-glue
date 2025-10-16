@@ -21,26 +21,20 @@ import openfl.display.Sprite;
 		currentScene = null;
 	}
 	
-	static public function gotoScene(screenClass:Dynamic)
+	static public function gotoScene(sceneClass:Class<GScene>)
 	{
-		var sceneClass:Class<Dynamic> = cast screenClass;
-		if (!inheritsFrom(sceneClass, GScene))
-		{
-			throw "Screen class needs to be GScreen";
-		}
-		
 		if (currentScene != null)
 		{
 			currentScene.destroy();
 		}
 
-		currentScene = Type.createInstance(screenClass, []);
+		currentScene = cast Type.createInstance(sceneClass, []);
 		Glue.stage.stageFocusRect = false;
 
 		currentScene.preInit();
 	}
 
-	static public function showLoaderScene(loaderClass:Dynamic, callback:Dynamic)
+	static public function showLoaderScene(loaderClass:Class<GPopup>, callback:Void->Void)
 	{
 		showPopup(loaderClass);
 		GLoader.startDownload(function()
@@ -50,20 +44,14 @@ import openfl.display.Sprite;
 		});
 	}
 
-	static public function showPopup(popupClass:Dynamic)
+	static public function showPopup(popupClass:Class<GPopup>)
 	{
-		var popupClassRef:Class<Dynamic> = cast popupClass;
-		if (!inheritsFrom(popupClassRef, GPopup))
-		{
-			throw "Popup Class needs to be GPopup";
-		}
-		
 		if (currentPopup != null)
 		{
 			currentPopup.destroy();
 		}
 		
-		currentPopup = Type.createInstance(popupClass, []);
+		currentPopup = cast Type.createInstance(popupClass, []);
 		currentPopup.preInit();
 	}
 	
@@ -87,19 +75,5 @@ import openfl.display.Sprite;
 		{
 			currentPopup.preUpdate();
 		}
-	}
-
-	static function inheritsFrom(clazz:Class<Dynamic>, parent:Class<Dynamic>):Bool
-	{
-		var current:Class<Dynamic> = clazz;
-		while (current != null)
-		{
-			if (current == parent)
-			{
-				return true;
-			}
-			current = Type.getSuperClass(current);
-		}
-		return false;
 	}
 }

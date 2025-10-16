@@ -27,29 +27,24 @@ class GPopup
 		_popupCanvas = new Sprite();
 		_canvas.addChild(_popupCanvas);
 		
-		_mask = new Sprite();
-		_canvas.addChild(_mask);
-		
 		addLayer("default");
 
 		Glue.stage.focus = _popupCanvas;
 		
-		// mask
-		_mask.graphics.beginFill(0xFF0000, 0.3);
-		_mask.graphics.drawRect(0, 0, Glue.width, Glue.height);
-		_mask.graphics.endFill();
-		_mask.x = 0;
-		_mask.y = 0;
-		_mask.mouseEnabled = false;
-		_mask.doubleClickEnabled = false;
-		_canvas.mask = _mask;
+		if (usesMask())
+		{
+			_mask = new Sprite();
+			_canvas.addChild(_mask);
+			updateMask();
+			_canvas.mask = _mask;
+		}
 
 		init();
 	}
 
-	public function gotoScene(screenClass:Dynamic)
+	public function gotoScene(sceneClass:Class<GScene>)
 	{
-		GSceneManager.gotoScene(screenClass);
+		GSceneManager.gotoScene(sceneClass);
 	}
 
 	public function init() {	}
@@ -143,6 +138,13 @@ class GPopup
 		}
 
 		GSceneManager.canvas.removeChild(_canvas);
+		_canvas.mask = null;
+
+		if (_mask != null)
+		{
+			_mask.graphics.clear();
+			_mask = null;
+		}
 		
 		while (_entities.length > 0)
 		{
@@ -150,5 +152,29 @@ class GPopup
 			_entities[0] = null;
 			_entities.splice(0, 1);
 		}
+	}
+
+	public function onResize():Void
+	{
+		updateMask();
+	}
+
+	function usesMask():Bool
+	{
+		return true;
+	}
+
+	function updateMask():Void
+	{
+		if (_mask == null) return;
+
+		_mask.graphics.clear();
+		_mask.graphics.beginFill(0xFF0000, 0.3);
+		_mask.graphics.drawRect(0, 0, Glue.width, Glue.height);
+		_mask.graphics.endFill();
+		_mask.x = 0;
+		_mask.y = 0;
+		_mask.mouseEnabled = false;
+		_mask.doubleClickEnabled = false;
 	}
 }
