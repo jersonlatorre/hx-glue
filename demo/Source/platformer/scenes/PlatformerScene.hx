@@ -1,18 +1,18 @@
 package platformer.scenes;
 
-import glue.scene.GScene;
+import glue.scene.Scene;
 import glue.GlueContext;
-import glue.display.GGroup;
+import glue.display.Group;
 import platformer.entities.Player;
 import platformer.entities.Platform;
 import platformer.entities.Enemy;
 import openfl.ui.Keyboard;
 
-class PlatformerScene extends GScene
+class PlatformerScene extends Scene
 {
 	var player:Player;
-	var platforms:GGroup<Platform>;
-	var enemies:GGroup<Enemy>;
+	var platforms:Group<Platform>;
+	var enemies:Group<Enemy>;
 
 	public function new(context:GlueContext)
 	{
@@ -24,8 +24,8 @@ class PlatformerScene extends GScene
 		addWASDAndArrows();
 		addAction("jump", [Keyboard.SPACE, Keyboard.UP, 87]);
 
-		platforms = new GGroup<Platform>(this);
-		enemies = new GGroup<Enemy>(this);
+		platforms = new Group<Platform>(this);
+		enemies = new Group<Enemy>(this);
 
 		createLevel();
 		createPlayer();

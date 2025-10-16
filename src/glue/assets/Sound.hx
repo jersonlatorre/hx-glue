@@ -1,6 +1,5 @@
 package glue.assets;
 
-import openfl.media.Sound;
 import openfl.media.SoundChannel;
 import openfl.media.SoundTransform;
 
@@ -11,17 +10,17 @@ import openfl.media.SoundTransform;
 
 typedef SoundData =
 {
-	sound: Sound,
+	sound: openfl.media.Sound,
 	channel: SoundChannel,
 	group: String
 }
 
-@:final class GSound
+@:final class Sound
 {
 	static var _sounds:Map<String, SoundData> = new Map<String, SoundData>();
 	
-	@:allow(glue.assets.GLoader.handleFileComplete, glue.assets.GAssetPipeline)
-	static function addSound(id:String, sound:Sound, group:String)
+	@:allow(glue.assets.Loader.handleFileComplete, glue.assets.AssetPipeline)
+	static function addSound(id:String, sound:openfl.media.Sound, group:String)
 	{
 		var soundInfo = { sound: sound, channel: null, group: group };
 		sound.play(0, 0, new SoundTransform(0));

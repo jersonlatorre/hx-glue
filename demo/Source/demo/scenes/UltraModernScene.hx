@@ -4,8 +4,8 @@ import demo.entities.FallingItem;
 import demo.entities.Player;
 import demo.ui.ScoreLabel;
 import glue.Glue;
-import glue.scene.GScene;
-import glue.display.GEntityGroup;
+import glue.scene.Scene;
+import glue.display.Group;
 import openfl.ui.Keyboard;
 
 /**
@@ -13,11 +13,11 @@ import openfl.ui.Keyboard;
  * ZERO imports needed for common operations!
  * Everything is accessible directly from scene
  */
-class UltraModernScene extends GScene
+class UltraModernScene extends Scene
 {
 	var player:Player;
 	var scoreLabel:ScoreLabel;
-	var items:GEntityGroup<FallingItem>;
+	var items:Group<FallingItem>;
 	var spawnTimer:Float = 0;
 	var spawnInterval:Float = 1.0;
 	var score:Int = 0;
@@ -39,7 +39,7 @@ class UltraModernScene extends GScene
 			.at(Glue.width * 0.5, Glue.height - 80),
 			"entities");
 
-		items = new GEntityGroup(this, "entities");
+		items = new Group(this, "entities");
 
 		scoreLabel = add(new ScoreLabel()
 			.at(20, 20),
@@ -49,7 +49,7 @@ class UltraModernScene extends GScene
 
 	override public function update()
 	{
-		// NO MORE: import glue.utils.GTime;
+		// NO MORE: import glue.utils.Time;
 		// deltaTime is available directly!
 		spawnTimer += deltaTime; // ← Sin import!
 		if (spawnTimer >= spawnInterval)

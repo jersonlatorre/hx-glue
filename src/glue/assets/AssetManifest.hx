@@ -1,17 +1,17 @@
 package glue.assets;
 
-final class GAssetManifest
+final class AssetManifest
 {
-	final requests:Array<GAssetRequest> = [];
+	final requests:Array<AssetRequest> = [];
 
 	public function new() {}
 
-	public function add(request:GAssetRequest):Void
+	public function add(request:AssetRequest):Void
 	{
 		requests.push(request);
 	}
 
-	public function consume():Array<GAssetRequest>
+	public function consume():Array<AssetRequest>
 	{
 		var items = requests.copy();
 		requests.resize(0);

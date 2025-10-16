@@ -1,9 +1,9 @@
 package demo.entities;
 
-import glue.display.GEntity;
+import glue.display.Entity;
 import openfl.display.Shape;
 
-class FallingItem extends GEntity
+class FallingItem extends Entity
 {
 	static inline var MIN_SPEED:Float = 120;
 	static inline var MAX_EXTRA_SPEED:Float = 160;

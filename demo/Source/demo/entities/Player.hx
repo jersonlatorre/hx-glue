@@ -1,11 +1,11 @@
 package demo.entities;
 
 import glue.Glue;
-import glue.display.GEntity;
-import glue.input.GInput;
+import glue.display.Entity;
+import glue.input.Input;
 import openfl.display.Shape;
 
-class Player extends GEntity
+class Player extends Entity
 {
 	static inline var SPEED:Float = 320;
 
@@ -31,8 +31,8 @@ class Player extends GEntity
 	override public function update()
 	{
 		var horizontal:Float = 0;
-		if (GInput.isKeyPressed("move_left")) horizontal -= 1;
-		if (GInput.isKeyPressed("move_right")) horizontal += 1;
+		if (Input.isKeyPressed("move_left")) horizontal -= 1;
+		if (Input.isKeyPressed("move_right")) horizontal += 1;
 
 		velocity.x = SPEED * horizontal;
 		velocity.y = 0;

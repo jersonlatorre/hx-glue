@@ -1,6 +1,6 @@
 package glue.display;
 
-import glue.assets.GLoader;
+import glue.assets.Loader;
 import openfl.display.Bitmap;
 import openfl.display.PixelSnapping;
 
@@ -10,14 +10,14 @@ import openfl.display.PixelSnapping;
  * 
  */
 
-class GImage extends GEntity
+class Image extends Entity
 {
 	var _image:Bitmap = null;
 	
 	public function new(assetId:String)
 	{
 		super();
-		_image = new Bitmap(GLoader.getImage(assetId));
+		_image = new Bitmap(Loader.getImage(assetId));
 		_image.pixelSnapping = PixelSnapping.ALWAYS;
 		_skin.addChild(_image);
 		width = _skin.width;

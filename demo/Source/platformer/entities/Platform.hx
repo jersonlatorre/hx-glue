@@ -1,9 +1,9 @@
 package platformer.entities;
 
-import glue.display.GEntity;
+import glue.display.Entity;
 import openfl.display.Shape;
 
-class Platform extends GEntity
+class Platform extends Entity
 {
 	public function new(w:Float, h:Float, color:Int = 0x8B4513)
 	{

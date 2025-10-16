@@ -1,6 +1,6 @@
 package glue.assets;
 
-enum GAssetType
+enum AssetType
 {
 	Image;
 	Json;

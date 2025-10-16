@@ -1,11 +1,11 @@
 package demo.ui;
 
-import glue.display.GEntity;
+import glue.display.Entity;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
 import openfl.text.TextFieldAutoSize;
 
-class ScoreLabel extends GEntity
+class ScoreLabel extends Entity
 {
 	var textField:TextField;
 	var format:TextFormat;

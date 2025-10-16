@@ -1,9 +1,9 @@
 package platformer.entities;
 
-import glue.display.GEntity;
+import glue.display.Entity;
 import openfl.display.Shape;
 
-class Player extends GEntity
+class Player extends Entity
 {
 	static inline final MOVE_SPEED:Float = 200;
 	static inline final JUMP_FORCE:Float = -400;

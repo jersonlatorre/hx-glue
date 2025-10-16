@@ -1,6 +1,6 @@
 package glue.assets;
 
-import glue.assets.GSound;
+import glue.assets.Sound;
 import openfl.display.Loader;
 import openfl.events.Event;
 import openfl.events.EventDispatcher;
@@ -29,7 +29,7 @@ private typedef PendingFile =
 	@:optional var errorHandler:Event->Void;
 }
 
-final class GAssetPipeline
+final class AssetPipeline
 {
 	static inline var SUFFIX_IMAGE:String = "__image";
 	static inline var SUFFIX_JSON:String = "__json";
@@ -39,16 +39,16 @@ final class GAssetPipeline
 	public var totalFiles(default, null):Int = 0;
 	public var isDownloading(default, null):Bool = false;
 
-	final cache:GAssetCache;
+	final cache:AssetCache;
 	var pending:Array<PendingFile> = [];
 	var onComplete:Void->Void;
 
-	public function new(cache:GAssetCache)
+	public function new(cache:AssetCache)
 	{
 		this.cache = cache;
 	}
 
-	public function process(manifest:GAssetManifest, onComplete:Void->Void):Void
+	public function process(manifest:AssetManifest, onComplete:Void->Void):Void
 	{
 		if (isDownloading)
 		{
@@ -71,32 +71,32 @@ final class GAssetPipeline
 		{
 			switch (request.type)
 			{
-				case GAssetType.Image:
+				case AssetType.Image:
 				{
 					cache.define(request.id, request.type);
 					pending.push({ id: request.id, url: request.url, type: DataType.IMAGE, loader: new Loader() });
 				}
 
-				case GAssetType.Json:
+				case AssetType.Json:
 				{
 					cache.define(request.id, request.type);
 					pending.push({ id: request.id, url: request.url, type: DataType.JSON, loader: new URLLoader() });
 				}
 
-				case GAssetType.Sound(group):
+				case AssetType.Sound(group):
 				{
 					cache.define(request.id, request.type);
 					pending.push({ id: request.id, url: request.url, type: DataType.SOUND, loader: new Sound(), group: group });
 				}
 
-				case GAssetType.AdobeAnimateSpritesheet(fps):
+				case AssetType.AdobeAnimateSpritesheet(fps):
 				{
 					cache.define(request.id, request.type);
 					var imageId = request.id + SUFFIX_IMAGE;
 					var jsonId = request.id + SUFFIX_JSON;
 
-					cache.define(imageId, GAssetType.Image);
-					cache.define(jsonId, GAssetType.Json);
+					cache.define(imageId, AssetType.Image);
+					cache.define(jsonId, AssetType.Json);
 
 					pending.push({ id: imageId, url: request.url, type: DataType.IMAGE, loader: new Loader(), fps: fps });
 
@@ -185,7 +185,7 @@ final class GAssetPipeline
 			case DataType.SOUND:
 			{
 				var group = file.group == null ? "default" : file.group;
-				GSound.addSound(file.id, file.loader, group);
+				Sound.addSound(file.id, file.loader, group);
 				cache.storeRaw(file.id, file.loader);
 			}
 		}

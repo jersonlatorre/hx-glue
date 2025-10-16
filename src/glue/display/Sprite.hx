@@ -1,8 +1,8 @@
 package glue.display;
 
-import glue.assets.GLoader;
-import glue.utils.GTime;
-import glue.utils.GSignal;
+import glue.assets.Loader;
+import glue.utils.Time;
+import glue.utils.Signal;
 import openfl.display.Tile;
 import openfl.display.Tilemap;
 import openfl.display.Tileset;
@@ -24,11 +24,11 @@ private typedef AnimationState =
 	var completed:Bool;
 }
 
-class GSprite extends GEntity
+class Sprite extends Entity
 {
 	public var animation:String = "";
 
-	public final onEndAnimation:GSignal0 = new GSignal0();
+	public final onEndAnimation:Signal0 = new Signal0();
 
 	var _animations:Map<String, AnimationConfig> = new Map<String, AnimationConfig>();
 	var _tilemap:Tilemap;
@@ -55,7 +55,7 @@ class GSprite extends GEntity
 			throw '${ name } animation is not registered.';
 		}
 
-		var data:Dynamic = GLoader.getSpritesheet(config.id);
+		var data:Dynamic = Loader.getSpritesheet(config.id);
 		var tileset:Tileset = data.tileset;
 		var frames:Array<Int> = data.frameIds;
 		var frameWidth:Int = data.width;
@@ -95,7 +95,7 @@ class GSprite extends GEntity
 	{
 		if (_state != null && _state.frames.length > 0)
 		{
-			_state.framePointer += _state.fps * GTime.deltaTime;
+			_state.framePointer += _state.fps * Time.deltaTime;
 			var total = _state.frames.length;
 			var pointer = Std.int(_state.framePointer);
 

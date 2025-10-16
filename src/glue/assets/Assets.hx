@@ -1,6 +1,6 @@
 package glue.assets;
 
-import glue.assets.GLoader;
+import glue.assets.Loader;
 
 /**
  * Simplified assets API with less verbosity
@@ -10,22 +10,22 @@ import glue.assets.GLoader;
 {
 	public static inline function image(id:String, url:String):Void
 	{
-		GLoader.load({ type: "image", id: id, url: url });
+		Loader.load({ type: "image", id: id, url: url });
 	}
 
 	public static inline function json(id:String, url:String):Void
 	{
-		GLoader.load({ type: "json", id: id, url: url });
+		Loader.load({ type: "json", id: id, url: url });
 	}
 
 	public static inline function sound(id:String, url:String, ?group:String):Void
 	{
-		GLoader.load({ type: "sound", id: id, url: url, group: group });
+		Loader.load({ type: "sound", id: id, url: url, group: group });
 	}
 
 	public static inline function spritesheet(id:String, url:String, fps:Int = 30):Void
 	{
-		GLoader.load({ type: "adobe_animate_spritesheet", id: id, url: url, fps: fps });
+		Loader.load({ type: "adobe_animate_spritesheet", id: id, url: url, fps: fps });
 	}
 
 	public static function batch():AssetBatch
@@ -35,22 +35,22 @@ import glue.assets.GLoader;
 
 	public static inline function getImage(id:String)
 	{
-		return GLoader.getImage(id);
+		return Loader.getImage(id);
 	}
 
 	public static inline function getJson(id:String)
 	{
-		return GLoader.getJson(id);
+		return Loader.getJson(id);
 	}
 
 	public static inline function getSound(id:String)
 	{
-		return GLoader.getSound(id);
+		return Loader.getSound(id);
 	}
 
 	public static inline function getSpritesheet(id:String)
 	{
-		return GLoader.getSpritesheet(id);
+		return Loader.getSpritesheet(id);
 	}
 }
 

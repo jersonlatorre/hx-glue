@@ -8,14 +8,14 @@ import openfl.media.Sound;
 import openfl.display.Tileset;
 import Xml;
 
-@:final class GLoader
+@:final class Loader
 {
 	static inline var SUFFIX_IMAGE:String = "__image";
 	static inline var SUFFIX_JSON:String = "__json";
 
-	static final manifest = new GAssetManifest();
-	static final cache = new GAssetCache();
-	static final pipeline = new GAssetPipeline(cache);
+	static final manifest = new AssetManifest();
+	static final cache = new AssetCache();
+	static final pipeline = new AssetPipeline(cache);
 
 	static var completion:()->Void;
 
@@ -34,24 +34,24 @@ import Xml;
 		{
 			case "image":
 			{
-				queueInternal(id, data.url, GAssetType.Image);
+				queueInternal(id, data.url, AssetType.Image);
 			}
 
 			case "json":
 			{
-				queueInternal(id, data.url, GAssetType.Json);
+				queueInternal(id, data.url, AssetType.Json);
 			}
 
 			case "sound":
 			{
 				var group = data.group == null ? "default" : data.group;
-				queueInternal(id, data.url, GAssetType.Sound(group));
+				queueInternal(id, data.url, AssetType.Sound(group));
 			}
 
 			case "adobe_animate_spritesheet":
 			{
 				var fps:Int = data.fps == null ? 30 : data.fps;
-				queueInternal(id, data.url, GAssetType.AdobeAnimateSpritesheet(fps));
+				queueInternal(id, data.url, AssetType.AdobeAnimateSpritesheet(fps));
 			}
 
 			case other:
@@ -61,12 +61,12 @@ import Xml;
 		}
 	}
 
-	static public function queue(request:GAssetRequest):Void
+	static public function queue(request:AssetRequest):Void
 	{
 		queueInternal(request.id, request.url, request.type);
 	}
 
-	@:allow(glue.scene.GScene, glue.Glue, glue.scene.GSceneManager.showLoaderScene)
+	@:allow(glue.scene.Scene, glue.Glue, glue.scene.SceneManager.showLoaderScene)
 	static function startDownload(callback:()->Void = null):Void
 	{
 		completion = callback;
@@ -80,12 +80,12 @@ import Xml;
 		});
 	}
 
-	static function enqueue(request:GAssetRequest):Void
+	static function enqueue(request:AssetRequest):Void
 	{
 		manifest.add(request);
 	}
 
-	static function queueInternal(id:String, url:String, type:GAssetType):Void
+	static function queueInternal(id:String, url:String, type:AssetType):Void
 	{
 		if (cache.has(id)) return;
 		cache.define(id, type);

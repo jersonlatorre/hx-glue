@@ -1,6 +1,6 @@
 package glue.input;
 
-class GKey
+class Key
 {
 	public static inline var ANY:Int = -1;
 

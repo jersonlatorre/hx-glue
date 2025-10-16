@@ -15,7 +15,7 @@
 
 ```haxe
 // Your first game in 5 minutes - ZERO imports needed!
-class GameScene extends GScene
+class GameScene extends Scene
 {
     override public function init()
     {
@@ -94,7 +94,7 @@ Check out:
 
 ### Entity Groups
 ```haxe
-var enemies = new GEntityGroup<Enemy>(this, "entities");
+var enemies = new Group<Enemy>(this, "entities");
 enemies.add(new Enemy().at(100, 50));
 enemies.cleanup(); // Auto-removes destroyed entities
 var hit = enemies.collidesWith(player); // Easy collision
@@ -103,7 +103,7 @@ var hit = enemies.collidesWith(player); // Easy collision
 ### Input Actions
 ```haxe
 InputActions.bindWASDAndArrows();
-var direction = InputActions.getDirection(); // Returns GVector2D
+var direction = InputActions.getDirection(); // Returns Vector2D
 velocity = direction * SPEED;
 ```
 

@@ -2,33 +2,33 @@ package glue.scene;
 
 import glue.Glue;
 import glue.GlueContext;
-import glue.assets.GAssetRequest;
-import glue.assets.GLoader;
-import glue.input.GInput;
+import glue.assets.AssetRequest;
+import glue.assets.Loader;
+import glue.input.Input;
 import glue.input.InputActions;
-import glue.math.GConstants;
-import glue.scene.GCamera;
-import glue.utils.GTime;
-import glue.utils.GTools;
+import glue.math.Constants;
+import glue.scene.Camera;
+import glue.utils.Time;
+import glue.utils.Tools;
 import motion.Actuate;
 import motion.easing.Quad;
 import openfl.display.Shape;
 import openfl.display.Sprite;
 
-class GScene extends GViewBase
+class Scene extends ViewBase
 {
 	var sceneCanvas:Sprite;
 	var effectCanvas:Sprite;
 
-	public var camera:GCamera;
+	public var camera:Camera;
 
 	public var deltaTime(get, never):Float;
 	public var time(get, never):Float;
 	public var framerate(get, never):Float;
 
-	inline function get_deltaTime():Float return GTime.deltaTime;
-	inline function get_time():Float return GTime.timelapse;
-	inline function get_framerate():Float return GTime.framerate;
+	inline function get_deltaTime():Float return Time.deltaTime;
+	inline function get_time():Float return Time.timelapse;
+	inline function get_framerate():Float return Time.framerate;
 
 	public function new(context:GlueContext)
 	{
@@ -37,7 +37,7 @@ class GScene extends GViewBase
 
 	public function preInit():Void
 	{
-		if (Glue.isDebug) haxe.Log.trace('[ Scene: ${ GTools.getClassName(this) } ]', null);
+		if (Glue.isDebug) haxe.Log.trace('[ Scene: ${ Tools.getClassName(this) } ]', null);
 
 		canvas = new Sprite();
 		context.canvas.addChild(canvas);
@@ -55,7 +55,7 @@ class GScene extends GViewBase
 
 		context.stage.focus = sceneCanvas;
 
-		camera = new GCamera();
+		camera = new Camera();
 
 		if (usesMask())
 		{
@@ -69,26 +69,26 @@ class GScene extends GViewBase
 		queueAssetRequests();
 
 		preload();
-		GLoader.startDownload(init);
+		Loader.startDownload(init);
 	}
 
-	public function gotoScene(sceneClass:Class<GScene>):Void
+	public function gotoScene(sceneClass:Class<Scene>):Void
 	{
-		GSceneManager.gotoScene(sceneClass);
+		SceneManager.gotoScene(sceneClass);
 	}
 
 	public var load = Glue.load;
 
 	public function addAction(name:String, keys:Array<Int>):Void
 	{
-		GInput.bindKeys(name, keys);
+		Input.bindKeys(name, keys);
 	}
 
 	public function addActions(actions:Map<String, Array<Int>>):Void
 	{
 		for (name => keys in actions)
 		{
-			GInput.bindKeys(name, keys);
+			Input.bindKeys(name, keys);
 		}
 	}
 
@@ -107,7 +107,7 @@ class GScene extends GViewBase
 		InputActions.bindWASDAndArrows();
 	}
 
-	public function getDirection(left:String = "left", right:String = "right", up:String = "up", down:String = "down"):glue.math.GVector2D
+	public function getDirection(left:String = "left", right:String = "right", up:String = "up", down:String = "down"):glue.math.Vector2D
 	{
 		return InputActions.getDirection(left, right, up, down);
 	}
@@ -124,20 +124,20 @@ class GScene extends GViewBase
 
 	public function isPressed(action:String):Bool
 	{
-		return GInput.isKeyPressed(action);
+		return Input.isKeyPressed(action);
 	}
 
 	public function isDown(action:String):Bool
 	{
-		return GInput.isKeyDown(action);
+		return Input.isKeyDown(action);
 	}
 
 	public function isUp(action:String):Bool
 	{
-		return GInput.isKeyUp(action);
+		return Input.isKeyUp(action);
 	}
 
-	public override function assetRequests():Array<GAssetRequest>
+	public override function assetRequests():Array<AssetRequest>
 	{
 		return [];
 	}
@@ -148,10 +148,10 @@ class GScene extends GViewBase
 
 	public function update():Void {}
 
-	@:allow(glue.scene.GSceneManager)
+	@:allow(glue.scene.SceneManager)
 	function preUpdate():Void
 	{
-		if (!GLoader.isDownloading)
+		if (!Loader.isDownloading)
 		{
 			update();
 		}
@@ -164,10 +164,10 @@ class GScene extends GViewBase
 		updateEntities();
 	}
 
-	public function fadeIn(duration:Float = GConstants.DEFAULT_FADE_DURATION):Void
+	public function fadeIn(duration:Float = Constants.DEFAULT_FADE_DURATION):Void
 	{
 		var fade = new Shape();
-		fade.graphics.beginFill(GConstants.COLOR_BLACK);
+		fade.graphics.beginFill(Constants.COLOR_BLACK);
 		fade.graphics.drawRect(0, 0, context.width, context.height);
 		fade.graphics.endFill();
 
@@ -176,26 +176,26 @@ class GScene extends GViewBase
 
 		effectCanvas.addChild(fade);
 
-		Actuate.tween(fade, duration, { alpha: GConstants.ALPHA_TRANSPARENT }).ease(Quad.easeInOut).onComplete(function()
+		Actuate.tween(fade, duration, { alpha: Constants.ALPHA_TRANSPARENT }).ease(Quad.easeInOut).onComplete(function()
 		{
 			effectCanvas.removeChild(fade);
 		});
 	}
 
-	public function fadeOut(duration:Float = GConstants.DEFAULT_FADE_DURATION, callback:()->Void):Void
+	public function fadeOut(duration:Float = Constants.DEFAULT_FADE_DURATION, callback:()->Void):Void
 	{
 		var fade = new Shape();
-		fade.graphics.beginFill(GConstants.COLOR_BLACK);
+		fade.graphics.beginFill(Constants.COLOR_BLACK);
 		fade.graphics.drawRect(0, 0, context.width, context.height);
 		fade.graphics.endFill();
 
-		fade.alpha = GConstants.ALPHA_TRANSPARENT;
+		fade.alpha = Constants.ALPHA_TRANSPARENT;
 		fade.x = 0;
 		fade.y = 0;
 
 		effectCanvas.addChild(fade);
 
-		Actuate.tween(fade, duration, { alpha: GConstants.ALPHA_OPAQUE }).ease(Quad.easeInOut).onComplete(function()
+		Actuate.tween(fade, duration, { alpha: Constants.ALPHA_OPAQUE }).ease(Quad.easeInOut).onComplete(function()
 		{
 			effectCanvas.removeChild(fade);
 			callback();

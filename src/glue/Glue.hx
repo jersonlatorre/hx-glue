@@ -1,13 +1,13 @@
 package glue;
 
-import glue.assets.GLoader;
-import glue.scene.GPreloader;
-import glue.scene.GScene;
-import glue.scene.GPopup;
-import glue.scene.GSceneManager;
-import glue.utils.GTime;
-import glue.utils.GStats;
-import glue.input.GInput;
+import glue.assets.Loader;
+import glue.scene.Preloader;
+import glue.scene.Scene;
+import glue.scene.Popup;
+import glue.scene.SceneManager;
+import glue.utils.Time;
+import glue.utils.Stats;
+import glue.input.Input;
 import openfl.Lib;
 import openfl.display.Sprite;
 import openfl.display.Stage;
@@ -15,14 +15,14 @@ import openfl.events.Event;
 
 typedef GlueOptions =
 {
-	@:optional var preloader:Null<Class<GPopup>>;
+	@:optional var preloader:Null<Class<Popup>>;
 	@:optional var showStats:Bool;
 }
 
 @:final class Glue
 {
-	static var mainScene:Class<GScene>;
-	static var customPreloader:Null<Class<GPopup>>;
+	static var mainScene:Class<Scene>;
+	static var customPreloader:Null<Class<Popup>>;
 	static var context:GlueContext;
 
 	static public var stage:Stage;
@@ -32,10 +32,10 @@ typedef GlueOptions =
 	static public var isDebug:Bool = false;
 	static public var showBounds:Bool = false;
 
-	@:allow(glue.assets.GLoader)
+	@:allow(glue.assets.Loader)
 	static var cacheCanvas:Sprite;
 
-	static public function run<TScene:GScene>(sceneClass:Class<TScene>, ?options:GlueOptions)
+	static public function run<TScene:Scene>(sceneClass:Class<TScene>, ?options:GlueOptions)
 	{
 		var resolved = resolveOptions(options);
 
@@ -62,39 +62,39 @@ typedef GlueOptions =
 
 		if (resolved.showStats == true)
 		{
-			var stats = new GStats();
+			var stats = new Stats();
 			Glue.stage.addChild(stats);
 		}
 
-		GTime.init();
-		GInput.init();
-		GSceneManager.init(context);
+		Time.init();
+		Input.init();
+		SceneManager.init(context);
 
- if (customPreloader == null)
+		if (customPreloader == null)
 		{
-			GSceneManager.showLoaderScene(GPreloader, onAssetsDownloaded);
+			SceneManager.showLoaderScene(Preloader, onAssetsDownloaded);
 		}
 		else
 		{
 			var loaderClass = customPreloader;
 			if (loaderClass != null)
 			{
-				GSceneManager.showLoaderScene(loaderClass, onAssetsDownloaded);
+				SceneManager.showLoaderScene(loaderClass, onAssetsDownloaded);
 			}
 		}
 	}
 
 	static function onAssetsDownloaded()
 	{
-		GSceneManager.gotoScene(mainScene);
+		SceneManager.gotoScene(mainScene);
 	}
 
 	static function onUpdate(_)
 	{
-		GTime.update();
-		GInput.update();
-		GSceneManager.update();
-		GInput.clear();
+		Time.update();
+		Input.update();
+		SceneManager.update();
+		Input.clear();
 	}
 
 	static function onStageResize(_):Void
@@ -102,14 +102,14 @@ typedef GlueOptions =
 		refreshWindowSize();
 		context.updateSize(Glue.width, Glue.height);
 
-		if (GSceneManager.currentScene != null)
+		if (SceneManager.currentScene != null)
 		{
-			GSceneManager.currentScene.onResize();
+			SceneManager.currentScene.onResize();
 		}
 
-		if (GSceneManager.currentPopup != null)
+		if (SceneManager.currentPopup != null)
 		{
-			GSceneManager.currentPopup.onResize();
+			SceneManager.currentPopup.onResize();
 		}
 	}
 
@@ -136,23 +136,23 @@ typedef GlueOptions =
 		{
 			fromAdobeAnimate: function(assetId:String, url:String, fps:Int = 30)
 			{
-				GLoader.load({ type:"adobe_animate_spritesheet", id: assetId, url: url, fps: fps });
+				Loader.load({ type:"adobe_animate_spritesheet", id: assetId, url: url, fps: fps });
 			}
 		},
 
 		image: function(assetId:String, url:String)
 		{
-			GLoader.load({ type: "image", id: assetId, url: url });
+			Loader.load({ type: "image", id: assetId, url: url });
 		},
 
 		json: function(assetId:String, url:String)
 		{
-			GLoader.load({ type: "json", id: assetId, url: url });
+			Loader.load({ type: "json", id: assetId, url: url });
 		},
 
 		sound: function(assetId:String, url:String, group:String = null)
 		{
-			GLoader.load({ type: "sound", id: assetId, url: url, group: group});
+			Loader.load({ type: "sound", id: assetId, url: url, group: group});
 		}
 	}
 

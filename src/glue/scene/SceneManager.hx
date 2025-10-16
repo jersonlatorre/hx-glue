@@ -2,7 +2,7 @@ package glue.scene;
 
 import glue.Glue;
 import glue.GlueContext;
-import glue.assets.GLoader;
+import glue.assets.Loader;
 
 /**
  * Scene management system
@@ -10,10 +10,10 @@ import glue.assets.GLoader;
  * @author Jerson La Torre
  */
 
-@:final class GSceneManager
+@:final class SceneManager
 {
-	static public var currentScene(default, null):GScene;
-	static public var currentPopup(default, null):GPopup;
+	static public var currentScene(default, null):Scene;
+	static public var currentPopup(default, null):Popup;
 	static var context:GlueContext;
 		
 	static public function init(glueContext:GlueContext)
@@ -22,7 +22,7 @@ import glue.assets.GLoader;
 		currentScene = null;
 	}
 	
-	static public function gotoScene(sceneClass:Class<GScene>)
+	static public function gotoScene(sceneClass:Class<Scene>)
 	{
 		if (currentScene != null)
 		{
@@ -35,17 +35,17 @@ import glue.assets.GLoader;
 		currentScene.preInit();
 	}
 
-	static public function showLoaderScene(loaderClass:Class<GPopup>, callback:()->Void)
+	static public function showLoaderScene(loaderClass:Class<Popup>, callback:()->Void)
 	{
 		showPopup(loaderClass);
-		GLoader.startDownload(function()
+		Loader.startDownload(function()
 		{
 			removePopup();
 			callback();
 		});
 	}
 
-	static public function showPopup(popupClass:Class<GPopup>)
+	static public function showPopup(popupClass:Class<Popup>)
 	{
 		if (currentPopup != null)
 		{

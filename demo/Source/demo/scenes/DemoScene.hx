@@ -4,12 +4,12 @@ import demo.entities.FallingItem;
 import demo.entities.Player;
 import demo.ui.ScoreLabel;
 import glue.Glue;
-import glue.scene.GScene;
-import glue.utils.GTime;
-import glue.input.GInput;
+import glue.scene.Scene;
+import glue.utils.Time;
+import glue.input.Input;
 import openfl.ui.Keyboard;
 
-class DemoScene extends GScene
+class DemoScene extends Scene
 {
 	var player:Player;
 	var scoreLabel:ScoreLabel;
@@ -23,8 +23,8 @@ class DemoScene extends GScene
 		addLayer("entities");
 		addLayer("hud");
 
-		GInput.bindKeys("move_left", [Keyboard.LEFT, Keyboard.A]);
-		GInput.bindKeys("move_right", [Keyboard.RIGHT, Keyboard.D]);
+		Input.bindKeys("move_left", [Keyboard.LEFT, Keyboard.A]);
+		Input.bindKeys("move_right", [Keyboard.RIGHT, Keyboard.D]);
 
 		player = new Player();
 		player.position.set(Glue.width * 0.5, Glue.height - 80);
@@ -38,7 +38,7 @@ class DemoScene extends GScene
 
 	override public function update()
 	{
-		spawnTimer += GTime.deltaTime;
+		spawnTimer += Time.deltaTime;
 		if (spawnTimer >= spawnInterval)
 		{
 			spawnTimer -= spawnInterval;

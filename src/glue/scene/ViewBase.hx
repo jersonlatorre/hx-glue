@@ -1,13 +1,13 @@
 package glue.scene;
 
 import glue.GlueContext;
-import glue.assets.GAssetRequest;
-import glue.assets.GLoader;
-import glue.display.GEntity;
-import glue.math.GConstants;
+import glue.assets.AssetRequest;
+import glue.assets.Loader;
+import glue.display.Entity;
+import glue.math.Constants;
 import openfl.display.Sprite;
 
-class GViewBase
+class ViewBase
 {
 	public final context:GlueContext;
 	@:allow(glue.scene)
@@ -15,7 +15,7 @@ class GViewBase
 	var layerRoot:Sprite;
 	var mask:Sprite;
 	var layers:Map<String, Sprite> = new Map();
-	var entities:Array<GEntity> = [];
+	var entities:Array<Entity> = [];
 
 	public function new(context:GlueContext)
 	{
@@ -26,11 +26,11 @@ class GViewBase
 	{
 		for (request in assetRequests())
 		{
-			GLoader.queue(request);
+			Loader.queue(request);
 		}
 	}
 
-	public function assetRequests():Array<GAssetRequest>
+	public function assetRequests():Array<AssetRequest>
 	{
 		return [];
 	}
@@ -49,7 +49,7 @@ class GViewBase
 		}
 	}
 
-	public function add(entity:GEntity, layerName:String = "default"):GEntity
+	public function add(entity:Entity, layerName:String = "default"):Entity
 	{
 		if (layers.exists(layerName))
 		{
@@ -63,7 +63,7 @@ class GViewBase
 		return entity;
 	}
 
-	public function remove(entity:GEntity):GEntity
+	public function remove(entity:Entity):Entity
 	{
 		var index = entities.indexOf(entity);
 		if (index >= 0)
@@ -82,7 +82,7 @@ class GViewBase
 		return entity;
 	}
 
-	public function find(predicate:GEntity->Bool):Null<GEntity>
+	public function find(predicate:Entity->Bool):Null<Entity>
 	{
 		for (entity in entities)
 		{
@@ -94,12 +94,12 @@ class GViewBase
 		return null;
 	}
 
-	public function filter(predicate:GEntity->Bool):Array<GEntity>
+	public function filter(predicate:Entity->Bool):Array<Entity>
 	{
 		return entities.filter(predicate);
 	}
 
-	public function forEach(callback:GEntity->Void):Void
+	public function forEach(callback:Entity->Void):Void
 	{
 		for (entity in entities)
 		{
@@ -187,7 +187,7 @@ class GViewBase
 	{
 		if (mask == null) return;
 		mask.graphics.clear();
-		mask.graphics.beginFill(GConstants.COLOR_DEBUG_RED, GConstants.ALPHA_DEBUG_OVERLAY);
+		mask.graphics.beginFill(Constants.COLOR_DEBUG_RED, Constants.ALPHA_DEBUG_OVERLAY);
 		mask.graphics.drawRect(0, 0, context.width, context.height);
 		mask.graphics.endFill();
 		mask.x = 0;

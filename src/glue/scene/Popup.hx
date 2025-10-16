@@ -2,13 +2,13 @@ package glue.scene;
 
 import glue.Glue;
 import glue.GlueContext;
-import glue.assets.GAssetRequest;
-import glue.assets.GLoader;
-import glue.display.GEntity;
-import glue.utils.GTools;
+import glue.assets.AssetRequest;
+import glue.assets.Loader;
+import glue.display.Entity;
+import glue.utils.Tools;
 import openfl.display.Sprite;
 
-class GPopup extends GViewBase
+class Popup extends ViewBase
 {
 	var popupCanvas:Sprite;
 
@@ -19,7 +19,7 @@ class GPopup extends GViewBase
 
 	public function preInit():Void
 	{
-		if (Glue.isDebug) haxe.Log.trace('[ Popup: ${ GTools.getClassName(this) } ]' , null);
+		if (Glue.isDebug) haxe.Log.trace('[ Popup: ${ Tools.getClassName(this) } ]' , null);
 
 		canvas = new Sprite();
 		context.canvas.addChild(canvas);
@@ -48,21 +48,21 @@ class GPopup extends GViewBase
 		init();
 	}
 
-	public function gotoScene(sceneClass:Class<GScene>):Void
+	public function gotoScene(sceneClass:Class<Scene>):Void
 	{
-		GSceneManager.gotoScene(sceneClass);
+		SceneManager.gotoScene(sceneClass);
 	}
 
 	public function init():Void {}
 
 	public function update():Void {}
 
-	public override function assetRequests():Array<GAssetRequest>
+	public override function assetRequests():Array<AssetRequest>
 	{
 		return [];
 	}
 
-	@:allow(glue.scene.GSceneManager)
+	@:allow(glue.scene.SceneManager)
 	function preUpdate():Void
 	{
 		update();

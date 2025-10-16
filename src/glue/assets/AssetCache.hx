@@ -1,14 +1,14 @@
 package glue.assets;
 
-final class GAssetCache
+final class AssetCache
 {
-	final types:Map<String, GAssetType> = new Map();
+	final types:Map<String, AssetType> = new Map();
 	final raw:Map<String, Dynamic> = new Map();
 	final prepared:Map<String, Dynamic> = new Map();
 
 	public function new() {}
 
-	public function define(id:String, type:GAssetType):Void
+	public function define(id:String, type:AssetType):Void
 	{
 		types.set(id, type);
 	}
@@ -18,7 +18,7 @@ final class GAssetCache
 		return types.exists(id);
 	}
 
-	public function getType(id:String):Null<GAssetType>
+	public function getType(id:String):Null<AssetType>
 	{
 		return types.get(id);
 	}

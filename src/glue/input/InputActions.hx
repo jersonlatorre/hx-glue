@@ -1,6 +1,6 @@
 package glue.input;
 
-import glue.input.GInput;
+import glue.input.Input;
 
 /**
  * Simplified input actions API
@@ -12,7 +12,7 @@ import glue.input.GInput;
 	{
 		for (actionName => keys in actions)
 		{
-			GInput.bindKeys(actionName, keys);
+			Input.bindKeys(actionName, keys);
 		}
 	}
 
@@ -23,54 +23,54 @@ import glue.input.GInput;
 
 	public static function bindWASD():Void
 	{
-		GInput.bindKeys("up", [87]); // W
-		GInput.bindKeys("down", [83]); // S
-		GInput.bindKeys("left", [65]); // A
-		GInput.bindKeys("right", [68]); // D
+		Input.bindKeys("up", [87]); // W
+		Input.bindKeys("down", [83]); // S
+		Input.bindKeys("left", [65]); // A
+		Input.bindKeys("right", [68]); // D
 	}
 
 	public static function bindArrows():Void
 	{
-		GInput.bindKeys("up", [38]); // UP
-		GInput.bindKeys("down", [40]); // DOWN
-		GInput.bindKeys("left", [37]); // LEFT
-		GInput.bindKeys("right", [39]); // RIGHT
+		Input.bindKeys("up", [38]); // UP
+		Input.bindKeys("down", [40]); // DOWN
+		Input.bindKeys("left", [37]); // LEFT
+		Input.bindKeys("right", [39]); // RIGHT
 	}
 
 	public static function bindWASDAndArrows():Void
 	{
-		GInput.bindKeys("up", [87, 38]); // W, UP
-		GInput.bindKeys("down", [83, 40]); // S, DOWN
-		GInput.bindKeys("left", [65, 37]); // A, LEFT
-		GInput.bindKeys("right", [68, 39]); // D, RIGHT
+		Input.bindKeys("up", [87, 38]); // W, UP
+		Input.bindKeys("down", [83, 40]); // S, DOWN
+		Input.bindKeys("left", [65, 37]); // A, LEFT
+		Input.bindKeys("right", [68, 39]); // D, RIGHT
 	}
 
-	public static function getDirection(left:String = "left", right:String = "right", up:String = "up", down:String = "down"):glue.math.GVector2D
+	public static function getDirection(left:String = "left", right:String = "right", up:String = "up", down:String = "down"):glue.math.Vector2D
 	{
 		var x:Float = 0;
 		var y:Float = 0;
 
-		if (GInput.isKeyPressed(left)) x -= 1;
-		if (GInput.isKeyPressed(right)) x += 1;
-		if (GInput.isKeyPressed(up)) y -= 1;
-		if (GInput.isKeyPressed(down)) y += 1;
+		if (Input.isKeyPressed(left)) x -= 1;
+		if (Input.isKeyPressed(right)) x += 1;
+		if (Input.isKeyPressed(up)) y -= 1;
+		if (Input.isKeyPressed(down)) y += 1;
 
-		return new glue.math.GVector2D(x, y);
+		return new glue.math.Vector2D(x, y);
 	}
 
 	public static function getHorizontal(left:String = "left", right:String = "right"):Float
 	{
 		var value:Float = 0;
-		if (GInput.isKeyPressed(left)) value -= 1;
-		if (GInput.isKeyPressed(right)) value += 1;
+		if (Input.isKeyPressed(left)) value -= 1;
+		if (Input.isKeyPressed(right)) value += 1;
 		return value;
 	}
 
 	public static function getVertical(up:String = "up", down:String = "down"):Float
 	{
 		var value:Float = 0;
-		if (GInput.isKeyPressed(up)) value -= 1;
-		if (GInput.isKeyPressed(down)) value += 1;
+		if (Input.isKeyPressed(up)) value -= 1;
+		if (Input.isKeyPressed(down)) value += 1;
 		return value;
 	}
 }

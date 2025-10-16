@@ -1,9 +1,9 @@
 package platformer.entities;
 
-import glue.display.GEntity;
+import glue.display.Entity;
 import openfl.display.Shape;
 
-class Enemy extends GEntity
+class Enemy extends Entity
 {
 	static inline final MOVE_SPEED:Float = 50;
 	static inline final GRAVITY:Float = 800;

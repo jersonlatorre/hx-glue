@@ -2,7 +2,7 @@ package glue.display;
 
 import haxe.Utf8;
 import haxe.xml.Access;
-import glue.assets.GLoader;
+import glue.assets.Loader;
 import openfl.geom.ColorTransform;
 import openfl.geom.Rectangle;
 import openfl.geom.Matrix;
@@ -14,12 +14,12 @@ import openfl.display.PixelSnapping;
 /**
  * Class for rendering text with provided bitmap font and some additional options.
  */
-class GBitmapText extends GEntity 
+class BitmapText extends Entity 
 {
 	/**
 	 * Font for text rendering.
 	 */
-	public var font(default, set):GBitmapFont;
+	public var font(default, set):BitmapFont;
 	
 	/**
 	 * Text to display.
@@ -38,7 +38,7 @@ class GBitmapText extends GEntity
 	/**
 	 * Specifies how the text field should align text.
 	 */
-	public var alignment(default, set):GBitmapTextAlign = GBitmapTextAlign.LEFT;
+	public var alignment(default, set):BitmapTextAlign = BitmapTextAlign.LEFT;
 	
 	/**
 	 * The distance to add between lines.
@@ -111,7 +111,7 @@ class GBitmapText extends GEntity
 	/**
 	 * Use a border style
 	 */	
-	public var borderStyle(default, set):GBitmapTextBorderStyle = NONE;
+	public var borderStyle(default, set):BitmapTextBorderStyle = NONE;
 	
 	/**
 	 * The color of the border in 0xAARRGGBB format
@@ -188,12 +188,12 @@ class GBitmapText extends GEntity
 	/**
 	 * Glyphs for text rendering. Used only in blit render mode.
 	 */
-	private var textGlyphs:GBitmapGlyphCollection;
+	private var textGlyphs:BitmapGlyphCollection;
 	/**
 	 * Glyphs for border (shadow or outline) rendering.
 	 * Used only in blit render mode.
 	 */
-	private var borderGlyphs:GBitmapGlyphCollection;
+	private var borderGlyphs:BitmapGlyphCollection;
 	
 	private var _point:Point;
 	
@@ -202,7 +202,7 @@ class GBitmapText extends GEntity
 	 * @param font	optional parameter for component's font prop
 	 * @param text	optional parameter for component's text
 	 */
-	public function new(?font:GBitmapFont, text:String = "", pixelSnapping:PixelSnapping = null, smoothing:Bool = false)
+	public function new(?font:BitmapFont, text:String = "", pixelSnapping:PixelSnapping = null, smoothing:Bool = false)
 	{
 		super();
 		
@@ -216,7 +216,7 @@ class GBitmapText extends GEntity
 		
 		if (font == null)
 		{
-			font = GBitmapFont.getDefaultFont();
+			font = BitmapFont.getDefaultFont();
 		}
 
 		width = _skin.width;
@@ -227,20 +227,20 @@ class GBitmapText extends GEntity
 		this.smoothing = smoothing;
 	}
 
-	static public function fromAngelCode(idBitmap:String, idData:String):GBitmapText
+	static public function fromAngelCode(idBitmap:String, idData:String):BitmapText
 	{
-		var fontImage:BitmapData = GLoader.getImage(idBitmap);
-		var fontXml:Xml = GLoader.getXml(idData);
-		var font:GBitmapFont = GBitmapFont.fromAngelCode(fontImage, fontXml);
-		var angelCodeText = new GBitmapText(font);
+		var fontImage:BitmapData = Loader.getImage(idBitmap);
+		var fontXml:Xml = Loader.getXml(idData);
+		var font:BitmapFont = BitmapFont.fromAngelCode(fontImage, fontXml);
+		var angelCodeText = new BitmapText(font);
 		return angelCodeText;
 	}
 
-	static public function fromMonospace(idBitmap:String, chars:String, charWidth:Int, charHeight:Int):GBitmapText
+	static public function fromMonospace(idBitmap:String, chars:String, charWidth:Int, charHeight:Int):BitmapText
 	{
-		var fontImage:BitmapData = GLoader.getImage(idBitmap);
-		var font:GBitmapFont = GBitmapFont.fromMonospace(idBitmap, fontImage, chars, new Point(charWidth, charHeight));
-		var monospaceText = new GBitmapText(font);
+		var fontImage:BitmapData = Loader.getImage(idBitmap);
+		var font:BitmapFont = BitmapFont.fromMonospace(idBitmap, fontImage, chars, new Point(charWidth, charHeight));
+		var monospaceText = new BitmapText(font);
 		return monospaceText;
 	}
 
@@ -450,17 +450,17 @@ class GBitmapText extends GEntity
 		var charWidth:Float = 0;			// the width of current character
 		
 		var widthPlusOffset:Int = 0;
-		var glyphFrame:GBitmapGlyphFrame;
+		var glyphFrame:BitmapGlyphFrame;
 		
 		for (c in 0...lineLength)
 		{
 			charCode = Utf8.charCodeAt(str, c);
 			
-			if (charCode == GBitmapFont.spaceCode)
+			if (charCode == BitmapFont.spaceCode)
 			{
 				charWidth = spaceWidth;
 			}
-			else if (charCode == GBitmapFont.tabCode)
+			else if (charCode == BitmapFont.tabCode)
 			{
 				charWidth = tabWidth;
 			}
@@ -530,11 +530,11 @@ class GBitmapText extends GEntity
 			{
 				charCode = Utf8.charCodeAt(line, c);
 				
-				if (charCode == GBitmapFont.spaceCode)
+				if (charCode == BitmapFont.spaceCode)
 				{
 					charWidth = spaceWidth;
 				}
-				else if (charCode == GBitmapFont.tabCode)
+				else if (charCode == BitmapFont.tabCode)
 				{
 					charWidth = tabWidth;
 				}
@@ -618,7 +618,7 @@ class GBitmapText extends GEntity
 			charCode = Utf8.charCodeAt(line, c);
 			word = wordUtf8.toString();
 			
-			if (charCode == GBitmapFont.spaceCode || charCode == GBitmapFont.tabCode)
+			if (charCode == BitmapFont.spaceCode || charCode == BitmapFont.tabCode)
 			{
 				if (!isSpaceWord)
 				{
@@ -711,17 +711,17 @@ class GBitmapText extends GEntity
 				wordLength = Utf8.length(word);
 				
 				charCode = Utf8.charCodeAt(word, 0);
-				isSpaceWord = (charCode == GBitmapFont.spaceCode || charCode == GBitmapFont.tabCode);
+				isSpaceWord = (charCode == BitmapFont.spaceCode || charCode == BitmapFont.tabCode);
 				
 				for (c in 0...wordLength)
 				{
 					charCode = Utf8.charCodeAt(word, c);
 					
-					if (charCode == GBitmapFont.spaceCode)
+					if (charCode == BitmapFont.spaceCode)
 					{
 						charWidth = spaceWidth;
 					}
-					else if (charCode == GBitmapFont.tabCode)
+					else if (charCode == BitmapFont.tabCode)
 					{
 						charWidth = tabWidth;
 					}
@@ -819,7 +819,7 @@ class GBitmapText extends GEntity
 				wordLength = Utf8.length(word);
 				
 				charCode = Utf8.charCodeAt(word, 0);
-				isSpaceWord = (charCode == GBitmapFont.spaceCode || charCode == GBitmapFont.tabCode);
+				isSpaceWord = (charCode == BitmapFont.spaceCode || charCode == BitmapFont.tabCode);
 				
 				c = 0;
 				
@@ -827,11 +827,11 @@ class GBitmapText extends GEntity
 				{
 					charCode = Utf8.charCodeAt(word, c);
 					
-					if (charCode == GBitmapFont.spaceCode)
+					if (charCode == BitmapFont.spaceCode)
 					{
 						charWidth = spaceWidth;
 					}
-					else if (charCode == GBitmapFont.tabCode)
+					else if (charCode == BitmapFont.tabCode)
 					{
 						charWidth = tabWidth;
 					}
@@ -934,7 +934,7 @@ class GBitmapText extends GEntity
 			var deltaX:Int = 1;
 			var deltaY:Int = 1;
 			
-			if (borderStyle == GBitmapTextBorderStyle.SHADOW)
+			if (borderStyle == BitmapTextBorderStyle.SHADOW)
 			{
 				iterationsX = Math.round(Math.abs(shadowOffset.x) * borderQuality);
 				iterationsX = (iterationsX <= 0) ? 1 : iterationsX;
@@ -956,11 +956,11 @@ class GBitmapText extends GEntity
 				ox = Std.int(Math.abs(font.minOffsetX) * size);
 				oy = Std.int(i * (font.lineHeight * size + lineSpacing)) + padding;
 				
-				if (alignment == GBitmapTextAlign.CENTER) 
+				if (alignment == BitmapTextAlign.CENTER) 
 				{
 					ox += Std.int((_fieldWidth - lineWidth) * 0.5) - padding;
 				}
-				if (alignment == GBitmapTextAlign.RIGHT) 
+				if (alignment == BitmapTextAlign.RIGHT) 
 				{
 					ox += (_fieldWidth - Std.int(lineWidth)) - padding;
 				}
@@ -1017,11 +1017,11 @@ class GBitmapText extends GEntity
 				ox = Std.int(Math.abs(font.minOffsetX) * size);
 				oy = Std.int(i * (font.lineHeight * size + lineSpacing)) + padding;
 				
-				if (alignment == GBitmapTextAlign.CENTER) 
+				if (alignment == BitmapTextAlign.CENTER) 
 				{
 					ox += Std.int((_fieldWidth - lineWidth) * 0.5) - padding;
 				}
-				if (alignment == GBitmapTextAlign.RIGHT) 
+				if (alignment == BitmapTextAlign.RIGHT) 
 				{
 					ox += (_fieldWidth - Std.int(lineWidth)) - padding;
 				}
@@ -1039,11 +1039,11 @@ class GBitmapText extends GEntity
 		_pendingGraphicChange = false;
 	}
 	
-	private function blitLine(line:String, glyphs:GBitmapGlyphCollection, startX:Int, startY:Int):Void
+	private function blitLine(line:String, glyphs:BitmapGlyphCollection, startX:Int, startY:Int):Void
 	{
 		if (glyphs == null) return;
 		
-		var glyph:GBitmapGlyph;
+		var glyph:BitmapGlyph;
 		var charCode:Int;
 		var curX:Int = startX;
 		var curY:Int = startY;
@@ -1057,11 +1057,11 @@ class GBitmapText extends GEntity
 		{
 			charCode = Utf8.charCodeAt(line, i);
 			
-			if (charCode == GBitmapFont.spaceCode)
+			if (charCode == BitmapFont.spaceCode)
 			{
 				curX += spaceWidth;
 			}
-			else if (charCode == GBitmapFont.tabCode)
+			else if (charCode == BitmapFont.tabCode)
 			{
 				curX += tabWidth;
 			}
@@ -1089,13 +1089,13 @@ class GBitmapText extends GEntity
 	 * @param	Size outline size in pixels
 	 * @param	Quality outline quality - # of iterations to use when drawing. 0:just 1, 1:equal number to BorderSize
 	 */
-	public inline function setBorderStyle(Style:GBitmapTextBorderStyle, Color:UInt = 0xFFFFFFFF, Size:Float = 1, Quality:Float = 1):Void 
+	public inline function setBorderStyle(Style:BitmapTextBorderStyle, Color:UInt = 0xFFFFFFFF, Size:Float = 1, Quality:Float = 1):Void 
 	{
 		borderStyle = Style;
 		borderColor = Color;
 		borderSize = Size;
 		borderQuality = Quality;
-		if (borderStyle == GBitmapTextBorderStyle.SHADOW)
+		if (borderStyle == BitmapTextBorderStyle.SHADOW)
 		{
 			shadowOffset.setTo(borderSize, borderSize);
 		}
@@ -1120,7 +1120,7 @@ class GBitmapText extends GEntity
 		return value;
 	}
 	
-	private function set_alignment(value:GBitmapTextAlign):GBitmapTextAlign 
+	private function set_alignment(value:BitmapTextAlign):BitmapTextAlign 
 	{
 		if (alignment != value)
 		{
@@ -1144,7 +1144,7 @@ class GBitmapText extends GEntity
 		return value;
 	}
 	
-	private function set_font(value:GBitmapFont):GBitmapFont 
+	private function set_font(value:BitmapFont):BitmapFont 
 	{
 		if (font != value && value != null)
 		{
@@ -1302,7 +1302,7 @@ class GBitmapText extends GEntity
 		return value;
 	}
 	
-	private function set_borderStyle(style:GBitmapTextBorderStyle):GBitmapTextBorderStyle
+	private function set_borderStyle(style:BitmapTextBorderStyle):BitmapTextBorderStyle
 	{		
 		if (style != borderStyle)
 		{
@@ -1332,7 +1332,7 @@ class GBitmapText extends GEntity
 		{			
 			borderSize = value;
 			
-			if (borderStyle != GBitmapTextBorderStyle.NONE)
+			if (borderStyle != BitmapTextBorderStyle.NONE)
 			{
 				_pendingGraphicChange = true;
 				checkImmediateChanges();
@@ -1350,7 +1350,7 @@ class GBitmapText extends GEntity
 		{
 			borderQuality = value;
 			
-			if (borderStyle != GBitmapTextBorderStyle.NONE)
+			if (borderStyle != BitmapTextBorderStyle.NONE)
 			{
 				_pendingGraphicChange = true;
 				checkImmediateChanges();
@@ -1451,7 +1451,7 @@ class GBitmapText extends GEntity
 /**
  * Holds information and bitmap glyphs for a bitmap font.
  */
-class GBitmapFont
+class BitmapFont
 {
 	public static inline var spaceCode:Int = 32;
 	public static inline var tabCode:Int = 9;
@@ -1461,14 +1461,14 @@ class GBitmapFont
 	
 	private static inline var defaultFontData:String = " 36000000000000000000!26101010001000\"46101010100000000000000000#66010100111110010100111110010100000000$56001000111011000001101110000100%66100100000100001000010000010010000000&66011000100000011010100100011010000000'26101000000000(36010100100100010000)36100010010010100000*46000010100100101000000000+46000001001110010000000000,36000000000000010100-46000000001110000000000000.26000000001000/66000010000100001000010000100000000000056011001001010010100100110000000156011000010000100001000010000000256111000001001100100001111000000356111000001001100000101110000000456100101001010010011100001000000556111101000011100000101110000000656011001000011100100100110000000756111000001000010001100001000000856011001001001100100100110000000956011001001010010011100001000000:26001000100000;26001000101000<46001001001000010000100000=46000011100000111000000000>46100001000010010010000000?56111000001001100000000100000000@66011100100010101110101010011100000000A56011001001010010111101001000000B56111001001011100100101110000000C56011001001010000100100110000000D56111001001010010100101110000000E56111101000011000100001111000000F56111101000010000110001000000000G56011001000010110100100111000000H56100101001011110100101001000000I26101010101000J56000100001000010100100110000000K56100101001010010111001001000000L46100010001000100011100000M66100010100010110110101010100010000000N56100101001011010101101001000000O56011001001010010100100110000000P56111001001010010111001000000000Q56011001001010010100100110000010R56111001001010010111001001000000S56011101000001100000101110000000T46111001000100010001000000U56100101001010010100100110000000V56100101001010010101000100000000W66100010100010101010110110100010000000X56100101001001100100101001000000Y56100101001010010011100001001100Z56111100001001100100001111000000[36110100100100110000}46110001000010010011000000]36110010010010110000^46010010100000000000000000_46000000000000000011110000'26101000000000a56000000111010010100100111000000b56100001110010010100101110000000c46000001101000100001100000d56000100111010010100100111000000e56000000110010110110000110000000f46011010001000110010000000g5700000011001001010010011100001001100h56100001110010010100101001000000i26100010101000j37010000010010010010100k56100001001010010111001001000000l26101010101000m66000000111100101010101010101010000000n56000001110010010100101001000000o56000000110010010100100110000000p5700000111001001010010111001000010000q5700000011101001010010011100001000010r46000010101100100010000000s56000000111011000001101110000000t46100011001000100001100000u56000001001010010100100111000000v56000001001010010101000100000000w66000000101010101010101010011110000000x56000001001010010011001001000000y5700000100101001010010011100001001100z56000001111000100010001111000000{46011001001000010001100000|26101010101000}46110001000010010011000000~56010101010000000000000000000000\\46111010101010101011100000";
 	
-	private static var fonts:Map<String, GBitmapFont> = new Map<String, GBitmapFont>();
+	private static var fonts:Map<String, BitmapFont> = new Map<String, BitmapFont>();
 	
 	/**
 	 * Stores a font for global use using an identifier.
 	 * @param	fontKey		String identifer for the font.
 	 * @param	font		Font to store.
 	 */
-	public static function store(fontKey:String, font:GBitmapFont):Void 
+	public static function store(fontKey:String, font:BitmapFont):Void 
 	{
 		if (!fonts.exists(fontKey))
 		{
@@ -1481,7 +1481,7 @@ class GBitmapFont
 	 * @param	fontKey		Identifier of font to fetch.
 	 * @return	Stored font, or null if no font was found.
 	 */
-	public static function get(fontKey:String):GBitmapFont 
+	public static function get(fontKey:String):BitmapFont 
 	{
 		return fonts.get(fontKey);
 	}
@@ -1492,7 +1492,7 @@ class GBitmapFont
 	 */
 	public static function remove(fontKey):Void
 	{
-		var font:GBitmapFont = fonts.get(fontKey);
+		var font:BitmapFont = fonts.get(fontKey);
 		fonts.remove(fontKey);
 		
 		if (font != null)
@@ -1511,15 +1511,15 @@ class GBitmapFont
 			font.dispose();
 		}
 		
-		fonts = new Map<String, GBitmapFont>();
+		fonts = new Map<String, BitmapFont>();
 	}
 	
 	/**
-	 * Retrieves default GBitmapFont.
+	 * Retrieves default BitmapFont.
 	 */
-	public static function getDefaultFont():GBitmapFont
+	public static function getDefaultFont():BitmapFont
 	{
-		var font:GBitmapFont = GBitmapFont.get(defaultFontKey);
+		var font:BitmapFont = BitmapFont.get(defaultFontKey);
 		
 		if (font != null)
 		{
@@ -1560,7 +1560,7 @@ class GBitmapFont
 			letterPos++;
 		}
 		
-		return GBitmapFont.fromXNA(defaultFontKey, bd, letters);
+		return BitmapFont.fromXNA(defaultFontKey, bd, letters);
 	}
 	
 	/**
@@ -1603,7 +1603,7 @@ class GBitmapFont
 	 */
 	public var bitmap:BitmapData;
 	
-	public var glyphs:Map<Int, GBitmapGlyphFrame>;
+	public var glyphs:Map<Int, BitmapGlyphFrame>;
 	
 	/**
 	 * Creates and stores new bitmap font using specified source image.
@@ -1612,8 +1612,8 @@ class GBitmapFont
 	{
 		this.bitmap = bitmap;
 		this.fontName = name;
-		glyphs = new Map<Int, GBitmapGlyphFrame>();
-		GBitmapFont.store(name, this);
+		glyphs = new Map<Int, BitmapGlyphFrame>();
+		BitmapFont.store(name, this);
 	}
 	
 	/**
@@ -1639,19 +1639,19 @@ class GBitmapFont
 	 * @param	Data		XML font data.
 	 * @return	Generated bitmap font object.
 	 */
-	public static function fromAngelCode(Source:BitmapData, Data:Xml):GBitmapFont
+	public static function fromAngelCode(Source:BitmapData, Data:Xml):BitmapFont
 	{
 		var xml:Access = new Access(Data.firstElement());
 		var fontName:String = Std.string(xml.node.info.att.face);
 		
-		var font:GBitmapFont = GBitmapFont.get(fontName);
+		var font:BitmapFont = BitmapFont.get(fontName);
 		
 		if (font != null)
 		{
 			return font;
 		}
 		
-		font = new GBitmapFont(fontName, Source);
+		font = new BitmapFont(fontName, Source);
 		font.lineHeight = Std.parseInt(xml.node.common.att.lineHeight);
 		font.size = Std.parseInt(xml.node.info.att.size);
 		font.fontName = Std.string(xml.node.info.att.face);
@@ -1739,16 +1739,16 @@ class GBitmapFont
 	 * @param	glyphBGColor	An additional background color to remove. Defaults to 0xFF202020, often used for glyphs background.
 	 * @return	Generated bitmap font object.
 	 */
-	public static function fromXNA(key:String, source:BitmapData, letters:String = null, glyphBGColor:Int = 0x00000000):GBitmapFont
+	public static function fromXNA(key:String, source:BitmapData, letters:String = null, glyphBGColor:Int = 0x00000000):BitmapFont
 	{
-		var font:GBitmapFont = GBitmapFont.get(key);
+		var font:BitmapFont = BitmapFont.get(key);
 		
 		if (font != null)
 		{
 			return font;
 		}
 		
-		font = new GBitmapFont(key, source);
+		font = new BitmapFont(key, source);
 		font.fontName = key;
 		
 		letters = (letters == null) ? DEFAULT_GLYPHS : letters;
@@ -1870,9 +1870,9 @@ class GBitmapFont
 	 * @param	spacing		Spaces between characters in the font set. Default is null which means no spaces.
 	 * @return	Generated bitmap font object.
 	 */
-	public static function fromMonospace(key:String, source:BitmapData, letters:String = null, charSize:Point, region:Rectangle = null, spacing:Point = null):GBitmapFont
+	public static function fromMonospace(key:String, source:BitmapData, letters:String = null, charSize:Point, region:Rectangle = null, spacing:Point = null):BitmapFont
 	{
-		var font:GBitmapFont = GBitmapFont.get(key);
+		var font:BitmapFont = BitmapFont.get(key);
 		if (font != null)
 			return font;
 		
@@ -1910,7 +1910,7 @@ class GBitmapFont
 		var numRows:Int = (charHeight == 0) ? 1 : Std.int((bitmapHeight + ySpacing) / spacedHeight);
 		var numCols:Int = (charWidth == 0) ? 1 : Std.int((bitmapWidth + xSpacing) / spacedWidth);
 		
-		font = new GBitmapFont(key, source);
+		font = new BitmapFont(key, source);
 		font.fontName = key;
 		font.lineHeight = font.size = charHeight;
 		
@@ -1952,7 +1952,7 @@ class GBitmapFont
 	{
 		if (frame.width == 0 || frame.height == 0 || glyphs.get(charCode) != null)	return;
 		
-		var glyphFrame:GBitmapGlyphFrame = new GBitmapGlyphFrame(this);
+		var glyphFrame:BitmapGlyphFrame = new BitmapGlyphFrame(this);
 		glyphFrame.charCode = charCode;
 		glyphFrame.xoffset = offsetX;
 		glyphFrame.yoffset = offsetY;
@@ -1962,29 +1962,29 @@ class GBitmapFont
 	}
 	
 	/**
-	 * Generates special collection of GBitmapGlyph objects, which are used in RENDER_BLIT mode.
-	 * These GBitmapGlyph objects contain prepared (scales and color transformed) glyph images, which saves some CPU cycles for you.
+	 * Generates special collection of BitmapGlyph objects, which are used in RENDER_BLIT mode.
+	 * These BitmapGlyph objects contain prepared (scales and color transformed) glyph images, which saves some CPU cycles for you.
 	 * 
 	 * @param	scale		How much scale apply to glyphs.
 	 * @param	color		color in AARRGGBB format for glyph preparations.
 	 * @param	useColor	Whether to use color transformation for glyphs.
-	 * @return	Generated collection of GBitmapGlyph objects. They are used for rendering text and borders in RENDER_BLIT mode.
+	 * @return	Generated collection of BitmapGlyph objects. They are used for rendering text and borders in RENDER_BLIT mode.
 	 */
-	public function prepareGlyphs(scale:Float, color:UInt, useColor:Bool = true, smoothing:Bool = true):GBitmapGlyphCollection
+	public function prepareGlyphs(scale:Float, color:UInt, useColor:Bool = true, smoothing:Bool = true):BitmapGlyphCollection
 	{
-		return new GBitmapGlyphCollection(this, scale, color, useColor, smoothing);
+		return new BitmapGlyphCollection(this, scale, color, useColor, smoothing);
 	}
 }
 
 /**
  * Helper object. Stores info about single glyph (without transformations).
  */
-class GBitmapGlyphFrame 
+class BitmapGlyphFrame 
 {
 	/**
 	 * Bitmap font which this glyph frame belongs to.
 	 */
-	public var parent:GBitmapFont;
+	public var parent:BitmapFont;
 	
 	public var charCode:Int;
 	
@@ -2020,7 +2020,7 @@ class GBitmapGlyphFrame
 	 */
 	public var tileID:Int;
 	
-	public function new(parent:GBitmapFont)
+	public function new(parent:BitmapFont)
 	{ 
 		this.parent = parent;
 	}
@@ -2054,13 +2054,13 @@ class GBitmapGlyphFrame
  * Helper class for blit render mode to reduce BitmapData draw() method calls.
  * It stores info about transformed (scale and color transformed) bitmap font glyphs. 
  */
-class GBitmapGlyphCollection
+class BitmapGlyphCollection
 {
 	public var minOffsetX:Float = 0;
 	
-	public var glyphMap:Map<Int, GBitmapGlyph>;
+	public var glyphMap:Map<Int, BitmapGlyph>;
 	
-	public var glyphs:Array<GBitmapGlyph>;
+	public var glyphs:Array<BitmapGlyph>;
 	
 	public var color:UInt;
 	
@@ -2068,12 +2068,12 @@ class GBitmapGlyphCollection
 	
 	public var spaceWidth:Float = 0;
 	
-	public var font:GBitmapFont;
+	public var font:BitmapFont;
 	
-	public function new(font:GBitmapFont, scale:Float, color:UInt, useColor:Bool = true, smoothing:Bool = true)
+	public function new(font:BitmapFont, scale:Float, color:UInt, useColor:Bool = true, smoothing:Bool = true)
 	{
-		glyphMap = new Map<Int, GBitmapGlyph>();
-		glyphs = new Array<GBitmapGlyph>();
+		glyphMap = new Map<Int, BitmapGlyph>();
+		glyphs = new Array<BitmapGlyph>();
 		this.font = font;
 		this.scale = scale;
 		this.color = (useColor) ? color : 0xFFFFFFFF;
@@ -2094,8 +2094,8 @@ class GBitmapGlyphCollection
 		
 		var glyphBD:BitmapData;
 		var preparedBD:BitmapData;
-		var glyph:GBitmapGlyphFrame;
-		var preparedGlyph:GBitmapGlyph;
+		var glyph:BitmapGlyphFrame;
+		var preparedGlyph:BitmapGlyph;
 		var bdWidth:Int, bdHeight:Int;
 		var offsetX:Int, offsetY:Int, xAdvance:Int;
 		
@@ -2124,7 +2124,7 @@ class GBitmapGlyphCollection
 			offsetY = Math.ceil(glyph.yoffset * scale);
 			xAdvance = Math.ceil(glyph.xadvance * scale);
 			
-			preparedGlyph = new GBitmapGlyph(glyph.charCode, preparedBD, offsetX, offsetY, xAdvance);
+			preparedGlyph = new BitmapGlyph(glyph.charCode, preparedBD, offsetX, offsetY, xAdvance);
 			
 			glyphs.push(preparedGlyph);
 			glyphMap.set(preparedGlyph.charCode, preparedGlyph);
@@ -2151,7 +2151,7 @@ class GBitmapGlyphCollection
  * Helper class for blit render mode. 
  * Stores info about single transformed bitmap glyph.
  */
-class GBitmapGlyph
+class BitmapGlyph
 {
 	public var charCode:Int;
 	

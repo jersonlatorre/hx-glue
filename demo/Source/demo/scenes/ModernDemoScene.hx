@@ -4,22 +4,22 @@ import demo.entities.FallingItem;
 import demo.entities.Player;
 import demo.ui.ScoreLabel;
 import glue.Glue;
-import glue.scene.GScene;
-import glue.utils.GTime;
-import glue.display.GEntityGroup;
+import glue.scene.Scene;
+import glue.utils.Time;
+import glue.display.Group;
 import glue.input.InputActions;
-import glue.math.GVector2D;
+import glue.math.Vector2D;
 import openfl.ui.Keyboard;
 
 /**
  * Modern version of DemoScene showcasing new architecture features
  * Compare with DemoScene.hx to see the improvements
  */
-class ModernDemoScene extends GScene
+class ModernDemoScene extends Scene
 {
 	var player:Player;
 	var scoreLabel:ScoreLabel;
-	var items:GEntityGroup<FallingItem>;
+	var items:Group<FallingItem>;
 	var spawnTimer:Float = 0;
 	var spawnInterval:Float = 1.0;
 	var score:Int = 0;
@@ -41,7 +41,7 @@ class ModernDemoScene extends GScene
 			"entities");
 
 		// Entity groups for automatic management
-		items = new GEntityGroup(this, "entities");
+		items = new Group(this, "entities");
 
 		scoreLabel = add(new ScoreLabel()
 			.at(20, 20),
@@ -52,7 +52,7 @@ class ModernDemoScene extends GScene
 	override public function update()
 	{
 		// Timer logic
-		spawnTimer += GTime.deltaTime;
+		spawnTimer += Time.deltaTime;
 		if (spawnTimer >= spawnInterval)
 		{
 			spawnTimer -= spawnInterval;

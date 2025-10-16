@@ -1,8 +1,8 @@
 package glue.assets;
 
-typedef GAssetRequest =
+typedef AssetRequest =
 {
 	var id:String;
 	var url:String;
-	var type:GAssetType;
+	var type:AssetType;
 }
