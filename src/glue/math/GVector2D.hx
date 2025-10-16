@@ -1,17 +1,49 @@
 package glue.math;
 
-@:forward 
-  abstract GVector2D(__GVectorBase) from __GVectorBase to __GVectorBase
+/**
+ * Modern 2D vector with operator overloading and implicit conversions
+ * Supports fluent API and reduced verbosity
+ */
+@:forward
+abstract GVector2D(__GVectorBase) from __GVectorBase to __GVectorBase
+{
+  public inline function new(x:Float = 0, y:Float = 0)
   {
-    public function new(x:Float = 0, y:Float = 0)
-    {
-      this = new __GVectorBase(x, y);
-    }
+    this = new __GVectorBase(x, y);
+  }
 
-  static public function create(x:Float = 0, y:Float = 0)
+  // Static factory for clarity
+  static public inline function create(x:Float = 0, y:Float = 0)
   {
     return new GVector2D(x, y);
   }
+
+  // Implicit conversion from array [x, y]
+  @:from static public inline function fromArray(arr:Array<Float>):GVector2D
+  {
+    return new GVector2D(arr[0], arr[1]);
+  }
+
+  // Implicit conversion from anonymous structure
+  @:from static public inline function fromStruct(obj:{x:Float, y:Float}):GVector2D
+  {
+    return new GVector2D(obj.x, obj.y);
+  }
+
+  // Shorthand for common vectors
+  static public var zero(get, never):GVector2D;
+  static public var one(get, never):GVector2D;
+  static public var up(get, never):GVector2D;
+  static public var down(get, never):GVector2D;
+  static public var left(get, never):GVector2D;
+  static public var right(get, never):GVector2D;
+
+  static inline function get_zero():GVector2D return new GVector2D(0, 0);
+  static inline function get_one():GVector2D return new GVector2D(1, 1);
+  static inline function get_up():GVector2D return new GVector2D(0, -1);
+  static inline function get_down():GVector2D return new GVector2D(0, 1);
+  static inline function get_left():GVector2D return new GVector2D(-1, 0);
+  static inline function get_right():GVector2D return new GVector2D(1, 0);
 
   static public function lerp(v1:GVector2D, v2:GVector2D, t:Float):GVector2D
   {

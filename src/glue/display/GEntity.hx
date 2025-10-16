@@ -82,7 +82,7 @@ class GEntity
 		}
 	}
 
-	public function add(entity:GEntity, layerName:String = "default")
+	public function add(entity:GEntity, layerName:String = "default"):GEntity
 	{
 		if (_layers.exists(layerName))
 		{
@@ -93,12 +93,13 @@ class GEntity
 		{
 			throw "There is no any layer with the name: " + layerName;
 		}
+		return entity;
 	}
 
-	public function remove(entity:GEntity) 
+	public function remove(entity:GEntity):GEntity
 	{
 		var index = _entities.indexOf(entity);
-		
+
 		if (index >= 0)
 		{
 			for (layerName in _layers.keys())
@@ -109,9 +110,47 @@ class GEntity
 					break;
 				}
 			}
-			
+
 			_entities.splice(index, 1);
 		}
+		return entity;
+	}
+
+	// Fluent API for chaining
+	public function at(x:Float, y:Float):GEntity
+	{
+		position.set(x, y);
+		return this;
+	}
+
+	public function withVelocity(vx:Float, vy:Float):GEntity
+	{
+		velocity.set(vx, vy);
+		return this;
+	}
+
+	public function withScale(sx:Float, sy:Float):GEntity
+	{
+		scale.set(sx, sy);
+		return this;
+	}
+
+	public function withAnchor(ax:Float, ay:Float):GEntity
+	{
+		anchor.set(ax, ay);
+		return this;
+	}
+
+	public function withRotation(rot:Float):GEntity
+	{
+		rotation = rot;
+		return this;
+	}
+
+	public function withAlpha(a:Float):GEntity
+	{
+		alpha = a;
+		return this;
 	}
 
 		@:allow(glue.scene.GScene.add, glue.scene.GPopup.add, glue.scene.GViewBase, glue.assets.GLoader, glue.utils.GStats)

@@ -4,8 +4,11 @@ import glue.Glue;
 import glue.GlueContext;
 import glue.assets.GAssetRequest;
 import glue.assets.GLoader;
+import glue.input.GInput;
+import glue.input.InputActions;
 import glue.math.GConstants;
 import glue.scene.GCamera;
+import glue.utils.GTime;
 import glue.utils.GTools;
 import motion.Actuate;
 import motion.easing.Quad;
@@ -18,6 +21,19 @@ class GScene extends GViewBase
 	var effectCanvas:Sprite;
 
 	public var camera:GCamera;
+
+	// ============================================
+	// SCENE CONVENIENCES - No imports needed!
+	// ============================================
+
+	// Time helpers - like Unity's Time.deltaTime
+	public var deltaTime(get, never):Float;
+	public var time(get, never):Float;
+	public var framerate(get, never):Float;
+
+	inline function get_deltaTime():Float return GTime.deltaTime;
+	inline function get_time():Float return GTime.timelapse;
+	inline function get_framerate():Float return GTime.framerate;
 
 	public function new(context:GlueContext)
 	{
@@ -67,6 +83,105 @@ class GScene extends GViewBase
 	}
 
 	public var load = Glue.load;
+
+	// ============================================
+	// INPUT CONVENIENCES - Consistent with addLayer()
+	// ============================================
+
+	/**
+	 * Add an input action - consistent API with addLayer()
+	 * Usage: addAction("jump", [Keyboard.SPACE]);
+	 */
+	public function addAction(name:String, keys:Array<Int>):Void
+	{
+		GInput.bindKeys(name, keys);
+	}
+
+	/**
+	 * Add multiple actions at once
+	 * Usage: addActions({ "jump": [Keyboard.SPACE], "shoot": [Keyboard.X] });
+	 */
+	public function addActions(actions:Map<String, Array<Int>>):Void
+	{
+		for (name => keys in actions)
+		{
+			GInput.bindKeys(name, keys);
+		}
+	}
+
+	/**
+	 * Quick preset for WASD controls
+	 */
+	public function addWASD():Void
+	{
+		InputActions.bindWASD();
+	}
+
+	/**
+	 * Quick preset for Arrow controls
+	 */
+	public function addArrows():Void
+	{
+		InputActions.bindArrows();
+	}
+
+	/**
+	 * Quick preset for WASD + Arrows
+	 */
+	public function addWASDAndArrows():Void
+	{
+		InputActions.bindWASDAndArrows();
+	}
+
+	/**
+	 * Get directional input as vector - no imports needed!
+	 */
+	public function getDirection(left:String = "left", right:String = "right", up:String = "up", down:String = "down"):glue.math.GVector2D
+	{
+		return InputActions.getDirection(left, right, up, down);
+	}
+
+	/**
+	 * Get horizontal axis (-1, 0, 1)
+	 */
+	public function getHorizontal(left:String = "left", right:String = "right"):Float
+	{
+		return InputActions.getHorizontal(left, right);
+	}
+
+	/**
+	 * Get vertical axis (-1, 0, 1)
+	 */
+	public function getVertical(up:String = "up", down:String = "down"):Float
+	{
+		return InputActions.getVertical(up, down);
+	}
+
+	/**
+	 * Check if action is pressed (held down)
+	 */
+	public function isPressed(action:String):Bool
+	{
+		return GInput.isKeyPressed(action);
+	}
+
+	/**
+	 * Check if action was just pressed this frame
+	 */
+	public function isDown(action:String):Bool
+	{
+		return GInput.isKeyDown(action);
+	}
+
+	/**
+	 * Check if action was just released this frame
+	 */
+	public function isUp(action:String):Bool
+	{
+		return GInput.isKeyUp(action);
+	}
+
+	// ============================================
 
 	public override function assetRequests():Array<GAssetRequest>
 	{

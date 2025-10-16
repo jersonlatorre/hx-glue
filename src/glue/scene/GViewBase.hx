@@ -49,7 +49,7 @@ class GViewBase
 		}
 	}
 
-	public function add(entity:GEntity, layerName:String = "default"):Void
+	public function add(entity:GEntity, layerName:String = "default"):GEntity
 	{
 		if (layers.exists(layerName))
 		{
@@ -60,9 +60,10 @@ class GViewBase
 		{
 			throw "There is no any layer with the name: " + layerName;
 		}
+		return entity;
 	}
 
-	public function remove(entity:GEntity):Void
+	public function remove(entity:GEntity):GEntity
 	{
 		var index = entities.indexOf(entity);
 		if (index >= 0)
@@ -77,6 +78,35 @@ class GViewBase
 				}
 			}
 			entities.splice(index, 1);
+		}
+		return entity;
+	}
+
+	// Utility to find entity by predicate
+	public function find(predicate:GEntity->Bool):Null<GEntity>
+	{
+		for (entity in entities)
+		{
+			if (predicate(entity))
+			{
+				return entity;
+			}
+		}
+		return null;
+	}
+
+	// Utility to filter entities
+	public function filter(predicate:GEntity->Bool):Array<GEntity>
+	{
+		return entities.filter(predicate);
+	}
+
+	// Utility to iterate all entities
+	public function forEach(callback:GEntity->Void):Void
+	{
+		for (entity in entities)
+		{
+			callback(entity);
 		}
 	}
 
