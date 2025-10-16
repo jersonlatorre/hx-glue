@@ -1,8 +1,8 @@
 package glue.scene;
 
 import glue.Glue;
+import glue.GlueContext;
 import glue.assets.GLoader;
-import openfl.display.Sprite;
 
 /**
  * ...
@@ -11,13 +11,13 @@ import openfl.display.Sprite;
 
 @:final class GSceneManager 
 {
-	static public var canvas:Sprite;
 	static public var currentScene:GScene;
 	static public var currentPopup:GPopup;
-	
-	static public function init()
+	static var context:GlueContext;
+		
+	static public function init(glueContext:GlueContext)
 	{
-		GSceneManager.canvas = Glue.canvas;
+		context = glueContext;
 		currentScene = null;
 	}
 	
@@ -28,7 +28,7 @@ import openfl.display.Sprite;
 			currentScene.destroy();
 		}
 
-		currentScene = cast Type.createInstance(sceneClass, []);
+		currentScene = cast Type.createInstance(sceneClass, [context]);
 		Glue.stage.stageFocusRect = false;
 
 		currentScene.preInit();
@@ -51,7 +51,7 @@ import openfl.display.Sprite;
 			currentPopup.destroy();
 		}
 		
-		currentPopup = cast Type.createInstance(popupClass, []);
+		currentPopup = cast Type.createInstance(popupClass, [context]);
 		currentPopup.preInit();
 	}
 	

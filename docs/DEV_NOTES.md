@@ -6,6 +6,12 @@ GLoader Roadmap
 - Add grouped volume/mute controls and reference counting to allow unloading / reloading assets cleanly.
 - Harden error handling with retries, per-file callbacks, and logging hooks instead of throwing immediately.
 
+Scene & Sprite Architecture Notes
+---------------------------------
+- `GScene`/`GPopup` now share `GViewBase`, which owns layers, entities, mask, and asset queuing; scenes only wire camera/effect layers.
+- `GlueContext` travels with every view so resize and stage info stay in sync without global lookups.
+- Sprites use `Tilemap`/`Tileset` data emitted by `GLoader.getSpritesheet`, eliminating the custom frame copier.
+
 Manual Validation Checklist
 ---------------------------
 - Launch the demo scene; confirm loader progress bar advances and scenes swap after assets finish.

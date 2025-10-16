@@ -22,7 +22,7 @@ class GEntity
 	var _layers:Map<String, Sprite> = new Map<String, Sprite>();
 	var _entities:Array<GEntity> = new Array<GEntity>();
 
-	@:allow(glue.scene.GScene.preUpdate, glue.scene.GPopup.preUpdate)
+	@:allow(glue.scene.GScene.preUpdate, glue.scene.GPopup.preUpdate, glue.scene.GViewBase)
 	var isDestroyed:Bool = false;
 	public var destroyed(get, never):Bool;
 	
@@ -112,7 +112,7 @@ class GEntity
 		}
 	}
 
-		@:allow(glue.scene.GScene.add, glue.scene.GPopup.add, glue.assets.GLoader, glue.utils.GStats)
+		@:allow(glue.scene.GScene.add, glue.scene.GPopup.add, glue.scene.GViewBase, glue.assets.GLoader, glue.utils.GStats)
 		function addToLayer(layer:Sprite):Dynamic
 	{
 		_parent = layer;
@@ -120,15 +120,15 @@ class GEntity
 		return this;
 	}
 	
-	@:allow(glue.scene.GScene.preUpdate, glue.scene.GPopup.preUpdate, glue.scene.GScene.remove, glue.scene.GPopup.remove)
-	function removeFromLayer(layer:Sprite):Dynamic
+		@:allow(glue.scene.GScene.preUpdate, glue.scene.GPopup.preUpdate, glue.scene.GScene.remove, glue.scene.GPopup.remove, glue.scene.GViewBase)
+		function removeFromLayer(layer:Sprite):Dynamic
 	{
 		layer.removeChild(_canvas);
 		return this;
 	}
 	
-	@:allow(glue.scene.GScene.preUpdate, glue.scene.GPopup.preUpdate, glue.scene.GScene.remove, glue.scene.GPopup.remove)
-	function isChildOfLayer(layer:Sprite):Bool
+		@:allow(glue.scene.GScene.preUpdate, glue.scene.GPopup.preUpdate, glue.scene.GScene.remove, glue.scene.GPopup.remove, glue.scene.GViewBase)
+		function isChildOfLayer(layer:Sprite):Bool
 	{
 		return layer.contains(_canvas);
 	}
@@ -140,7 +140,7 @@ class GEntity
 		return isDestroyed;
 	}
 
-	@:allow(glue.scene.GScene.preUpdate, glue.scene.GPopup.preUpdate, glue.utils.GStats)
+	@:allow(glue.scene.GScene.preUpdate, glue.scene.GPopup.preUpdate, glue.scene.GViewBase, glue.utils.GStats)
 	function preUpdate():Void 
 	{
 		if (_canvas == null) return; 

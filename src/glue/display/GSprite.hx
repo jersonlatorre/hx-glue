@@ -2,172 +2,143 @@ package glue.display;
 
 import glue.assets.GLoader;
 import glue.utils.GTime;
-import glue.utils.GTools;
-import openfl.display.Bitmap;
-import openfl.display.BitmapData;
-import openfl.display.Shape;
-import openfl.geom.Rectangle;
-import openfl.geom.Point;
+import openfl.display.Tile;
+import openfl.display.Tilemap;
+import openfl.display.Tileset;
 
-/**
- * ...
- * @author Jerson La Torre
- * 
- */
+typedef AnimationConfig =
+{
+	var id:String;
+	var fps:Int;
+	var loop:Bool;
+}
+
+private typedef AnimationState =
+{
+	var frames:Array<Int>;
+	var tileset:Tileset;
+	var fps:Int;
+	var loop:Bool;
+	var framePointer:Float;
+	var completed:Bool;
+}
 
 class GSprite extends GEntity
 {
 	public var animation:String = "";
+
 	var _onEndAnimation:Dynamic = null;
-	
-	var _animations:Map<String, Dynamic> = new Map<String, Dynamic>();
-	var _sprite:__GSpriteBase;
-	
+	var _animations:Map<String, AnimationConfig> = new Map<String, AnimationConfig>();
+	var _tilemap:Tilemap;
+	var _tile:Tile;
+	var _state:AnimationState;
+
 	public function new()
 	{
 		super();
 	}
 
-	public function addAnimation(animationId:String, assetId:String, ?fps:Int = 30, ?loop:Bool = true) 
+	public function addAnimation(animationId:String, assetId:String, ?fps:Int = 30, ?loop:Bool = true):Void
 	{
-		_animations[animationId] = { id: assetId, fps: fps, loop: loop };
+		_animations.set(animationId, { id: assetId, fps: fps, loop: loop });
 	}
 
-	public function play(name:String)
+	public function play(name:String):Void
 	{
-		if (animation == name) return null;
-		
-		while (_skin.numChildren > 0)
+		if (animation == name) return;
+
+		var config = _animations.get(name);
+		if (config == null)
 		{
-			_skin.removeChildAt(0);
+			throw '${ name } animation is not registered.';
 		}
-		
-		if (_animations[name] == null)
+
+		var data:Dynamic = GLoader.getSpritesheet(config.id);
+		var tileset:Tileset = data.tileset;
+		var frames:Array<Int> = data.frameIds;
+		var frameWidth:Int = data.width;
+		var frameHeight:Int = data.height;
+		if (frames.length == 0)
 		{
-			throw '${ GTools.getClassName(this) } -> a sprite ID must be provided!';
+			throw 'Spritesheet \'' + config.id + '\' has no frames.';
 		}
-		
-		_sprite = new __GSpriteBase(_animations[name].id, _animations[name].fps, _animations[name].loop);
-		_sprite.addToLayer(_skin);
-		if (_onEndAnimation != null) _sprite.onEndAnimation(_onEndAnimation);
-		
-		width = _sprite.width;
-		height = _sprite.height;
+
+		if (_tilemap != null && _tilemap.parent == _skin)
+		{
+			_skin.removeChild(_tilemap);
+		}
+
+		_tilemap = new Tilemap(frameWidth, frameHeight, tileset);
+		_tile = new Tile(frames[0], 0, 0);
+		_tilemap.addTile(_tile);
+		_skin.addChild(_tilemap);
+
+		width = frameWidth;
+		height = frameHeight;
+		bounds.setTo(-width * anchor.x, -height * anchor.y, width, height);
+
+		_state = {
+			frames: frames,
+			tileset: tileset,
+			fps: config.fps,
+			loop: config.loop,
+			framePointer: 0,
+			completed: false
+		};
+
 		animation = name;
-
-		return null;
 	}
 
-	public function onEndAnimation(callback:Dynamic)
+	public function onEndAnimation(callback:Dynamic):Void
 	{
 		_onEndAnimation = callback;
 	}
-	
-	override public function preUpdate() 
+
+	override public function preUpdate():Void
 	{
-		if (_sprite != null) _sprite.preUpdate();
-		super.preUpdate();
-		// width = _sprite.width;
-		// height = _sprite.height;
-	}
-	
-	override public function destroy() 
-	{
-		_sprite.removeFromLayer(_skin);
-		_sprite.destroy();
-		super.destroy();
-	}
-}
-
-@:final class __GSpriteBase extends GEntity
-{
-	var _framesLength:Int;
-	var _currentFrameIndex:Float = 0;
-	var _fps:Int;
-	var _loop:Bool;
-	var _frame:Bitmap;
-
-	// #if CREATE_ONE_ROW_SPRITESHEET
-	var _frames:BitmapData;
-	// #end
-
-	// #if CACHE_FRAME_PER_FRAME
-	// var _frames:Array<BitmapData>;
-	// #end
-
-	var _frameBmd:BitmapData;
-	var _mask:Shape;
-	var _drawRect:Rectangle;
-	var _drawPoint:Point;
-	var _isPaused:Bool = false;
-	var _onEndAnimation:Dynamic = null;
-	var rounded:Int = 0;
-	
-	public function new(assetId:String, fps:Int = 30, loop:Bool = true)
-	{
-		super();
-
-		_fps = fps;
-		_loop = loop;
-
-		_frames = GLoader.getSpritesheet(assetId).frames;
-
-		_framesLength = GLoader.getSpritesheet(assetId).numFrames;
-		width = GLoader.getSpritesheet(assetId).width;
-		height = GLoader.getSpritesheet(assetId).height;
-
-		// #if CACHE_FRAME_PER_FRAME
-		// _drawRect = new Rectangle(0, 0, width, height);
-		// _drawPoint = new Point(0, 0);
-		// _frameBmd = new BitmapData(Std.int(width), Std.int(height), true, 0x00000000);
-		// _frame = new Bitmap(_frameBmd);
-		// _skin.addChild(_frame);
-		// #end
-
-		// #if CREATE_ONE_ROW_SPRITESHEET
-		_frame = new Bitmap(_frames);
-		_mask = new Shape();
-		_mask.graphics.beginFill(0);
-		_mask.graphics.drawRect(0, 0, width, height);
-		_mask.graphics.endFill();
-		_frame.mask = _mask;
-		_skin.addChild(_frame);
-		_skin.addChild(_mask);
-		// #end
-	}
-	
-	public function onEndAnimation(callback:Dynamic)
-	{
-		_onEndAnimation = callback;
-	}
-	
-	override public function preUpdate()
-	{
-		_currentFrameIndex += _fps * GTime.deltaTime;
-		
-		if(_currentFrameIndex >= _framesLength)
+		if (_state != null && _state.frames.length > 0)
 		{
-			if (!_loop) _isPaused = true;
-			if (_onEndAnimation != null) _onEndAnimation();
-		}
-		
-		rounded = Std.int((_currentFrameIndex) % _framesLength);
-		
-		// #if CACHE_FRAME_PER_FRAME
-		// _frameBmd.fillRect(_drawRect, 0);
-		// _frameBmd.draw(_frames[rounded]);
-		// #end
+			_state.framePointer += _state.fps * GTime.deltaTime;
+			var total = _state.frames.length;
+			var pointer = Std.int(_state.framePointer);
 
-		// #if CREATE_ONE_ROW_SPRITESHEET
-		if (_frame != null) _frame.x = -rounded * width;
-		// #end
+			if (pointer >= total)
+			{
+				if (_state.loop)
+				{
+					_state.framePointer = _state.framePointer % total;
+					pointer = Std.int(_state.framePointer);
+					if (_onEndAnimation != null) _onEndAnimation();
+					_state.completed = false;
+				}
+				else
+				{
+					_state.framePointer = total - 1;
+					pointer = total - 1;
+					if (!_state.completed)
+					{
+						_state.completed = true;
+						if (_onEndAnimation != null) _onEndAnimation();
+					}
+				}
+			}
+
+			_tile.id = _state.frames[pointer];
+		}
+
+		super.preUpdate();
 	}
 
-	override public function destroy()
+	override public function destroy():Void
 	{
-		_frame.bitmapData.disposeImage();
-		_frame = null;
-		_mask = null;
+		if (_tilemap != null && _tilemap.parent == _skin)
+		{
+			_skin.removeChild(_tilemap);
+		}
+		_tilemap = null;
+		_tile = null;
+		_state = null;
+
 		super.destroy();
 	}
 }

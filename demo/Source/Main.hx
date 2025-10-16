@@ -10,14 +10,6 @@ class Main extends Sprite
 	{
 		super();
 
-		var config = {
-			mainScene: cast DemoScene,
-			preloader: null,
-			isDebug: true,
-			showBounds: false,
-			showStats: true
-		};
-
-		Glue.start(config);
+		Glue.run(DemoScene, { showStats: true });
 	}
 }

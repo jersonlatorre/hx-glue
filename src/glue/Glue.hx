@@ -13,29 +13,17 @@ import openfl.display.Sprite;
 import openfl.display.Stage;
 import openfl.events.Event;
 
-typedef GlueConfig =
+typedef GlueOptions =
 {
-	var mainScene:Class<GScene>;
 	@:optional var preloader:Null<Class<GPopup>>;
-	@:optional var isDebug:Bool;
-	@:optional var showBounds:Bool;
 	@:optional var showStats:Bool;
-}
-
-private typedef ResolvedGlueConfig =
-{
-	var mainScene:Class<GScene>;
-	var preloader:Null<Class<GPopup>>;
-	var isDebug:Bool;
-	var showBounds:Bool;
-	var showStats:Bool;
 }
 
 @:final class Glue
 {
 	static var mainScene:Class<GScene>;
 	static var customPreloader:Null<Class<GPopup>>;
-	static var isPreloading:Bool;
+	static var context:GlueContext;
 
 	static public var stage:Stage;
 	static public var width:Int;
@@ -47,19 +35,14 @@ private typedef ResolvedGlueConfig =
 	@:allow(glue.assets.GLoader)
 	static var cacheCanvas:Sprite;
 
-	static public function start(config:GlueConfig)
+	static public function run<TScene:GScene>(sceneClass:Class<TScene>, ?options:GlueOptions)
 	{
-		var resolved = resolveConfig(config);
+		var resolved = resolveOptions(options);
 
 		Glue.stage = Lib.application.window.stage;
 		Glue.width = Lib.application.window.width;
 		Glue.height = Lib.application.window.height;
-		
-		Glue.mainScene = resolved.mainScene;
-		Glue.isDebug = resolved.isDebug;
-		Glue.showBounds = resolved.showBounds;
-		customPreloader = resolved.preloader;
-		
+
 		canvas = new Sprite();
 		Glue.stage.addChild(canvas);
 		Glue.stage.addEventListener(Event.ENTER_FRAME, onUpdate);
@@ -72,45 +55,43 @@ private typedef ResolvedGlueConfig =
 
 		refreshWindowSize();
 
-		if (resolved.showStats)
+		context = new GlueContext(Glue.stage, canvas, Glue.width, Glue.height);
+
+		mainScene = cast sceneClass;
+		customPreloader = resolved.preloader;
+
+		if (resolved.showStats == true)
 		{
 			var stats = new GStats();
 			Glue.stage.addChild(stats);
 		}
-		
+
 		GTime.init();
 		GInput.init();
-		GSceneManager.init();
+		GSceneManager.init(context);
 
-		// if (isPreloading)
-		// {
-			if (customPreloader == null)
+ if (customPreloader == null)
+		{
+			GSceneManager.showLoaderScene(GPreloader, onAssetsDownloaded);
+		}
+		else
+		{
+			var loaderClass = customPreloader;
+			if (loaderClass != null)
 			{
-				GSceneManager.showLoaderScene(GPreloader, onAssetsDownloaded);
+				GSceneManager.showLoaderScene(loaderClass, onAssetsDownloaded);
 			}
-			else
-			{
-				var loaderClass = customPreloader;
-				if (loaderClass != null)
-				{
-					GSceneManager.showLoaderScene(loaderClass, onAssetsDownloaded);
-				}
-			}
-		// }
-		// else
-		// {
-		// 	GSceneManager.gotoScene(Glue.mainScene);
-		// }
+		}
 	}
 
-	static function onAssetsDownloaded() 
+	static function onAssetsDownloaded()
 	{
-		GSceneManager.gotoScene(Glue.mainScene);
+		GSceneManager.gotoScene(mainScene);
 	}
-	
-	static function onUpdate(e:Event)
+
+	static function onUpdate(_)
 	{
-		GTime.update();	
+		GTime.update();
 		GInput.update();
 		GSceneManager.update();
 		GInput.clear();
@@ -119,6 +100,8 @@ private typedef ResolvedGlueConfig =
 	static function onStageResize(_):Void
 	{
 		refreshWindowSize();
+		context.updateSize(Glue.width, Glue.height);
+
 		if (GSceneManager.currentScene != null)
 		{
 			GSceneManager.currentScene.onResize();
@@ -156,32 +139,29 @@ private typedef ResolvedGlueConfig =
 				GLoader.load({ type:"adobe_animate_spritesheet", id: assetId, url: url, fps: fps });
 			}
 		},
-		
+
 		image: function(assetId:String, url:String)
 		{
 			GLoader.load({ type: "image", id: assetId, url: url });
 		},
-		
+
 		json: function(assetId:String, url:String)
 		{
 			GLoader.load({ type: "json", id: assetId, url: url });
 		},
-		
+
 		sound: function(assetId:String, url:String, group:String = null)
 		{
 			GLoader.load({ type: "sound", id: assetId, url: url, group: group});
 		}
 	}
 
-	static function resolveConfig(config:GlueConfig):ResolvedGlueConfig
+	static function resolveOptions(options:GlueOptions):GlueOptions
 	{
 		return
 		{
-			mainScene: config.mainScene,
-			preloader: config.preloader,
-			isDebug: config.isDebug == true,
-			showBounds: config.showBounds == true,
-			showStats: config.showStats == true
+			preloader: options != null ? options.preloader : null,
+			showStats: options != null && options.showStats == true
 		};
 	}
 }

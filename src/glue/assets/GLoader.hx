@@ -1,381 +1,203 @@
 package glue.assets;
 
 import haxe.Json;
+import openfl.display.Bitmap;
 import openfl.display.BitmapData;
-import openfl.display.Loader;
 import openfl.geom.Rectangle;
-import openfl.geom.Point;
-import openfl.events.Event;
-import openfl.events.EventDispatcher;
-import openfl.events.EventType;
-import openfl.events.IOErrorEvent;
-import openfl.net.URLLoader;
-import openfl.net.URLRequest;
 import openfl.media.Sound;
-
-/**
- * ...
- * @author Jerson La Torre
- */
-
-typedef Asset =
-{
-	type: String,
-	data: Dynamic,
-	content: Dynamic
-}
-
-typedef PendingFile =
-{
-	var type:DataType;
-	var id:String;
-	var url:String;
-	var loader:Dynamic;
-	@:optional var group:String;
-	@:optional var fps:Int;
-    @:optional var completeHandler:Event->Void;
-    @:optional var errorHandler:Event->Void;
-}
-
-enum DataType {	IMAGE; JSON; XML; SOUND; }
+import openfl.display.Tileset;
+import Xml;
 
 @:final class GLoader
 {
 	static inline var SUFFIX_IMAGE:String = "__image";
 	static inline var SUFFIX_JSON:String = "__json";
-	static final IO_ERROR_EVENT:EventType<Event> = cast IOErrorEvent.IO_ERROR;
 
-	static var _callback:Dynamic;
-	static var _assets:Map<String, Asset> = new Map<String, Asset>();
-	static var _toLoadFiles:Array<PendingFile> = new Array<PendingFile>();
-	static var _totalLoadedFiles:Map<String, Dynamic> = new Map<String, Dynamic>();
-	static var _currentLoadedFiles:Map<String, Dynamic> = new Map<String, Dynamic>();
+	static final manifest = new GAssetManifest();
+	static final cache = new GAssetCache();
+	static final pipeline = new GAssetPipeline(cache);
 
-	static public var downloadedFiles = 0;
-	static public var totalFiles = 0;
-	static public var isDownloading = false;
+	static var completion:Dynamic;
 
-	static public function load(data:Dynamic)
+	static public var downloadedFiles(get, never):Int;
+	static public var totalFiles(get, never):Int;
+	static public var isDownloading(get, never):Bool;
+
+	static function get_downloadedFiles():Int return pipeline.downloadedFiles;
+	static function get_totalFiles():Int return pipeline.totalFiles;
+	static function get_isDownloading():Bool return pipeline.isDownloading;
+
+	static public function load(data:Dynamic):Void
 	{
-		if (_assets.exists(data.id))
-		{
-			return;
-		}
-		
+		var id:String = data.id;
 		switch (data.type)
 		{
 			case "image":
 			{
-				var loader:Loader = new Loader();
-				_toLoadFiles.push({ type: DataType.IMAGE, id: data.id, url: data.url, loader: loader });
-				
-				_assets.set(data.id, { type: "image", data: null, content: null });
-				
-				totalFiles += 1;
+				queueInternal(id, data.url, GAssetType.Image);
 			}
-			
-			case "adobe_animate_spritesheet":
-			{
-				var loader1:Loader = new Loader();
-				_toLoadFiles.push({ type: DataType.IMAGE, id: data.id + SUFFIX_IMAGE, url: data.url, fps: data.fps, loader: loader1 });
-				
-				var loader2:URLLoader = new URLLoader();
-				var url:String = Std.string(data.url).substring(0, Std.string(data.url).lastIndexOf('.'));
-				_toLoadFiles.push({ type: DataType.JSON, id: data.id + SUFFIX_JSON, url: url + ".json", loader: loader2 });
 
-				_assets.set(data.id, { type: "adobe_animate_spritesheet", data: { }, content: null });
-				_assets.set(data.id + SUFFIX_IMAGE, { type: "image", data: { }, content: null });
-				_assets.set(data.id + SUFFIX_JSON, { type: "json", data: { }, content: null });
-
-				totalFiles += 2;
-			}
-			
-			case "sound":
-			{
-				if (data.group == null) data.group = "default";
-				var loader:Sound = new Sound();
-				_toLoadFiles.push({ type: DataType.SOUND, id: data.id, url: data.url, group: data.group, loader: loader });
-				_assets.set(data.id, { type: "sound", data: null, content: null });
-				totalFiles += 1;
-			}
-			
 			case "json":
 			{
-				var loader:URLLoader = new URLLoader();
-				_toLoadFiles.push({ type: DataType.JSON, id: data.id, url: data.url, loader: loader });
-				
-				_assets.set(data.id, { type: "json", data: { }, content: null });
-				
-				totalFiles += 1;
+				queueInternal(id, data.url, GAssetType.Json);
+			}
+
+			case "sound":
+			{
+				var group = data.group == null ? "default" : data.group;
+				queueInternal(id, data.url, GAssetType.Sound(group));
+			}
+
+			case "adobe_animate_spritesheet":
+			{
+				var fps:Int = data.fps == null ? 30 : data.fps;
+				queueInternal(id, data.url, GAssetType.AdobeAnimateSpritesheet(fps));
+			}
+
+			case other:
+			{
+				throw 'Unsupported asset type "' + other + '"';
 			}
 		}
 	}
-	
+
+	static public function queue(request:GAssetRequest):Void
+	{
+		queueInternal(request.id, request.url, request.type);
+	}
+
 	@:allow(glue.scene.GScene, glue.Glue, glue.scene.GSceneManager.showLoaderScene)
-	static function startDownload(callback:Dynamic = null)
+	static function startDownload(callback:Dynamic = null):Void
 	{
-		_callback = callback;
-
-		if (totalFiles == 0)
+		completion = callback;
+		pipeline.process(manifest, function()
 		{
-			isDownloading = false;
-			if (_callback != null) _callback();
-		}
-		else
-		{
-			isDownloading = true;
-
-			for (file in _toLoadFiles)
+			if (completion != null)
 			{
-				var pending = file;
-				var completeHandler:Event->Void = function(e:Event) { handleFileComplete(pending, e); };
-				var errorHandler:Event->Void = function(e:Event) { handleFileError(pending, cast e); };
-				pending.completeHandler = completeHandler;
-				pending.errorHandler = errorHandler;
-
-				switch (pending.type)
-				{
-					case DataType.IMAGE:
-					{
-						var info = pending.loader.contentLoaderInfo;
-						info.addEventListener(Event.COMPLETE, completeHandler);
-						info.addEventListener(IO_ERROR_EVENT, errorHandler);
-					}
-					
-					case DataType.SOUND, DataType.JSON:
-					{
-						var dispatcher:EventDispatcher = cast pending.loader;
-						dispatcher.addEventListener(Event.COMPLETE, completeHandler);
-						dispatcher.addEventListener(IO_ERROR_EVENT, errorHandler);
-					}
-					
-					case DataType.XML:
-					{
-						
-					}
-				}
-				
-				pending.loader.load(new URLRequest(pending.url));
+				completion();
+				completion = null;
 			}
-		}
+		});
 	}
 
-	static function handleFileComplete(file:PendingFile, _:Event)
+	static function enqueue(request:GAssetRequest):Void
 	{
-		if (Glue.isDebug) haxe.Log.trace('-- ${ file.id } ✔', null);
-
-		switch (file.type)
-		{
-			case DataType.IMAGE:
-			{
-				_currentLoadedFiles.set(file.id, file.loader.content);
-				var info = file.loader.contentLoaderInfo;
-				info.removeEventListener(Event.COMPLETE, file.completeHandler);
-				info.removeEventListener(IO_ERROR_EVENT, file.errorHandler);
-			}
-			
-			case DataType.JSON, DataType.XML:
-			{
-				_currentLoadedFiles.set(file.id, preventUtf8(file.loader.data));
-				var dispatcher:EventDispatcher = cast file.loader;
-				dispatcher.removeEventListener(Event.COMPLETE, file.completeHandler);
-				dispatcher.removeEventListener(IO_ERROR_EVENT, file.errorHandler);
-			}
-			
-			case DataType.SOUND:
-			{
-				GSound.addSound(file.id, file.loader, file.group);
-				_currentLoadedFiles.set(file.id, file.loader);
-				var dispatcher:EventDispatcher = cast file.loader;
-				dispatcher.removeEventListener(Event.COMPLETE, file.completeHandler);
-				dispatcher.removeEventListener(IO_ERROR_EVENT, file.errorHandler);
-			}
-		}
-
-		file.completeHandler = null;
-		file.errorHandler = null;
-		
-		downloadedFiles++;
-		
-		if (downloadedFiles == totalFiles)
-		{
-			downloadedFiles = 0;
-			totalFiles = 0;
-			isDownloading = false;
-			updateLoadedFiles();
-			if (_callback != null) _callback();
-		}
+		manifest.add(request);
 	}
 
-	static function updateLoadedFiles()
+	static function queueInternal(id:String, url:String, type:GAssetType):Void
 	{
-
-		for (key in _currentLoadedFiles.keys())
-		{
-			_totalLoadedFiles.set(key, _currentLoadedFiles.get(key));
-		}
-
-		_toLoadFiles = new Array<PendingFile>();
-
-		_currentLoadedFiles = new Map<String, Dynamic>();
-	}
-	
-static function handleFileError(file:PendingFile, error:IOErrorEvent)
-	{
-		switch (file.type)
-		{
-			case DataType.IMAGE:
-			{
-				var info = file.loader.contentLoaderInfo;
-				info.removeEventListener(Event.COMPLETE, file.completeHandler);
-				info.removeEventListener(IO_ERROR_EVENT, file.errorHandler);
-			}
-
-			case DataType.SOUND, DataType.JSON, DataType.XML:
-			{
-				var dispatcher:EventDispatcher = cast file.loader;
-				dispatcher.removeEventListener(Event.COMPLETE, file.completeHandler);
-				dispatcher.removeEventListener(IO_ERROR_EVENT, file.errorHandler);
-			}
-		}
-
-		file.completeHandler = null;
-		file.errorHandler = null;
-
-		throw '\'${ file.url }\' not found.';
+		if (cache.has(id)) return;
+		cache.define(id, type);
+		enqueue({ id: id, url: url, type: type });
 	}
 
-	static function onLoadComplete()
-	{
-		_callback();
-	}
-	
 	static public function getImage(assetId:String):BitmapData
 	{
-		if (!_assets.exists(assetId)) throw 'Image \'${ assetId }\' was not loaded.';
-		
-		if (_assets.get(assetId).content == null)
+		ensureLoaded(assetId, "Image");
+		var cached:BitmapData = cache.getPrepared(assetId);
+		if (cached == null)
 		{
-			if (!_totalLoadedFiles.exists(assetId)) throw 'Image \'${ assetId }\' was not loaded.';
-			
-			_assets.get(assetId).content = _totalLoadedFiles.get(assetId).bitmapData.clone();
+			var raw = cache.getRaw(assetId);
+			if (raw == null) throw 'Image \'' + assetId + '\' was not loaded.';
+			var bitmap:Bitmap = cast raw;
+			cached = bitmap.bitmapData.clone();
+			cache.storePrepared(assetId, cached);
 		}
-		
-		return _assets.get(assetId).content;
+		return cached;
 	}
-	
+
 	static public function getSpritesheet(assetId:String):Dynamic
 	{
-		if (!_assets.exists(assetId)) throw 'Spritesheet \'${ assetId }\' was not loaded.';
-
-		if (_assets.get(assetId).content == null)
+		ensureLoaded(assetId, "Spritesheet");
+		var cached = cache.getPrepared(assetId);
+		if (cached == null)
 		{
-			switch (_assets.get(assetId).type)
+			var metadataRaw = cache.getRaw(assetId + SUFFIX_JSON);
+			var imageRaw = cache.getRaw(assetId + SUFFIX_IMAGE);
+			if (metadataRaw == null || imageRaw == null)
 			{
-				case "adobe_animate_spritesheet":
-				{
-					var width:Int = 0;
-					var height:Int = 0;
-					var numFrames:Int = 0;
-					var framesObj:Array<Dynamic> = Json.parse(_totalLoadedFiles.get(assetId + SUFFIX_JSON)).frames;
-					var spritesheet:BitmapData = _totalLoadedFiles.get(assetId + SUFFIX_IMAGE).bitmapData.clone();
-
-					width = framesObj[0].sourceSize.w;
-					height = framesObj[0].sourceSize.h;
-					numFrames = framesObj.length;
-
-					// #if CACHE_FRAME_PER_FRAME
-					// var frames:Array<BitmapData> = new Array<BitmapData>();
-
-					// for (frame in framesObj)
-					// {
-					// 	var bitmapData = new BitmapData(width, height);
-					// 	bitmapData.copyPixels(spritesheet, new Rectangle(frame.frame.x, frame.frame.y, width, height), new Point(0, 0));
-					// 	frames.push(bitmapData);
-					// }
-					// #end
-
-					// #if CREATE_ONE_ROW_SPRITESHEET
-					var frames = new BitmapData(width * numFrames, height, true, 0x00000000);
-					var i:Int = 0;
-					for (frame in framesObj)
-					{
-						frames.copyPixels(spritesheet, new Rectangle(frame.frame.x, frame.frame.y, frame.frame.w, frame.frame.h), new Point(width * i, 0));
-						i++;
-					}
-					// #end
-
-					_assets.get(assetId).content = { frames: frames, width: width, height: height, numFrames: numFrames };
-				}
+				throw 'Spritesheet \'' + assetId + '\' was not loaded.';
 			}
-		}
-
-		return _assets.get(assetId).content;
+	var framesObj:Array<Dynamic> = Json.parse(preventUtf8(metadataRaw)).frames;
+	var spritesheetSource:Bitmap = cast imageRaw;
+	var tileset = new Tileset(spritesheetSource.bitmapData);
+	var frameIds:Array<Int> = [];
+	for (frame in framesObj)
+	{
+		var rect = new Rectangle(frame.frame.x, frame.frame.y, frame.frame.w, frame.frame.h);
+		frameIds.push(tileset.addRect(rect));
 	}
-	
+	var width = framesObj[0].sourceSize.w;
+	var height = framesObj[0].sourceSize.h;
+	cached = { tileset: tileset, frameIds: frameIds, width: width, height: height };
+			cache.storePrepared(assetId, cached);
+		}
+		return cached;
+	}
+
 	static public function getJson(assetId:String):Dynamic
 	{
-		if (!_assets.exists(assetId)) throw 'Json \'${ assetId }\' was not loaded.';
-		
-		if (_assets.get(assetId).content == null)
+		ensureLoaded(assetId, "Json");
+		var cached = cache.getPrepared(assetId);
+		if (cached == null)
 		{
-			if (!_totalLoadedFiles.exists(assetId)) throw 'Json \'${ assetId }\' was not loaded.';
-			
+			var raw = cache.getRaw(assetId);
+			if (raw == null) throw 'Json \'' + assetId + '\' was not loaded.';
 			try
 			{
-				var data:String = preventUtf8(_totalLoadedFiles.get(assetId));
-				_assets.get(assetId).content = Json.parse(data);
+				cached = Json.parse(preventUtf8(raw));
+				cache.storePrepared(assetId, cached);
 			}
 			catch (e:Any)
 			{
-				throw '\'$assetId\' is not a valid Json file.';
+				throw '\'' + assetId + '\' is not a valid Json file.';
 			}
 		}
-
-		return _assets.get(assetId).content;
+		return cached;
 	}
-	
+
 	static public function getSound(assetId:String):Sound
 	{
-		if (!_assets.exists(assetId)) throw 'Sound \'${ assetId }\' was not loaded.';
-
-		if (_assets.get(assetId).content == null)
+		ensureLoaded(assetId, "Sound");
+		var cached:Sound = cache.getPrepared(assetId);
+		if (cached == null)
 		{
-			if (!_totalLoadedFiles.exists(assetId)) throw 'Sound \'${ assetId }\' was not loaded.';
-
-			try
-			{
-				_assets.get(assetId).content = _totalLoadedFiles.get(assetId);
-			}
-			catch (e:Any)
-			{
-				throw '\'$assetId\' is not a valid sound file.';
-			}
+			var raw:Sound = cache.getRaw(assetId);
+			if (raw == null) throw 'Sound \'' + assetId + '\' was not loaded.';
+			cached = raw;
+			cache.storePrepared(assetId, cached);
 		}
-		
-		return _assets.get(assetId).content;
+		return cached;
 	}
-	
+
 	static public function getXml(assetId:String):Dynamic
 	{
-		if (!_assets.exists(assetId)) throw 'Xml \'${ assetId }\' was not loaded.';
-
-		if (_assets.get(assetId).content == null)
+		ensureLoaded(assetId, "Xml");
+		var cached = cache.getPrepared(assetId);
+		if (cached == null)
 		{
-			if (!_totalLoadedFiles.exists(assetId)) throw 'Xml \'${ assetId }\' was not loaded.';
-
+			var raw = cache.getRaw(assetId);
+			if (raw == null) throw 'Xml \'' + assetId + '\' was not loaded.';
 			try
 			{
-				var data:String = preventUtf8(_totalLoadedFiles.get(assetId));
-				_assets.get(assetId).content = Xml.parse(data);
+				cached = Xml.parse(preventUtf8(raw));
+				cache.storePrepared(assetId, cached);
 			}
 			catch (e:Any)
 			{
-				throw '\'$assetId\' is not a valid Xml file.';
+				throw '\'' + assetId + '\' is not a valid Xml file.';
 			}
 		}
-		
-		return _assets.get(assetId).content;
+		return cached;
+	}
+
+	static function ensureLoaded(assetId:String, kind:String):Void
+	{
+		if (!cache.has(assetId))
+		{
+			throw kind + " '" + assetId + "' was not queued for loading.";
+		}
 	}
 
 	static function preventUtf8(utf8String:String):String

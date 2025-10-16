@@ -1,231 +1,162 @@
 package glue.scene;
 
+import glue.Glue;
+import glue.GlueContext;
+import glue.assets.GAssetRequest;
 import glue.assets.GLoader;
-import glue.display.GEntity;
 import glue.scene.GCamera;
 import glue.utils.GTools;
 import motion.Actuate;
 import motion.easing.Quad;
-import openfl.display.Sprite;
 import openfl.display.Shape;
+import openfl.display.Sprite;
 
-/**
- * ...
- * @author Jerson La Torre
- */
-
-class GScene 
+class GScene extends GViewBase
 {
-	var _canvas:Sprite;
-	var _sceneCanvas:Sprite;
-	var _effectCanvas:Sprite;
-	var _layers:Map<String, Sprite> = new Map<String, Sprite>();
-	var _entities:Array<GEntity> = new Array<GEntity>();
-	var _mask:Sprite;
-	
+	var sceneCanvas:Sprite;
+	var effectCanvas:Sprite;
+
 	public var camera:GCamera;
-	
-	public function preInit()
+
+	public function new(context:GlueContext)
+	{
+		super(context);
+	}
+
+	public function preInit():Void
 	{
 		if (Glue.isDebug) haxe.Log.trace('[ Scene: ${ GTools.getClassName(this) } ]', null);
 
-		_canvas = new Sprite();
-		GSceneManager.canvas.addChild(_canvas);
-		
-		_sceneCanvas = new Sprite();
-		_canvas.addChild(_sceneCanvas);
-		
-		_effectCanvas = new Sprite();
-		_canvas.addChild(_effectCanvas);
-		
+		canvas = new Sprite();
+		context.canvas.addChild(canvas);
+
+		sceneCanvas = new Sprite();
+		canvas.addChild(sceneCanvas);
+
+		effectCanvas = new Sprite();
+		canvas.addChild(effectCanvas);
+
+		layerRoot = sceneCanvas;
+		layers = new Map<String, Sprite>();
+		entities = [];
 		addLayer("default");
 
-		Glue.stage.focus = _sceneCanvas;
-		
+		context.stage.focus = sceneCanvas;
+
 		camera = new GCamera();
-		
+
 		if (usesMask())
 		{
-			_mask = new Sprite();
-			_canvas.addChild(_mask);
-			updateMask();
-			_canvas.mask = _mask;
+			ensureMask();
 		}
+		else
+		{
+			clearMask();
+		}
+
+		queueAssetRequests();
 
 		preload();
 		GLoader.startDownload(init);
 	}
 
-	public function gotoScene(sceneClass:Class<GScene>)
+	public function gotoScene(sceneClass:Class<GScene>):Void
 	{
 		GSceneManager.gotoScene(sceneClass);
 	}
 
 	public var load = Glue.load;
 
-	public function preload() { }
+	public override function assetRequests():Array<GAssetRequest>
+	{
+		return [];
+	}
 
-	public function init() {	}
+	public function preload():Void {}
 
-	public function update() { }
-	
-	public function addLayer(layerName:String)
-	{
-		if (!_layers.exists(layerName))
-		{
-			var layer:Sprite = new Sprite();
-			_sceneCanvas.addChild(layer);
-			_layers.set(layerName, layer);
-		}
-		else
-		{
-			throw "Already exists a layer whit the name: " + layerName;
-		}
-	}
-	
-	public function add(entity:GEntity, layerName:String = "default")
-	{
-		if (_layers.exists(layerName))
-		{
-			_entities.push(entity);
-			entity.addToLayer(_layers.get(layerName));
-		}
-		else
-		{
-			throw "There is no any layer with the name: " + layerName;
-		}
-	}
-	
-	public function remove(entity:GEntity) 
-	{
-		var index = _entities.indexOf(entity);
-		
-		if (index >= 0)
-		{
-			for (layerName in _layers.keys())
-			{
-				if (entity.isChildOfLayer(_layers.get(layerName)))
-				{
-					entity.removeFromLayer(_layers.get(layerName));
-					break;
-				}
-			}
-			
-			_entities.splice(index, 1);
-		}
-	}
-	
+	public function init():Void {}
+
+	public function update():Void {}
+
 	@:allow(glue.scene.GSceneManager)
-	function preUpdate()
+	function preUpdate():Void
 	{
 		if (!GLoader.isDownloading)
 		{
 			update();
 		}
 
-		// camera
 		camera.update();
-		
-		// canvas
-		_sceneCanvas.x = -camera.position.x + Glue.width / 2;
-		_sceneCanvas.y = -camera.position.y + Glue.height / 2;
-		
-		// world coordinates
-		//mouseX = GMouse.position.x / GEngine.stage.scaleX - _sceneCanvas.x;
-		//mouseY = GMouse.position.y / GEngine.stage.scaleY - _sceneCanvas.y;
-		
-		// entities
-		var i:Int = 0;
-		
-		while (i < _entities.length)
-		{
-			var entity = _entities[i];
-			
-			if (entity.isDestroyed)
-			{
-				for (layerName in _layers.keys())
-				{
-					if (entity.isChildOfLayer(_layers.get(layerName)))
-					{
-						entity.removeFromLayer(_layers.get(layerName));
-						break;
-					}
-				}
-				
-				_entities.splice(i, 1);
-			}
-			else
-			{
-				entity.preUpdate();
-				i++;
-			}
-		}
+
+		sceneCanvas.x = -camera.position.x + context.width / 2;
+		sceneCanvas.y = -camera.position.y + context.height / 2;
+
+		updateEntities();
 	}
-	
-	public function fadeIn(duration:Float = 0.3)
+
+	public function fadeIn(duration:Float = 0.3):Void
 	{
-		var fade:Shape = new Shape();
+		var fade = new Shape();
 		fade.graphics.beginFill(0);
-		fade.graphics.drawRect(0, 0, Glue.width, Glue.height);
+		fade.graphics.drawRect(0, 0, context.width, context.height);
 		fade.graphics.endFill();
-		
+
 		fade.x = 0;
 		fade.y = 0;
-		
-		_effectCanvas.addChild(fade);
-		
-		Actuate.tween(fade, duration, { alpha: 0 } ).ease(Quad.easeInOut).onComplete(function()
+
+		effectCanvas.addChild(fade);
+
+		Actuate.tween(fade, duration, { alpha: 0 }).ease(Quad.easeInOut).onComplete(function()
 		{
-			_effectCanvas.removeChild(fade);
+			effectCanvas.removeChild(fade);
 		});
 	}
 
-	public function fadeOut(duration:Float = 0.3, callback:Dynamic)
+	public function fadeOut(duration:Float = 0.3, callback:Dynamic):Void
 	{
-		var fade:Shape = new Shape();
+		var fade = new Shape();
 		fade.graphics.beginFill(0);
-		fade.graphics.drawRect(0, 0, Glue.width, Glue.height);
+		fade.graphics.drawRect(0, 0, context.width, context.height);
 		fade.graphics.endFill();
 
 		fade.alpha = 0;
 		fade.x = 0;
 		fade.y = 0;
-		
-		_effectCanvas.addChild(fade);
-		
-		Actuate.tween(fade, duration, { alpha: 1 } ).ease(Quad.easeInOut).onComplete(function()
+
+		effectCanvas.addChild(fade);
+
+		Actuate.tween(fade, duration, { alpha: 1 }).ease(Quad.easeInOut).onComplete(function()
 		{
-			_effectCanvas.removeChild(fade);
+			effectCanvas.removeChild(fade);
 			callback();
 		});
 	}
 
-	public function destroy()
+	public function destroy():Void
 	{
-		if (_canvas != null)
+		clearMask();
+		mask = null;
+
+		while (sceneCanvas != null && sceneCanvas.numChildren > 0)
 		{
-			_canvas.mask = null;
+			sceneCanvas.removeChildAt(0);
+		}
+		while (effectCanvas != null && effectCanvas.numChildren > 0)
+		{
+			effectCanvas.removeChildAt(0);
 		}
 
-		if (_mask != null && _mask.parent == _canvas)
+		if (context.canvas.contains(canvas))
 		{
-			_canvas.removeChild(_mask);
-			_mask = null;
+			context.canvas.removeChild(canvas);
 		}
 
-		while (_sceneCanvas.numChildren > 0)
-		{
-			_sceneCanvas.removeChildAt(0);
-		}
-
-		GSceneManager.canvas.removeChild(_canvas);
-		
-		while (_entities.length > 0)
-		{
-			_entities[0].destroy();
-			_entities[0] = null;
-			_entities.splice(0, 1);
-		}
+		destroyEntities();
+		entities = [];
+		layers = new Map<String, Sprite>();
+		sceneCanvas = null;
+		effectCanvas = null;
+		canvas = null;
 	}
 
 	public function onResize():Void
@@ -236,19 +167,5 @@ class GScene
 	function usesMask():Bool
 	{
 		return true;
-	}
-
-	function updateMask():Void
-	{
-		if (_mask == null) return;
-
-		_mask.graphics.clear();
-		_mask.graphics.beginFill(0xFF0000, 0.3);
-		_mask.graphics.drawRect(0, 0, Glue.width, Glue.height);
-		_mask.graphics.endFill();
-		_mask.x = 0;
-		_mask.y = 0;
-		_mask.mouseEnabled = false;
-		_mask.doubleClickEnabled = false;
 	}
 }

@@ -244,11 +244,6 @@ class GBitmapText extends GEntity
 		return monospaceText;
 	}
 
-	// public function addTo(scene:GScene, ?layer:String):GBitmapText
-	// {
-	// 	scene.addEntity(this, layer);
-	// 	return this;
-	// }
 	
 	/**
 	 * Clears all resources used by this text field.
@@ -419,8 +414,6 @@ class GBitmapText extends GEntity
 		_fieldWidth = (txtWidth == 0) ? 1 : txtWidth;
 		_fieldHeight = (txtHeight == 0) ? 1 : txtHeight;
 
-		// width = _skin.width;
-		// height = _skin.height;
 	}
 	
 	/**

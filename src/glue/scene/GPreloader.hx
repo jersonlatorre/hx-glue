@@ -16,13 +16,13 @@ class GPreloader extends GPopup
 	override public function init()
 	{
 		_bar = new Sprite();
-		_canvas.addChild(_bar);
+		canvas.addChild(_bar);
 	}
 	
 	override public function update()
 	{
-		var width:Float = Glue.width;
-		var height:Float = Glue.height;
+		var width:Float = context.width;
+		var height:Float = context.height;
 
 		_bar.graphics.clear();
 		_bar.graphics.beginFill(0x55AA77, 1);
