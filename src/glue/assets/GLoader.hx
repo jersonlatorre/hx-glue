@@ -17,7 +17,7 @@ import Xml;
 	static final cache = new GAssetCache();
 	static final pipeline = new GAssetPipeline(cache);
 
-	static var completion:Dynamic;
+	static var completion:()->Void;
 
 	static public var downloadedFiles(get, never):Int;
 	static public var totalFiles(get, never):Int;
@@ -67,7 +67,7 @@ import Xml;
 	}
 
 	@:allow(glue.scene.GScene, glue.Glue, glue.scene.GSceneManager.showLoaderScene)
-	static function startDownload(callback:Dynamic = null):Void
+	static function startDownload(callback:()->Void = null):Void
 	{
 		completion = callback;
 		pipeline.process(manifest, function()

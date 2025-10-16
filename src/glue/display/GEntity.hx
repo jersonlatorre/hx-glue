@@ -1,5 +1,7 @@
 package glue.display;
 
+import glue.Glue;
+import glue.math.GConstants;
 import glue.scene.GScene;
 import glue.scene.GSceneManager;
 import glue.math.GVector2D;
@@ -8,9 +10,9 @@ import openfl.display.Sprite;
 import openfl.geom.Rectangle;
 
 /**
- * ...
+ * Base entity class for all game objects
+ * Handles rendering, physics, and lifecycle management
  * @author Jerson La Torre
- * 
  */
 
 class GEntity
@@ -76,7 +78,7 @@ class GEntity
 		}
 		else
 		{
-			throw "Already exists a layer whit the name: " + layerName;
+			throw "Already exists a layer with the name: " + layerName;
 		}
 	}
 
@@ -113,15 +115,15 @@ class GEntity
 	}
 
 		@:allow(glue.scene.GScene.add, glue.scene.GPopup.add, glue.scene.GViewBase, glue.assets.GLoader, glue.utils.GStats)
-		function addToLayer(layer:Sprite):Dynamic
+		function addToLayer(layer:Sprite):GEntity
 	{
 		_parent = layer;
 		layer.addChild(_canvas);
 		return this;
 	}
-	
+
 		@:allow(glue.scene.GScene.preUpdate, glue.scene.GPopup.preUpdate, glue.scene.GScene.remove, glue.scene.GPopup.remove, glue.scene.GViewBase)
-		function removeFromLayer(layer:Sprite):Dynamic
+		function removeFromLayer(layer:Sprite):GEntity
 	{
 		layer.removeChild(_canvas);
 		return this;
@@ -148,7 +150,7 @@ class GEntity
 		_canvas.y = Std.int(position.y);
 		_canvas.scaleX = scale.x;
 		_canvas.scaleY = scale.y;
-		_canvas.rotation = (57.29578) * rotation;
+		_canvas.rotation = GConstants.RAD_TO_DEG * rotation;
 		_canvas.alpha = alpha;
 		
 		_skin.x = -width * anchor.x;
@@ -160,14 +162,14 @@ class GEntity
 		if (Glue.showBounds)
 		{
 			_debug.graphics.clear();
-			_debug.graphics.lineStyle(1, 0xFF0000);
+			_debug.graphics.lineStyle(1, GConstants.COLOR_DEBUG_RED);
 			_debug.graphics.drawRect(-width * anchor.x, -height * anchor.y, width, height);
-			
-			_debug.graphics.beginFill(1, 0xFF0000);
+
+			_debug.graphics.beginFill(GConstants.COLOR_DEBUG_RED);
 			_debug.graphics.drawCircle(0, 0, 5);
 			_debug.graphics.endFill();
 
-			_debug.graphics.lineStyle(1, 0x00FF00);
+			_debug.graphics.lineStyle(1, GConstants.COLOR_DEBUG_GREEN);
 			_debug.graphics.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
 		}
 

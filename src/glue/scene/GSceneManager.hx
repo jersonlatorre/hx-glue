@@ -5,14 +5,15 @@ import glue.GlueContext;
 import glue.assets.GLoader;
 
 /**
- * ...
+ * Scene management system
+ * Handles scene transitions, popups, and lifecycle
  * @author Jerson La Torre
  */
 
-@:final class GSceneManager 
+@:final class GSceneManager
 {
-	static public var currentScene:GScene;
-	static public var currentPopup:GPopup;
+	static public var currentScene(default, null):GScene;
+	static public var currentPopup(default, null):GPopup;
 	static var context:GlueContext;
 		
 	static public function init(glueContext:GlueContext)
@@ -34,7 +35,7 @@ import glue.assets.GLoader;
 		currentScene.preInit();
 	}
 
-	static public function showLoaderScene(loaderClass:Class<GPopup>, callback:Void->Void)
+	static public function showLoaderScene(loaderClass:Class<GPopup>, callback:()->Void)
 	{
 		showPopup(loaderClass);
 		GLoader.startDownload(function()

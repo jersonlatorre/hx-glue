@@ -1,5 +1,6 @@
 package glue.display;
 
+import glue.utils.GSignal;
 import openfl.geom.Point;
 import openfl.geom.Rectangle;
 import openfl.display.BitmapData;
@@ -9,7 +10,7 @@ import openfl.display.Shape;
 import openfl.events.MouseEvent;
 
 /**
- * ...
+ * Interactive button with hover, press states and type-safe callbacks
  * @author Jerson La Torre
  */
 
@@ -19,11 +20,14 @@ class GButton extends GEntity
 	var _hitBmd:BitmapData;
 	var _mask:Shape;
 	var _frames:Array<Dynamic> = new Array<Dynamic>();
-	var _callbackClick:Dynamic = null;
-	var _callbackMouseOver:Dynamic = null;
-	var _callbackMouseDown:Dynamic = null;
-	var _callbackMouseOut:Dynamic = null;
-	var _callbackMouseEnter:Dynamic = null;
+
+	// Type-safe signals for button events
+	public final onClick:GSignal0 = new GSignal0();
+	public final onMouseOver:GSignal0 = new GSignal0();
+	public final onMouseDown:GSignal0 = new GSignal0();
+	public final onMouseOut:GSignal0 = new GSignal0();
+	public final onMouseEnter:GSignal0 = new GSignal0();
+
 	var _isDown:Bool;
 	var _isEnter:Bool;
 
@@ -80,12 +84,12 @@ class GButton extends GEntity
 	{
 		if (isWithinHitArea(e.localX, e.localY))
 		{
-			if (_callbackMouseOver != null) _callbackMouseOver();
+			onMouseOver.dispatch();
 
 			if (!_isEnter)
 			{
 				_isEnter = true;
-				if (_callbackMouseEnter != null) _callbackMouseEnter();
+				onMouseEnter.dispatch();
 			}
 
 			if (!e.buttonDown) setOver();
@@ -98,7 +102,7 @@ class GButton extends GEntity
 
 			if (_isEnter)
 			{
-				if (_callbackMouseOut != null) _callbackMouseOut();
+				onMouseOut.dispatch();
 			}
 
 			_isEnter = false;
@@ -113,9 +117,9 @@ class GButton extends GEntity
 
 		if (_isEnter)
 		{
-			if (_callbackMouseOut != null) _callbackMouseOut();
+			onMouseOut.dispatch();
 		}
-		
+
 		_isEnter = false;
 	}
 
@@ -123,7 +127,7 @@ class GButton extends GEntity
 	{
 		if (isWithinHitArea(e.localX, e.localY))
 		{
-			if (_callbackMouseDown != null) _callbackMouseDown();
+			onMouseDown.dispatch();
 			_isDown = true;
 			setDown();
 		}
@@ -139,7 +143,7 @@ class GButton extends GEntity
 		{
 			setOver();
 			_skin.buttonMode = false;
-			if (_callbackClick != null) _callbackClick();
+			onClick.dispatch();
 		}
 		else
 		{
@@ -147,36 +151,6 @@ class GButton extends GEntity
 		}
 
 		_isDown = false;
-	}
-	
-	public function onClick(callback:Dynamic):GButton
-	{
-		_callbackClick = callback;
-		return this;
-	}
-
-	public function onMouseOver(callback:Dynamic):GButton
-	{
-		_callbackMouseOver = callback;
-		return this;
-	}
-
-	public function onMouseDown(callback:Dynamic):GButton
-	{
-		_callbackMouseDown = callback;
-		return this;
-	}
-
-	public function onMouseOut(callback:Dynamic):GButton
-	{
-		_callbackMouseOut = callback;
-		return this;
-	}
-
-	public function onMouseEnter(callback:Dynamic):GButton
-	{
-		_callbackMouseEnter = callback;
-		return this;
 	}
 
 	function setNormal()
@@ -218,7 +192,14 @@ class GButton extends GEntity
 		_skin.removeEventListener(MouseEvent.MOUSE_OUT, _onMouseOut);
 		_skin.removeEventListener(MouseEvent.MOUSE_DOWN, _onMouseDown);
 		_skin.removeEventListener(MouseEvent.MOUSE_UP, _onMouseUp);
-		
+
+		// Clear all signal listeners
+		onClick.clear();
+		onMouseOver.clear();
+		onMouseDown.clear();
+		onMouseOut.clear();
+		onMouseEnter.clear();
+
 		super.destroy();
 	}
 }

@@ -1,10 +1,12 @@
 package glue.scene;
 
+import glue.Glue;
 import glue.display.GEntity;
+import glue.math.GConstants;
 import glue.math.GVector2D;
 
 /**
- * ...
+ * Camera system for following entities and managing view boundaries
  * @author Jerson La Torre
  */
 
@@ -12,27 +14,27 @@ import glue.math.GVector2D;
 {
 
 	public var position:GVector2D;
-	
+
 	var _target:GEntity;
-	
-	static inline var STATE_FOLLOW:Int = 1;
-	static inline var STATE_FOLLOW_X:Int = 3;
-	static inline var STATE_FOLLOW_Y:Int = 4;
-	static inline var STATE_NONE:Int = 2;
-	
+
+	static inline final STATE_FOLLOW:Int = 1;
+	static inline final STATE_FOLLOW_X:Int = 3;
+	static inline final STATE_FOLLOW_Y:Int = 4;
+	static inline final STATE_NONE:Int = 2;
+
 	var _leftLimit:Int = -2147483647;
 	var _rightLimit:Int = 2147483647;
 	var _topLimit:Int = -2147483647;
 	var _bottomLimit:Int = 2147483647;
 	var _mode:Int = STATE_NONE;
-	var _delayFactor:Float = 0.1;
-	
-	public function new() 
+	var _delayFactor:Float = GConstants.DEFAULT_CAMERA_DELAY;
+
+	public function new()
 	{
-		position = GVector2D.create(Glue.width * 0.5, Glue.height * 0.5);
+		position = GVector2D.create(Glue.width * GConstants.HALF, Glue.height * GConstants.HALF);
 	}
-	
-	public function follow(target:GEntity, delayFactor:Float = 0.1)
+
+	public function follow(target:GEntity, delayFactor:Float = GConstants.DEFAULT_CAMERA_DELAY)
 	{
 		_target = target;
 		_delayFactor = delayFactor;

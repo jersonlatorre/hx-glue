@@ -162,9 +162,9 @@ package glue.math;
   
   public function rotate(angle:Float):GVector2D
   {
-    var rx:Float = x * GMath.cos(angle) - y * GMath.sin(angle);
-    var ry:Float = x * GMath.sin(angle) + y * GMath.cos(angle);
-		
+    var rx:Float = x * Math.cos(angle) - y * Math.sin(angle);
+    var ry:Float = x * Math.sin(angle) + y * Math.cos(angle);
+
     return new GVector2D(rx, ry);
   }
 

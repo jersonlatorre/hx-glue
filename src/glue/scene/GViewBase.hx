@@ -4,6 +4,7 @@ import glue.GlueContext;
 import glue.assets.GAssetRequest;
 import glue.assets.GLoader;
 import glue.display.GEntity;
+import glue.math.GConstants;
 import openfl.display.Sprite;
 
 class GViewBase
@@ -44,7 +45,7 @@ class GViewBase
 		}
 		else
 		{
-			throw "Already exists a layer whit the name: " + layerName;
+			throw "Already exists a layer with the name: " + layerName;
 		}
 	}
 
@@ -159,7 +160,7 @@ class GViewBase
 	{
 		if (mask == null) return;
 		mask.graphics.clear();
-		mask.graphics.beginFill(0xFF0000, 0.3);
+		mask.graphics.beginFill(GConstants.COLOR_DEBUG_RED, GConstants.ALPHA_DEBUG_OVERLAY);
 		mask.graphics.drawRect(0, 0, context.width, context.height);
 		mask.graphics.endFill();
 		mask.x = 0;

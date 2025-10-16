@@ -4,6 +4,7 @@ import glue.Glue;
 import glue.GlueContext;
 import glue.assets.GAssetRequest;
 import glue.assets.GLoader;
+import glue.math.GConstants;
 import glue.scene.GCamera;
 import glue.utils.GTools;
 import motion.Actuate;
@@ -94,10 +95,10 @@ class GScene extends GViewBase
 		updateEntities();
 	}
 
-	public function fadeIn(duration:Float = 0.3):Void
+	public function fadeIn(duration:Float = GConstants.DEFAULT_FADE_DURATION):Void
 	{
 		var fade = new Shape();
-		fade.graphics.beginFill(0);
+		fade.graphics.beginFill(GConstants.COLOR_BLACK);
 		fade.graphics.drawRect(0, 0, context.width, context.height);
 		fade.graphics.endFill();
 
@@ -106,26 +107,26 @@ class GScene extends GViewBase
 
 		effectCanvas.addChild(fade);
 
-		Actuate.tween(fade, duration, { alpha: 0 }).ease(Quad.easeInOut).onComplete(function()
+		Actuate.tween(fade, duration, { alpha: GConstants.ALPHA_TRANSPARENT }).ease(Quad.easeInOut).onComplete(function()
 		{
 			effectCanvas.removeChild(fade);
 		});
 	}
 
-	public function fadeOut(duration:Float = 0.3, callback:Dynamic):Void
+	public function fadeOut(duration:Float = GConstants.DEFAULT_FADE_DURATION, callback:()->Void):Void
 	{
 		var fade = new Shape();
-		fade.graphics.beginFill(0);
+		fade.graphics.beginFill(GConstants.COLOR_BLACK);
 		fade.graphics.drawRect(0, 0, context.width, context.height);
 		fade.graphics.endFill();
 
-		fade.alpha = 0;
+		fade.alpha = GConstants.ALPHA_TRANSPARENT;
 		fade.x = 0;
 		fade.y = 0;
 
 		effectCanvas.addChild(fade);
 
-		Actuate.tween(fade, duration, { alpha: 1 }).ease(Quad.easeInOut).onComplete(function()
+		Actuate.tween(fade, duration, { alpha: GConstants.ALPHA_OPAQUE }).ease(Quad.easeInOut).onComplete(function()
 		{
 			effectCanvas.removeChild(fade);
 			callback();

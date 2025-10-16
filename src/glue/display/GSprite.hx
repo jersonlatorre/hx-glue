@@ -2,6 +2,7 @@ package glue.display;
 
 import glue.assets.GLoader;
 import glue.utils.GTime;
+import glue.utils.GSignal;
 import openfl.display.Tile;
 import openfl.display.Tilemap;
 import openfl.display.Tileset;
@@ -27,7 +28,9 @@ class GSprite extends GEntity
 {
 	public var animation:String = "";
 
-	var _onEndAnimation:Dynamic = null;
+	// Type-safe signal for animation completion
+	public final onEndAnimation:GSignal0 = new GSignal0();
+
 	var _animations:Map<String, AnimationConfig> = new Map<String, AnimationConfig>();
 	var _tilemap:Tilemap;
 	var _tile:Tile;
@@ -89,11 +92,6 @@ class GSprite extends GEntity
 		animation = name;
 	}
 
-	public function onEndAnimation(callback:Dynamic):Void
-	{
-		_onEndAnimation = callback;
-	}
-
 	override public function preUpdate():Void
 	{
 		if (_state != null && _state.frames.length > 0)
@@ -108,7 +106,7 @@ class GSprite extends GEntity
 				{
 					_state.framePointer = _state.framePointer % total;
 					pointer = Std.int(_state.framePointer);
-					if (_onEndAnimation != null) _onEndAnimation();
+					onEndAnimation.dispatch();
 					_state.completed = false;
 				}
 				else
@@ -118,7 +116,7 @@ class GSprite extends GEntity
 					if (!_state.completed)
 					{
 						_state.completed = true;
-						if (_onEndAnimation != null) _onEndAnimation();
+						onEndAnimation.dispatch();
 					}
 				}
 			}
@@ -138,6 +136,9 @@ class GSprite extends GEntity
 		_tilemap = null;
 		_tile = null;
 		_state = null;
+
+		// Clear signal listeners
+		onEndAnimation.clear();
 
 		super.destroy();
 	}
