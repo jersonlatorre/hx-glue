@@ -1,5 +1,8 @@
 package glue.assets;
 
+import glue.assets.AssetTypes.ButtonData;
+import glue.assets.AssetTypes.ButtonFrame;
+import glue.assets.AssetTypes.SpritesheetData;
 import haxe.Json;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
@@ -107,42 +110,48 @@ import Xml;
 		return cached;
 	}
 
-	static public function getSpritesheet(assetId:String):Dynamic
+	static public function getSpritesheet(assetId:String):SpritesheetData
 	{
 		ensureLoaded(assetId, "Spritesheet");
-		var cached = cache.getPrepared(assetId);
+		var cached:SpritesheetData = cache.getPrepared(assetId);
 		if (cached == null)
 		{
-			var metadataRaw = cache.getRaw(assetId + SUFFIX_JSON);
-			var imageRaw = cache.getRaw(assetId + SUFFIX_IMAGE);
+			var metadataRaw:Any = cache.getRaw(assetId + SUFFIX_JSON);
+			var imageRaw:Any = cache.getRaw(assetId + SUFFIX_IMAGE);
 			if (metadataRaw == null || imageRaw == null)
 			{
 				throw 'Spritesheet \'' + assetId + '\' was not loaded.';
 			}
-	var framesObj:Array<Dynamic> = Json.parse(preventUtf8(metadataRaw)).frames;
-	var spritesheetSource:Bitmap = cast imageRaw;
-	var tileset = new Tileset(spritesheetSource.bitmapData);
-	var frameIds:Array<Int> = [];
-	for (frame in framesObj)
-	{
-		var rect = new Rectangle(frame.frame.x, frame.frame.y, frame.frame.w, frame.frame.h);
-		frameIds.push(tileset.addRect(rect));
-	}
-	var width = framesObj[0].sourceSize.w;
-	var height = framesObj[0].sourceSize.h;
-	cached = { tileset: tileset, frameIds: frameIds, width: width, height: height };
+			var parsed:ButtonData = Json.parse(preventUtf8(metadataRaw));
+			var framesObj:Array<ButtonFrame> = parsed.frames;
+			var spritesheetSource:Bitmap = cast imageRaw;
+			var tileset = new Tileset(spritesheetSource.bitmapData);
+			var frameIds:Array<Int> = [];
+			for (frame in framesObj)
+			{
+				var rect = new Rectangle(frame.frame.x, frame.frame.y, frame.frame.w, frame.frame.h);
+				frameIds.push(tileset.addRect(rect));
+			}
+			var width = framesObj[0].sourceSize.w;
+			var height = framesObj[0].sourceSize.h;
+			cached = { tileset: tileset, frameIds: frameIds, width: width, height: height };
 			cache.storePrepared(assetId, cached);
 		}
 		return cached;
 	}
 
-	static public function getJson(assetId:String):Dynamic
+	/**
+	 * Gets parsed JSON data with type safety via generic parameter
+	 * @param assetId The asset identifier
+	 * @return Parsed JSON cast to type T
+	 */
+	static public function getJsonAs<T>(assetId:String):T
 	{
 		ensureLoaded(assetId, "Json");
-		var cached = cache.getPrepared(assetId);
+		var cached:Any = cache.getPrepared(assetId);
 		if (cached == null)
 		{
-			var raw = cache.getRaw(assetId);
+			var raw:Any = cache.getRaw(assetId);
 			if (raw == null) throw 'Json \'' + assetId + '\' was not loaded.';
 			try
 			{
@@ -155,6 +164,23 @@ import Xml;
 			}
 		}
 		return cached;
+	}
+
+	/**
+	 * Gets button data from JSON (type-safe convenience method)
+	 */
+	static public function getButtonData(assetId:String):ButtonData
+	{
+		return getJsonAs(assetId);
+	}
+
+	/**
+	 * Gets parsed JSON data (untyped for backwards compatibility)
+	 * @deprecated Use getJsonAs<T> for type safety
+	 */
+	static public function getJson(assetId:String):Any
+	{
+		return getJsonAs(assetId);
 	}
 
 	static public function getSound(assetId:String):Sound
@@ -171,13 +197,13 @@ import Xml;
 		return cached;
 	}
 
-	static public function getXml(assetId:String):Dynamic
+	static public function getXml(assetId:String):Xml
 	{
 		ensureLoaded(assetId, "Xml");
-		var cached = cache.getPrepared(assetId);
+		var cached:Xml = cache.getPrepared(assetId);
 		if (cached == null)
 		{
-			var raw = cache.getRaw(assetId);
+			var raw:Any = cache.getRaw(assetId);
 			if (raw == null) throw 'Xml \'' + assetId + '\' was not loaded.';
 			try
 			{
@@ -215,7 +241,33 @@ import Xml;
 			var s:Array<String> = utf8String.split(String.fromCharCode(0));
 			str = s.join("");
 		}
-		
+
 		return str;
+	}
+
+	/**
+	 * Clears all cached assets to free memory
+	 * @param keepIds Optional array of asset IDs to preserve (e.g., global/shared assets)
+	 */
+	static public function clearCache(?keepIds:Array<String>):Void
+	{
+		cache.clearAll(keepIds);
+		manifest.clear();
+	}
+
+	/**
+	 * Clears specific assets from cache
+	 */
+	static public function clearAssets(ids:Array<String>):Void
+	{
+		cache.clearAssets(ids);
+	}
+
+	/**
+	 * Returns cache statistics for debugging/monitoring memory usage
+	 */
+	static public function getCacheStats():{types:Int, raw:Int, prepared:Int}
+	{
+		return cache.getStats();
 	}
 }

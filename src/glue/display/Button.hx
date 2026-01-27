@@ -1,13 +1,15 @@
 package glue.display;
 
-import glue.utils.Signal;
-import openfl.geom.Point;
-import openfl.geom.Rectangle;
-import openfl.display.BitmapData;
+import glue.assets.AssetTypes.ButtonData;
+import glue.assets.AssetTypes.ButtonFrame;
 import glue.assets.Loader;
+import glue.utils.Signal;
 import openfl.display.Bitmap;
+import openfl.display.BitmapData;
 import openfl.display.Shape;
 import openfl.events.MouseEvent;
+import openfl.geom.Point;
+import openfl.geom.Rectangle;
 
 /**
  * Interactive button with hover, press states and type-safe callbacks
@@ -19,7 +21,7 @@ class Button extends Entity
 	var _image:Bitmap;
 	var _hitBmd:BitmapData;
 	var _mask:Shape;
-	var _frames:Array<Dynamic> = new Array<Dynamic>();
+	var _frames:Array<ButtonFrame> = [];
 
 	public final onClick:Signal0 = new Signal0();
 	public final onMouseOver:Signal0 = new Signal0();
@@ -34,8 +36,8 @@ class Button extends Entity
 	{
 		super();
 
-		var data:Dynamic = Loader.getJson(id + "_data");
-		for (i in 0...data.frames.length) _frames.push(data.frames[i]);
+		var data:ButtonData = Loader.getButtonData(id + "_data");
+		_frames = data.frames;
 
 		width = _frames[0].sourceSize.w * scale.x;
 		height = _frames[0].sourceSize.h * scale.y;
