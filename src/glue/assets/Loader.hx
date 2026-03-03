@@ -21,6 +21,8 @@ import Xml;
 	static final pipeline = new AssetPipeline(cache);
 
 	static var completion:()->Void;
+	static var requestedIds:Array<String> = [];
+	static var isTracking:Bool = false;
 
 	static public var downloadedFiles(get, never):Int;
 	static public var totalFiles(get, never):Int;
@@ -72,6 +74,8 @@ import Xml;
 	@:allow(glue.scene.Scene, glue.Glue, glue.scene.SceneManager.showLoaderScene)
 	static function startDownload(callback:()->Void = null):Void
 	{
+		cleanupUnusedAssets();
+
 		completion = callback;
 		pipeline.process(manifest, function()
 		{
@@ -90,6 +94,11 @@ import Xml;
 
 	static function queueInternal(id:String, url:String, type:AssetType):Void
 	{
+		if (isTracking && requestedIds.indexOf(id) == -1)
+		{
+			requestedIds.push(id);
+		}
+
 		if (cache.has(id)) return;
 		cache.define(id, type);
 		enqueue({ id: id, url: url, type: type });
@@ -246,21 +255,47 @@ import Xml;
 	}
 
 	/**
-	 * Clears all cached assets to free memory
-	 * @param keepIds Optional array of asset IDs to preserve (e.g., global/shared assets)
+	 * Begins tracking which assets are requested by a new scene.
+	 * Called automatically by SceneManager before scene transitions.
 	 */
-	static public function clearCache(?keepIds:Array<String>):Void
+	@:allow(glue.scene.SceneManager)
+	static function beginTracking():Void
 	{
-		cache.clearAll(keepIds);
-		manifest.clear();
+		requestedIds = [];
+		isTracking = true;
 	}
 
 	/**
-	 * Clears specific assets from cache
+	 * Cleans up assets not requested by the current scene.
+	 * Automatically expands spritesheet sub-IDs (image/json suffixes).
+	 * Called automatically before downloading new scene assets.
 	 */
-	static public function clearAssets(ids:Array<String>):Void
+	static function cleanupUnusedAssets():Void
 	{
-		cache.clearAssets(ids);
+		if (!isTracking) return;
+		isTracking = false;
+
+		var keepIds:Array<String> = [];
+		for (id in requestedIds)
+		{
+			keepIds.push(id);
+			var type = cache.getType(id);
+			if (type != null)
+			{
+				switch (type)
+				{
+					case AssetType.AdobeAnimateSpritesheet(_):
+					{
+						keepIds.push(id + SUFFIX_IMAGE);
+						keepIds.push(id + SUFFIX_JSON);
+					}
+					default:
+				}
+			}
+		}
+
+		cache.clearAll(keepIds);
+		requestedIds = [];
 	}
 
 	/**
