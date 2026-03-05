@@ -1,13 +1,14 @@
 package glue;
 
 import glue.assets.Loader;
+import glue.input.Gamepad;
+import glue.input.Input;
+import glue.scene.Popup;
 import glue.scene.Preloader;
 import glue.scene.Scene;
-import glue.scene.Popup;
 import glue.scene.SceneManager;
-import glue.utils.Time;
 import glue.utils.Stats;
-import glue.input.Input;
+import glue.utils.Time;
 import openfl.Lib;
 import openfl.display.Sprite;
 import openfl.display.Stage;
@@ -17,6 +18,7 @@ typedef GlueOptions =
 {
 	@:optional var preloader:Null<Class<Popup>>;
 	@:optional var showStats:Bool;
+	@:optional var enableGamepad:Bool;
 }
 
 @:final class Glue
@@ -24,6 +26,7 @@ typedef GlueOptions =
 	static var mainScene:Class<Scene>;
 	static var customPreloader:Null<Class<Popup>>;
 	static var context:GlueContext;
+	static var gamepadEnabled:Bool = false;
 
 	static public var stage:Stage;
 	static public var width:Int;
@@ -59,6 +62,7 @@ typedef GlueOptions =
 
 		mainScene = cast sceneClass;
 		customPreloader = resolved.preloader;
+		gamepadEnabled = resolved.enableGamepad == true;
 
 		if (resolved.showStats == true)
 		{
@@ -68,6 +72,12 @@ typedef GlueOptions =
 
 		Time.init();
 		Input.init();
+
+		if (gamepadEnabled)
+		{
+			Gamepad.init();
+		}
+
 		SceneManager.init(context);
 
 		if (customPreloader == null)
@@ -93,8 +103,19 @@ typedef GlueOptions =
 	{
 		Time.update();
 		Input.update();
+
+		if (gamepadEnabled)
+		{
+			Gamepad.update();
+		}
+
 		SceneManager.update();
 		Input.clear();
+
+		if (gamepadEnabled)
+		{
+			Gamepad.clear();
+		}
 	}
 
 	static function onStageResize(_):Void
@@ -136,7 +157,7 @@ typedef GlueOptions =
 		{
 			fromAdobeAnimate: function(assetId:String, url:String, fps:Int = 30)
 			{
-				Loader.load({ type:"adobe_animate_spritesheet", id: assetId, url: url, fps: fps });
+				Loader.load({ type: "adobe_animate_spritesheet", id: assetId, url: url, fps: fps });
 			}
 		},
 
@@ -152,7 +173,7 @@ typedef GlueOptions =
 
 		sound: function(assetId:String, url:String, group:String = null)
 		{
-			Loader.load({ type: "sound", id: assetId, url: url, group: group});
+			Loader.load({ type: "sound", id: assetId, url: url, group: group });
 		}
 	}
 
@@ -161,7 +182,8 @@ typedef GlueOptions =
 		return
 		{
 			preloader: options != null ? options.preloader : null,
-			showStats: options != null && options.showStats == true
+			showStats: options != null && options.showStats == true,
+			enableGamepad: options != null && options.enableGamepad == true
 		};
 	}
 }

@@ -2,6 +2,7 @@ package glue.display;
 
 import glue.Glue;
 import glue.errors.LayerException;
+import glue.input.Gamepad;
 import glue.input.Input;
 import glue.input.InputActions;
 import glue.math.Constants;
@@ -155,6 +156,7 @@ class Entity
 		return this;
 	}
 
+	// Keyboard input helpers
 	public inline function isPressed(action:String):Bool
 	{
 		return Input.isKeyPressed(action);
@@ -183,6 +185,51 @@ class Entity
 	public inline function getVertical(up:String = "up", down:String = "down"):Float
 	{
 		return InputActions.getVertical(up, down);
+	}
+
+	// Gamepad input helpers
+	public inline function isGamepadPressed(action:String):Bool
+	{
+		return Gamepad.isPressed(action);
+	}
+
+	public inline function isGamepadDown(action:String):Bool
+	{
+		return Gamepad.isDown(action);
+	}
+
+	public inline function isGamepadUp(action:String):Bool
+	{
+		return Gamepad.isUp(action);
+	}
+
+	public inline function getGamepadAxis(action:String):Vector2D
+	{
+		return Gamepad.getAxis(action);
+	}
+
+	/**
+	 * Check if action is pressed on either keyboard or gamepad
+	 */
+	public inline function isAnyPressed(action:String):Bool
+	{
+		return Input.isKeyPressed(action) || Gamepad.isPressed(action);
+	}
+
+	/**
+	 * Check if action was just pressed on either keyboard or gamepad
+	 */
+	public inline function isAnyDown(action:String):Bool
+	{
+		return Input.isKeyDown(action) || Gamepad.isDown(action);
+	}
+
+	/**
+	 * Check if action was just released on either keyboard or gamepad
+	 */
+	public inline function isAnyUp(action:String):Bool
+	{
+		return Input.isKeyUp(action) || Gamepad.isUp(action);
 	}
 
 	@:allow(glue.scene.Scene.add, glue.scene.Popup.add, glue.scene.ViewBase, glue.assets.Loader, glue.utils.Stats)
