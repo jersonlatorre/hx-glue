@@ -15,19 +15,21 @@ import glue.assets.Loader;
 	static public var currentScene(default, null):Scene;
 	static public var currentPopup(default, null):Popup;
 	static var context:GlueContext;
-		
+
 	static public function init(glueContext:GlueContext)
 	{
 		context = glueContext;
 		currentScene = null;
 	}
-	
+
 	static public function gotoScene(sceneClass:Class<Scene>)
 	{
 		if (currentScene != null)
 		{
 			currentScene.destroy();
 		}
+
+		Loader.beginTracking();
 
 		currentScene = cast Type.createInstance(sceneClass, [context]);
 		Glue.stage.stageFocusRect = false;

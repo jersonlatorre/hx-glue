@@ -22,4 +22,9 @@ final class AssetManifest
 	{
 		return requests.length == 0;
 	}
+
+	public function clear():Void
+	{
+		requests.resize(0);
+	}
 }

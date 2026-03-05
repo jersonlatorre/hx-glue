@@ -1,5 +1,6 @@
 package glue.display;
 
+import glue.assets.AssetTypes.SpritesheetData;
 import glue.assets.Loader;
 import glue.utils.Time;
 import glue.utils.Signal;
@@ -55,7 +56,7 @@ class Sprite extends Entity
 			throw '${ name } animation is not registered.';
 		}
 
-		var data:Dynamic = Loader.getSpritesheet(config.id);
+		var data:SpritesheetData = Loader.getSpritesheet(config.id);
 		var tileset:Tileset = data.tileset;
 		var frames:Array<Int> = data.frameIds;
 		var frameWidth:Int = data.width;
