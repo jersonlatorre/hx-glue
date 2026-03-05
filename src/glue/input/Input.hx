@@ -1,13 +1,14 @@
 package glue.input;
 
 import glue.Glue;
+import glue.errors.InputException;
 import glue.math.Vector2D;
 import openfl.events.KeyboardEvent;
 import openfl.events.MouseEvent;
 import openfl.ui.Mouse;
 
 /**
- * ...
+ * Input handling for keyboard and mouse
  * @author Jerson La Torre
  */
 
@@ -36,8 +37,8 @@ enum KeyState { NONE; UP; PRESSED; DOWN; }
 		isMouseDown = true;
 		isMousePressed = true;
 	}
-	
-	static function onMouseUp(e:MouseEvent) 
+
+	static function onMouseUp(e:MouseEvent)
 	{
 		isMouseDown = false;
 		isMouseUp = true;
@@ -53,7 +54,7 @@ enum KeyState { NONE; UP; PRESSED; DOWN; }
 	{
 		if (!_actions.exists(actionName))
 		{
-			throw 'The action \'$actionName\' has not been binded.';
+			throw new InputException(actionName);
 		}
 
 		for (key in _actions.get(actionName))
@@ -72,7 +73,7 @@ enum KeyState { NONE; UP; PRESSED; DOWN; }
 	{
 		if (!_actions.exists(actionName))
 		{
-			throw 'The action \'$actionName\' has not been binded.';
+			throw new InputException(actionName);
 		}
 
 		for (key in _actions.get(actionName))
@@ -91,7 +92,7 @@ enum KeyState { NONE; UP; PRESSED; DOWN; }
 	{
 		if (!_actions.exists(actionName))
 		{
-			throw 'The action \'$actionName\' has not been binded.';
+			throw new InputException(actionName);
 		}
 
 		for (key in _actions.get(actionName))
@@ -109,7 +110,7 @@ enum KeyState { NONE; UP; PRESSED; DOWN; }
 	static function onKeyDown(e:KeyboardEvent)
 	{
 		if (_keys.get(e.keyCode) != KeyState.PRESSED)
-			_keys.set(e.keyCode, KeyState.DOWN);	
+			_keys.set(e.keyCode, KeyState.DOWN);
 	}
 
 	static function onKeyUp(e:KeyboardEvent)

@@ -2,6 +2,7 @@ package glue.display;
 
 import haxe.Utf8;
 import haxe.xml.Access;
+import glue.errors.DisplayException;
 import glue.assets.Loader;
 import openfl.geom.ColorTransform;
 import openfl.geom.Rectangle;
@@ -1696,7 +1697,7 @@ class BitmapFont
 			
 			if (charCode == -1 && glyph == null) 
 			{
-				throw 'Invalid font xml data!';
+				throw new DisplayException(InvalidFontData, "charCode or glyph not found");
 			}
 			
 			if (glyph != null)

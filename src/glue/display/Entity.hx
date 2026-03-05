@@ -1,13 +1,14 @@
 package glue.display;
 
 import glue.Glue;
-import glue.math.Constants;
-import glue.scene.Scene;
-import glue.scene.SceneManager;
-import glue.math.Vector2D;
-import glue.utils.Time;
+import glue.errors.LayerException;
 import glue.input.Input;
 import glue.input.InputActions;
+import glue.math.Constants;
+import glue.math.Vector2D;
+import glue.scene.Scene;
+import glue.scene.SceneManager;
+import glue.utils.Time;
 import openfl.display.Sprite;
 import openfl.geom.Rectangle;
 
@@ -29,7 +30,7 @@ class Entity
 	@:allow(glue.scene.Scene.preUpdate, glue.scene.Popup.preUpdate, glue.scene.ViewBase)
 	var isDestroyed:Bool = false;
 	public var destroyed(get, never):Bool;
-	
+
 	public var position:Vector2D;
 	public var velocity:Vector2D;
 	public var acceleration:Vector2D;
@@ -40,7 +41,7 @@ class Entity
 	public var alpha:Float;
 	public var anchor:Vector2D;
 	public var bounds:Rectangle = new Rectangle();
-	
+
 	public function new():Void
 	{
 		_skin = new Sprite();
@@ -63,7 +64,7 @@ class Entity
 		init();
 	}
 
-	public function init() { }
+	public function init() {}
 
 	public function gotoScene(sceneClass:Class<Scene>)
 	{
@@ -80,7 +81,7 @@ class Entity
 		}
 		else
 		{
-			throw "Already exists a layer with the name: " + layerName;
+			throw new LayerException(AlreadyExists, layerName);
 		}
 	}
 
@@ -93,7 +94,7 @@ class Entity
 		}
 		else
 		{
-			throw "There is no any layer with the name: " + layerName;
+			throw new LayerException(NotFound, layerName);
 		}
 		return entity;
 	}
@@ -184,28 +185,28 @@ class Entity
 		return InputActions.getVertical(up, down);
 	}
 
-		@:allow(glue.scene.Scene.add, glue.scene.Popup.add, glue.scene.ViewBase, glue.assets.Loader, glue.utils.Stats)
-		function addToLayer(layer:Sprite):Entity
+	@:allow(glue.scene.Scene.add, glue.scene.Popup.add, glue.scene.ViewBase, glue.assets.Loader, glue.utils.Stats)
+	function addToLayer(layer:Sprite):Entity
 	{
 		_parent = layer;
 		layer.addChild(_canvas);
 		return this;
 	}
 
-		@:allow(glue.scene.Scene.preUpdate, glue.scene.Popup.preUpdate, glue.scene.Scene.remove, glue.scene.Popup.remove, glue.scene.ViewBase)
-		function removeFromLayer(layer:Sprite):Entity
+	@:allow(glue.scene.Scene.preUpdate, glue.scene.Popup.preUpdate, glue.scene.Scene.remove, glue.scene.Popup.remove, glue.scene.ViewBase)
+	function removeFromLayer(layer:Sprite):Entity
 	{
 		layer.removeChild(_canvas);
 		return this;
 	}
-	
-		@:allow(glue.scene.Scene.preUpdate, glue.scene.Popup.preUpdate, glue.scene.Scene.remove, glue.scene.Popup.remove, glue.scene.ViewBase)
-		function isChildOfLayer(layer:Sprite):Bool
+
+	@:allow(glue.scene.Scene.preUpdate, glue.scene.Popup.preUpdate, glue.scene.Scene.remove, glue.scene.Popup.remove, glue.scene.ViewBase)
+	function isChildOfLayer(layer:Sprite):Bool
 	{
 		return layer.contains(_canvas);
 	}
-	
-	public function update() { }
+
+	public function update() {}
 
 	function get_destroyed():Bool
 	{
@@ -213,16 +214,16 @@ class Entity
 	}
 
 	@:allow(glue.scene.Scene.preUpdate, glue.scene.Popup.preUpdate, glue.scene.ViewBase, glue.utils.Stats)
-	function preUpdate():Void 
+	function preUpdate():Void
 	{
-		if (_canvas == null) return; 
+		if (_canvas == null) return;
 		_canvas.x = Std.int(position.x);
 		_canvas.y = Std.int(position.y);
 		_canvas.scaleX = scale.x;
 		_canvas.scaleY = scale.y;
 		_canvas.rotation = Constants.RAD_TO_DEG * rotation;
 		_canvas.alpha = alpha;
-		
+
 		_skin.x = -width * anchor.x;
 		_skin.y = -height * anchor.y;
 
@@ -244,11 +245,11 @@ class Entity
 		}
 
 		var i:Int = 0;
-		
+
 		while (i < _entities.length)
 		{
 			var entity = _entities[i];
-			
+
 			if (entity.isDestroyed)
 			{
 				for (layerName in _layers.keys())
@@ -259,7 +260,7 @@ class Entity
 						break;
 					}
 				}
-				
+
 				_entities.splice(i, 1);
 			}
 			else
@@ -268,18 +269,18 @@ class Entity
 				i++;
 			}
 		}
-		
+
 		update();
 	}
 
 	public function collideWith(entity:Entity):Bool
 	{
-		return !(entity.position.x + entity.bounds.x > position.x + bounds.x + bounds.width 
-			  || entity.position.x + entity.bounds.x + entity.bounds.width < position.x + bounds.x 
-			  || entity.position.y + entity.bounds.y > position.y + bounds.y + bounds.height
-			  || entity.position.y + entity.bounds.y + entity.bounds.height < position.y + bounds.y);
+		return !(entity.position.x + entity.bounds.x > position.x + bounds.x + bounds.width
+			|| entity.position.x + entity.bounds.x + entity.bounds.width < position.x + bounds.x
+			|| entity.position.y + entity.bounds.y > position.y + bounds.y + bounds.height
+			|| entity.position.y + entity.bounds.y + entity.bounds.height < position.y + bounds.y);
 	}
-	
+
 	public function destroy()
 	{
 		if (_canvas != null)
@@ -287,7 +288,7 @@ class Entity
 			_canvas.removeChild(_skin);
 			_canvas = null;
 		}
-		
+
 		_skin = null;
 		isDestroyed = true;
 	}

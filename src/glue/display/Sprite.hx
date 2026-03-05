@@ -2,8 +2,9 @@ package glue.display;
 
 import glue.assets.AssetTypes.SpritesheetData;
 import glue.assets.Loader;
-import glue.utils.Time;
+import glue.errors.DisplayException;
 import glue.utils.Signal;
+import glue.utils.Time;
 import openfl.display.Tile;
 import openfl.display.Tilemap;
 import openfl.display.Tileset;
@@ -53,7 +54,7 @@ class Sprite extends Entity
 		var config = _animations.get(name);
 		if (config == null)
 		{
-			throw '${ name } animation is not registered.';
+			throw new DisplayException(AnimationNotFound, name);
 		}
 
 		var data:SpritesheetData = Loader.getSpritesheet(config.id);
@@ -63,7 +64,7 @@ class Sprite extends Entity
 		var frameHeight:Int = data.height;
 		if (frames.length == 0)
 		{
-			throw 'Spritesheet \'' + config.id + '\' has no frames.';
+			throw new DisplayException(EmptySpritesheet, config.id);
 		}
 
 		if (_tilemap != null && _tilemap.parent == _skin)

@@ -1,24 +1,25 @@
 package glue.assets;
 
+import glue.errors.AssetException;
 import openfl.media.SoundChannel;
 import openfl.media.SoundTransform;
 
 /**
- * ...
+ * Sound playback and management
  * @author Jerson La Torre
  */
 
 typedef SoundData =
 {
-	sound: openfl.media.Sound,
-	channel: SoundChannel,
-	group: String
+	sound:openfl.media.Sound,
+	channel:SoundChannel,
+	group:String
 }
 
 @:final class Sound
 {
 	static var _sounds:Map<String, SoundData> = new Map<String, SoundData>();
-	
+
 	@:allow(glue.assets.Loader.handleFileComplete, glue.assets.AssetPipeline)
 	static function addSound(id:String, sound:openfl.media.Sound, group:String)
 	{
@@ -30,7 +31,7 @@ typedef SoundData =
 	static public function play(id:String, times:Int = 1)
 	{
 		var data = _sounds.get(id);
-		if (data == null) throw 'Sound \'${ id }\' is not registered.';
+		if (data == null) throw new AssetException(NotLoaded, id, "Sound");
 
 		var loops = 0;
 		if (times <= 0)
@@ -49,12 +50,12 @@ typedef SoundData =
 	static public function loop(id:String)
 	{
 		var data = _sounds.get(id);
-		if (data == null) throw 'Sound \'${ id }\' is not registered.';
+		if (data == null) throw new AssetException(NotLoaded, id, "Sound");
 
 		data.channel = data.sound.play(0, 0x7FFFFFFF);
 		_sounds.set(id, data);
 	}
-	
+
 	static public function stop(id:String)
 	{
 		var data = _sounds.get(id);
