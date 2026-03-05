@@ -3,13 +3,14 @@ package glue.assets;
 import glue.assets.AssetTypes.ButtonData;
 import glue.assets.AssetTypes.ButtonFrame;
 import glue.assets.AssetTypes.SpritesheetData;
+import glue.assets.AssetValidator;
 import glue.errors.AssetException;
 import haxe.Json;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
+import openfl.display.Tileset;
 import openfl.geom.Rectangle;
 import openfl.media.Sound;
-import openfl.display.Tileset;
 import Xml;
 
 @:final class Loader
@@ -132,8 +133,20 @@ import Xml;
 			{
 				throw new AssetException(NotLoaded, assetId, "Spritesheet");
 			}
-			var parsed:ButtonData = Json.parse(preventUtf8(metadataRaw));
-			var framesObj:Array<ButtonFrame> = parsed.frames;
+
+			var rawParsed:Any;
+			try
+			{
+				rawParsed = Json.parse(preventUtf8(metadataRaw));
+			}
+			catch (e:Any)
+			{
+				throw new AssetException(InvalidFormat, assetId, "Invalid JSON in spritesheet");
+			}
+
+			var validated:ButtonData = AssetValidator.validateButtonData(rawParsed, assetId);
+			var framesObj:Array<ButtonFrame> = validated.frames;
+
 			var spritesheetSource:Bitmap = cast imageRaw;
 			var tileset = new Tileset(spritesheetSource.bitmapData);
 			var frameIds:Array<Int> = [];
@@ -170,18 +183,19 @@ import Xml;
 			}
 			catch (e:Any)
 			{
-				throw new AssetException(InvalidFormat, assetId, "Invalid JSON");
+				throw new AssetException(InvalidFormat, assetId, "Invalid JSON syntax");
 			}
 		}
 		return cached;
 	}
 
 	/**
-	 * Gets button data from JSON (type-safe convenience method)
+	 * Gets button data from JSON with validation
 	 */
 	static public function getButtonData(assetId:String):ButtonData
 	{
-		return getJsonAs(assetId);
+		var raw:Any = getJsonAs(assetId);
+		return AssetValidator.validateButtonData(raw, assetId);
 	}
 
 	/**
@@ -222,7 +236,7 @@ import Xml;
 			}
 			catch (e:Any)
 			{
-				throw new AssetException(InvalidFormat, assetId, "Invalid XML");
+				throw new AssetException(InvalidFormat, assetId, "Invalid XML syntax");
 			}
 		}
 		return cached;
