@@ -4,6 +4,7 @@ import glue.GlueContext;
 import glue.assets.AssetRequest;
 import glue.assets.Loader;
 import glue.display.Entity;
+import glue.errors.LayerException;
 import glue.math.Constants;
 import openfl.display.Sprite;
 
@@ -45,7 +46,7 @@ class ViewBase
 		}
 		else
 		{
-			throw "Already exists a layer with the name: " + layerName;
+			throw new LayerException(AlreadyExists, layerName);
 		}
 	}
 
@@ -58,7 +59,7 @@ class ViewBase
 		}
 		else
 		{
-			throw "There is no any layer with the name: " + layerName;
+			throw new LayerException(NotFound, layerName);
 		}
 		return entity;
 	}

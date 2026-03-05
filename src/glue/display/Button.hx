@@ -3,6 +3,7 @@ package glue.display;
 import glue.assets.AssetTypes.ButtonData;
 import glue.assets.AssetTypes.ButtonFrame;
 import glue.assets.Loader;
+import glue.errors.DisplayException;
 import glue.utils.Signal;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
@@ -39,9 +40,14 @@ class Button extends Entity
 		var data:ButtonData = Loader.getButtonData(id + "_data");
 		_frames = data.frames;
 
+		if (_frames.length < 3 || _frames.length > 4)
+		{
+			throw new DisplayException(InvalidFrameCount, 'Button "$id" must have 3 or 4 frames, got ${_frames.length}');
+		}
+
 		width = _frames[0].sourceSize.w * scale.x;
 		height = _frames[0].sourceSize.h * scale.y;
-		
+
 		_image = new Bitmap(Loader.getImage(id));
 		_image.smoothing = true;
 		_mask = new Shape();
@@ -50,15 +56,10 @@ class Button extends Entity
 		_mask.graphics.endFill();
 		_image.mask = _mask;
 
-		if (_frames.length > 4)
-		{
-			throw "Button class must have only 3 or 4 frames.";
-		}
-
 		if (_frames[3] != null)
 		{
 			_hitBmd = new BitmapData(_frames[3].frame.w, _frames[3].frame.h, true, 0x00000000);
-			_hitBmd.copyPixels(_image.bitmapData, new Rectangle(_frames[3].frame.x, _frames[3].frame.y, _frames[3].frame.w, _frames[3].frame.h) , new Point(0, 0), null, null, true);
+			_hitBmd.copyPixels(_image.bitmapData, new Rectangle(_frames[3].frame.x, _frames[3].frame.y, _frames[3].frame.w, _frames[3].frame.h), new Point(0, 0), null, null, true);
 		}
 		else
 		{
@@ -69,7 +70,7 @@ class Button extends Entity
 			_hitBmd = new BitmapData(_frames[0].sourceSize.w, _frames[0].sourceSize.h, true, 0x00000000);
 			_hitBmd.draw(_hit);
 		}
-		
+
 		_skin.addChild(_image);
 		_skin.addChild(_mask);
 

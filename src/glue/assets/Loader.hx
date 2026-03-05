@@ -3,12 +3,14 @@ package glue.assets;
 import glue.assets.AssetTypes.ButtonData;
 import glue.assets.AssetTypes.ButtonFrame;
 import glue.assets.AssetTypes.SpritesheetData;
+import glue.assets.AssetValidator;
+import glue.errors.AssetException;
 import haxe.Json;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
+import openfl.display.Tileset;
 import openfl.geom.Rectangle;
 import openfl.media.Sound;
-import openfl.display.Tileset;
 import Xml;
 
 @:final class Loader
@@ -61,7 +63,7 @@ import Xml;
 
 			case other:
 			{
-				throw 'Unsupported asset type "' + other + '"';
+				throw new AssetException(UnsupportedType, other);
 			}
 		}
 	}
@@ -111,7 +113,7 @@ import Xml;
 		if (cached == null)
 		{
 			var raw = cache.getRaw(assetId);
-			if (raw == null) throw 'Image \'' + assetId + '\' was not loaded.';
+			if (raw == null) throw new AssetException(NotLoaded, assetId, "Image");
 			var bitmap:Bitmap = cast raw;
 			cached = bitmap.bitmapData.clone();
 			cache.storePrepared(assetId, cached);
@@ -129,10 +131,22 @@ import Xml;
 			var imageRaw:Any = cache.getRaw(assetId + SUFFIX_IMAGE);
 			if (metadataRaw == null || imageRaw == null)
 			{
-				throw 'Spritesheet \'' + assetId + '\' was not loaded.';
+				throw new AssetException(NotLoaded, assetId, "Spritesheet");
 			}
-			var parsed:ButtonData = Json.parse(preventUtf8(metadataRaw));
-			var framesObj:Array<ButtonFrame> = parsed.frames;
+
+			var rawParsed:Any;
+			try
+			{
+				rawParsed = Json.parse(preventUtf8(metadataRaw));
+			}
+			catch (e:Any)
+			{
+				throw new AssetException(InvalidFormat, assetId, "Invalid JSON in spritesheet");
+			}
+
+			var validated:ButtonData = AssetValidator.validateButtonData(rawParsed, assetId);
+			var framesObj:Array<ButtonFrame> = validated.frames;
+
 			var spritesheetSource:Bitmap = cast imageRaw;
 			var tileset = new Tileset(spritesheetSource.bitmapData);
 			var frameIds:Array<Int> = [];
@@ -161,7 +175,7 @@ import Xml;
 		if (cached == null)
 		{
 			var raw:Any = cache.getRaw(assetId);
-			if (raw == null) throw 'Json \'' + assetId + '\' was not loaded.';
+			if (raw == null) throw new AssetException(NotLoaded, assetId, "Json");
 			try
 			{
 				cached = Json.parse(preventUtf8(raw));
@@ -169,18 +183,19 @@ import Xml;
 			}
 			catch (e:Any)
 			{
-				throw '\'' + assetId + '\' is not a valid Json file.';
+				throw new AssetException(InvalidFormat, assetId, "Invalid JSON syntax");
 			}
 		}
 		return cached;
 	}
 
 	/**
-	 * Gets button data from JSON (type-safe convenience method)
+	 * Gets button data from JSON with validation
 	 */
 	static public function getButtonData(assetId:String):ButtonData
 	{
-		return getJsonAs(assetId);
+		var raw:Any = getJsonAs(assetId);
+		return AssetValidator.validateButtonData(raw, assetId);
 	}
 
 	/**
@@ -199,7 +214,7 @@ import Xml;
 		if (cached == null)
 		{
 			var raw:Sound = cache.getRaw(assetId);
-			if (raw == null) throw 'Sound \'' + assetId + '\' was not loaded.';
+			if (raw == null) throw new AssetException(NotLoaded, assetId, "Sound");
 			cached = raw;
 			cache.storePrepared(assetId, cached);
 		}
@@ -213,7 +228,7 @@ import Xml;
 		if (cached == null)
 		{
 			var raw:Any = cache.getRaw(assetId);
-			if (raw == null) throw 'Xml \'' + assetId + '\' was not loaded.';
+			if (raw == null) throw new AssetException(NotLoaded, assetId, "Xml");
 			try
 			{
 				cached = Xml.parse(preventUtf8(raw));
@@ -221,7 +236,7 @@ import Xml;
 			}
 			catch (e:Any)
 			{
-				throw '\'' + assetId + '\' is not a valid Xml file.';
+				throw new AssetException(InvalidFormat, assetId, "Invalid XML syntax");
 			}
 		}
 		return cached;
@@ -231,7 +246,7 @@ import Xml;
 	{
 		if (!cache.has(assetId))
 		{
-			throw kind + " '" + assetId + "' was not queued for loading.";
+			throw new AssetException(NotQueued, assetId, kind);
 		}
 	}
 

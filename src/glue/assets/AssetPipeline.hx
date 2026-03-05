@@ -1,14 +1,15 @@
 package glue.assets;
 
 import glue.assets.Sound;
+import glue.errors.AssetException;
 import openfl.display.Loader;
 import openfl.events.Event;
 import openfl.events.EventDispatcher;
 import openfl.events.EventType;
 import openfl.events.IOErrorEvent;
+import openfl.media.Sound;
 import openfl.net.URLLoader;
 import openfl.net.URLRequest;
-import openfl.media.Sound;
 
 private enum DataType
 {
@@ -201,7 +202,7 @@ final class AssetPipeline
 	function handleError(file:PendingFile, error:IOErrorEvent):Void
 	{
 		detachListeners(file);
-		throw '\'' + file.url + '\' not found.';
+		throw new AssetException(NotFound, file.id, file.url);
 	}
 
 	function finish():Void
